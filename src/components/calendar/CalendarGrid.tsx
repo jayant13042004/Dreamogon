@@ -63,11 +63,17 @@ export function CalendarGrid({
   const monthName = currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
 
   const getDreamsForDate = (date: Date) => {
-    return dreams.filter(d => {
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    return dreams.filter((d) => {
+      if (typeof d.dream_date === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d.dream_date)) {
+        return d.dream_date.slice(0, 10) === key;
+      }
       const dreamDate = new Date(d.dream_date);
-      return dreamDate.getDate() === date.getDate() &&
-             dreamDate.getMonth() === date.getMonth() &&
-             dreamDate.getFullYear() === date.getFullYear();
+      return (
+        dreamDate.getFullYear() === date.getFullYear() &&
+        dreamDate.getMonth() === date.getMonth() &&
+        dreamDate.getDate() === date.getDate()
+      );
     });
   };
 

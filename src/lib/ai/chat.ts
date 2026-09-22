@@ -15,6 +15,12 @@ interface DreamContext {
   summary: string;
 }
 
+// Optimized fast model priority for real-time conversational latency
+const FAST_CHAT_MODELS = [
+  'gemini-3.6-flash',
+  'gemini-3.5-flash-lite',
+] as const;
+
 export async function chatWithDreamHistory(
   userMessage: string,
   dreamContext: DreamContext[],
@@ -22,19 +28,31 @@ export async function chatWithDreamHistory(
     role: 'user' | 'assistant';
     content: string;
   }>
-): Promise<{ response: string; dreamReferences: string[] }> {
+): Promise<{ response: string; dreamReferences: Array<{ id: string; title?: string; date?: string }> }> {
   try {
     const ai = getAIClient();
 
-    const contextString =
-      dreamContext.length > 0
-        ? 'Context (User Dreams):\n' +
-          JSON.stringify(dreamContext, null, 2)
-        : 'Context (User Dreams): No dreams available.';
+    // Streamlined compact context for ultra-low token latency
+    const compactContext = dreamContext.slice(0, 15).map(d => 
+      `• [ID: ${d.id}] "${d.title}" (${d.date}, mood: ${d.mood}) - ${d.summary || d.content.slice(0, 120)}`
+    ).join('\n');
 
-    const systemMessage = `${CHAT_SYSTEM_PROMPT}\n\n${contextString}\n\nWhen you reply, additionally provide a JSON list of dream IDs referenced in your response at the very end of your message in the format: <references>["id1", "id2"]</references>.`;
+    const contextString = compactContext.length > 0
+      ? `User's Recorded Dreams:\n${compactContext}`
+      : 'No recorded dreams yet.';
 
-    const contents = conversationHistory.map((msg) => ({
+    const systemMessage = `${CHAT_SYSTEM_PROMPT}
+
+${contextString}
+
+Instructions:
+Be insightful, warm, concise, and direct. Respond in 2-3 focused paragraphs.
+If you refer to any specific dream from the list, append its ID at the very end in format: <references>["id1", "id2"]</references>`;
+
+    // Take only last 6 turns of conversation history for speed
+    const recentHistory = conversationHistory.slice(-6);
+
+    const contents = recentHistory.map((msg) => ({
       role: msg.role === 'user' ? 'user' : 'model',
       parts: [{ text: msg.content }],
     }));
@@ -44,59 +62,51 @@ export async function chatWithDreamHistory(
       parts: [{ text: userMessage }],
     });
 
-    let response: Awaited<
-      ReturnType<typeof ai.models.generateContent>
-    > | null = null;
+    let response: Awaited<ReturnType<typeof ai.models.generateContent>> | null = null;
 
-    for (const model of GENERATION_MODELS) {
+    for (const model of FAST_CHAT_MODELS) {
       try {
-        console.log(`Trying Gemini model for chat: ${model}`);
-
         response = await ai.models.generateContent({
           model,
           contents,
           config: {
             systemInstruction: systemMessage,
+            temperature: 0.6,
+            maxOutputTokens: 600,
           },
         });
-
-        console.log(`Chat succeeded with: ${model}`);
         break;
       } catch (error) {
-        console.error(`Gemini model ${model} failed:`, error);
-
+        console.error(`Model ${model} failed, attempting fallback:`, error);
         if (!shouldFallbackToNextModel(error)) {
           throw error;
         }
-
-        console.log(`Falling back from ${model} to the next model...`);
       }
     }
 
     if (!response) {
-      throw new Error('All Gemini generation models failed.');
+      throw new Error('All generation models failed.');
     }
 
     const responseText = response.text || '';
-
     let cleanResponse = responseText;
-    let dreamReferences: string[] = [];
+    let refIds: string[] = [];
 
-    const refMatch = responseText.match(
-      /<references>(.*?)<\/references>/
-    );
-
+    const refMatch = responseText.match(/<references>(.*?)<\/references>/);
     if (refMatch) {
-      cleanResponse = responseText
-        .replace(/<references>.*?<\/references>/, '')
-        .trim();
-
+      cleanResponse = responseText.replace(/<references>.*?<\/references>/, '').trim();
       try {
-        dreamReferences = JSON.parse(refMatch[1]);
+        refIds = JSON.parse(refMatch[1]);
       } catch (e) {
         console.warn('Could not parse dream references:', e);
       }
     }
+
+    // Map referenced IDs back to dream titles and dates for UI cards
+    const dreamReferences = refIds.map(id => {
+      const match = dreamContext.find(d => d.id === id);
+      return match ? { id: match.id, title: match.title, date: match.date } : { id };
+    });
 
     return {
       response: cleanResponse,

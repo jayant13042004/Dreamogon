@@ -1,104 +1,102 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Sparkles, Save, Trash2, Info } from 'lucide-react';
-import { Input } from '@/components/ui/Input';
+import { Sparkles, Save, Info } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { MoodSelector } from './MoodSelector';
 import { LuciditySelector } from './LuciditySelector';
 import { TagInput } from './TagInput';
 import { VoiceInput } from './VoiceInput';
 import { Dream, Mood, Lucidity } from '@/types/dream';
-import { formatDreamDate } from '@/lib/utils/date';
+import { useAuth } from '@/hooks/useAuth';
+import {
+  clearDreamDraft,
+  draftHasSubstance,
+  readDreamDraft,
+  writeDreamDraft,
+} from '@/lib/drafts';
 
 interface DreamEditorProps {
   initialDream?: Partial<Dream>;
-  onSave: (dream: any, analyze: boolean) => void;
+  onSave: (dream: {
+    title: string;
+    date: string;
+    content: string;
+    mood: Mood | null;
+    lucidity: Lucidity | null;
+    tags: string[];
+  }, analyze: boolean) => void | Promise<void>;
   isEditing?: boolean;
+  saving?: boolean;
 }
 
-const DRAFT_KEY = 'dream_journal_draft';
-
-export function DreamEditor({ initialDream, onSave, isEditing = false }: DreamEditorProps) {
+export function DreamEditor({
+  initialDream,
+  onSave,
+  isEditing = false,
+  saving = false,
+}: DreamEditorProps) {
+  const { user } = useAuth();
   const [title, setTitle] = useState(initialDream?.title || '');
-  const [date, setDate] = useState(initialDream?.dream_date || new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(
+    initialDream?.dream_date || new Date().toISOString().split('T')[0]
+  );
   const [content, setContent] = useState(initialDream?.content || '');
   const [mood, setMood] = useState<Mood | null>(initialDream?.mood || null);
   const [lucidity, setLucidity] = useState<Lucidity | null>(initialDream?.lucidity || null);
   const [tags, setTags] = useState<string[]>(
     initialDream?.dream_tags
-      ? (initialDream.dream_tags as any).map((t: any) => (typeof t === 'string' ? t : t.tag))
+      ? (initialDream.dream_tags as { tag?: string }[] | string[]).map((t) =>
+          typeof t === 'string' ? t : t.tag || ''
+        )
       : []
   );
   const [hasDraft, setHasDraft] = useState(false);
-
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Check for drafts on mount
   useEffect(() => {
-    if (!isEditing) {
-      const savedDraft = localStorage.getItem(DRAFT_KEY);
-      if (savedDraft) {
-        try {
-          const parsed = JSON.parse(savedDraft);
-          // Only show draft prompt if there's substantial content
-          if (parsed.content?.length > 10 || parsed.title) {
-            setHasDraft(true);
-          }
-        } catch (e) {
-          console.error('Failed to parse draft', e);
-        }
-      }
-    }
-  }, [isEditing]);
+    if (isEditing || !user) return;
+    const draft = readDreamDraft(user.id);
+    setHasDraft(draftHasSubstance(draft));
+  }, [isEditing, user]);
 
   const loadDraft = () => {
-    const savedDraft = localStorage.getItem(DRAFT_KEY);
-    if (savedDraft) {
-      try {
-        const parsed = JSON.parse(savedDraft);
-        if (parsed.title) setTitle(parsed.title);
-        if (parsed.date) setDate(parsed.date);
-        if (parsed.content) setContent(parsed.content);
-        if (parsed.mood) setMood(parsed.mood);
-        if (parsed.lucidity) setLucidity(parsed.lucidity);
-        if (parsed.tags) setTags(parsed.tags);
-        setHasDraft(false);
-      } catch (e) {
-        console.error('Failed to parse draft', e);
-      }
-    }
-  };
-
-  const clearDraft = () => {
-    localStorage.removeItem(DRAFT_KEY);
+    if (!user) return;
+    const parsed = readDreamDraft(user.id);
+    if (!parsed) return;
+    if (parsed.title) setTitle(parsed.title);
+    if (parsed.date) setDate(parsed.date);
+    if (parsed.content) setContent(parsed.content);
+    if (parsed.mood) setMood(parsed.mood as Mood);
+    if (parsed.lucidity) setLucidity(parsed.lucidity as Lucidity);
+    if (parsed.tags) setTags(parsed.tags);
     setHasDraft(false);
   };
 
-  // Autosave
+  const clearDraft = () => {
+    if (!user) return;
+    clearDreamDraft(user.id);
+    setHasDraft(false);
+  };
+
   useEffect(() => {
-    if (isEditing) return; // Don't autosave when editing an existing dream
+    if (isEditing || !user || saving) return;
 
     const timer = setTimeout(() => {
-      if (title || content) {
-        localStorage.setItem(
-          DRAFT_KEY,
-          JSON.stringify({ title, date, content, mood, lucidity, tags })
-        );
-      }
-    }, 5000);
+      writeDreamDraft(user.id, { title, date, content, mood, lucidity, tags });
+    }, 1500);
 
     return () => clearTimeout(timer);
-  }, [title, date, content, mood, lucidity, tags, isEditing]);
+  }, [title, date, content, mood, lucidity, tags, isEditing, user, saving]);
 
   const handleVoiceTranscript = useCallback((text: string) => {
     setContent((prev) => prev + (prev.endsWith(' ') || prev === '' ? '' : ' ') + text);
   }, []);
 
-  const handleSubmit = (analyze: boolean) => {
-    if (!content.trim()) return;
+  const handleSubmit = async (analyze: boolean) => {
+    if (!content.trim() || saving) return;
 
-    onSave(
+    await onSave(
       {
         title: title.trim() || 'Untitled Dream',
         date,
@@ -112,13 +110,13 @@ export function DreamEditor({ initialDream, onSave, isEditing = false }: DreamEd
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-6 lg:p-8 space-y-8 animate-fade-in">
+    <div className="max-w-4xl mx-auto p-4 md:p-6 lg:p-8 space-y-8">
       {hasDraft && !isEditing && (
-        <div className="bg-[var(--accent-soft)] border border-[var(--accent)] p-4 rounded-xl flex items-center justify-between shadow-sm">
+        <div className="bg-[var(--accent-soft)] border border-[var(--accent)] p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
           <div className="flex items-center gap-3">
-            <Info className="text-[var(--accent)]" size={20} />
+            <Info className="text-[var(--accent)] shrink-0" size={20} />
             <span className="text-[var(--text-primary)] text-sm">
-              You have an unsaved dream draft. Would you like to restore it?
+              You have an unsaved dream draft. Restore it?
             </span>
           </div>
           <div className="flex gap-2">
@@ -152,17 +150,16 @@ export function DreamEditor({ initialDream, onSave, isEditing = false }: DreamEd
         <div className="space-y-2">
           <div className="flex items-center justify-between mb-2">
             <label className="text-sm font-medium text-[var(--text-secondary)]">The Dream</label>
-            <VoiceInput onTranscript={handleVoiceTranscript} />
+            <VoiceInput onTranscript={handleVoiceTranscript} disabled={saving} />
           </div>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Write everything you remember..."
+            disabled={saving}
             className="w-full min-h-[300px] p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] resize-y text-[var(--text-primary)] text-lg leading-relaxed shadow-inner transition-colors"
           />
-          <div className="text-right text-xs text-[var(--text-muted)]">
-            {content.length} characters
-          </div>
+          <div className="text-right text-xs text-[var(--text-muted)]">{content.length} characters</div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -180,19 +177,19 @@ export function DreamEditor({ initialDream, onSave, isEditing = false }: DreamEd
             variant="secondary"
             className="w-full sm:w-auto flex items-center justify-center gap-2"
             onClick={() => handleSubmit(false)}
-            disabled={!content.trim()}
+            disabled={!content.trim() || saving}
           >
             <Save size={18} />
-            {isEditing ? 'Save Changes' : 'Save Without Analysis'}
+            {saving ? 'Saving…' : isEditing ? 'Save Changes' : 'Save'}
           </Button>
           <Button
             type="button"
             className="w-full sm:w-auto flex items-center justify-center gap-2"
             onClick={() => handleSubmit(true)}
-            disabled={!content.trim()}
+            disabled={!content.trim() || saving}
           >
             <Sparkles size={18} />
-            {isEditing ? 'Update & Re-analyze' : 'Analyze Dream'}
+            {saving ? 'Saving…' : isEditing ? 'Save & re-explore' : 'Save & explore'}
           </Button>
         </div>
       </form>

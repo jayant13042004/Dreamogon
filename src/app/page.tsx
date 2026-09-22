@@ -1,18 +1,38 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { 
-  PenLine, Sparkles, TrendingUp, Shield, Lock, 
-  ChevronRight, Menu, X, Sun, Moon, Compass, Eye, Heart 
+import { motion } from 'framer-motion';
+import {
+  Compass,
+  PenLine,
+  Mic,
+  Lock,
+  Sparkles,
+  ShieldCheck,
+  Check,
+  ChevronRight,
+  ArrowRight,
+  Menu,
+  X,
+  Sun,
+  Moon,
+  Clock,
+  BookOpen,
 } from 'lucide-react';
-import { LivingDreamCanvas } from '@/components/layout/LivingDreamCanvas';
+import { CinematicDreamHero } from '@/components/layout/CinematicDreamHero';
+import { DreamJourneyWalkthrough } from '@/components/layout/DreamJourneyWalkthrough';
+import { ProductDemoSection } from '@/components/landing/ProductDemoSection';
+import { ProductShowcaseSection } from '@/components/landing/ProductShowcaseSection';
+import { BlogShowcaseSection } from '@/components/landing/BlogShowcaseSection';
+import { CompetitiveMatrixSection } from '@/components/landing/CompetitiveMatrixSection';
+import { PerspectivesSection } from '@/components/landing/PerspectivesSection';
 import { ExploreDreamModal } from '@/components/layout/ExploreDreamModal';
 import { useTheme } from '@/components/layout/ThemeProvider';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 
 export default function LandingPage() {
-  const { theme, resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [exploreModalOpen, setExploreModalOpen] = useState(false);
@@ -20,467 +40,737 @@ export default function LandingPage() {
 
   useEffect(() => {
     setMounted(true);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  // Reference for scroll-driven narrative timeline
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  
-  // Track scroll position of the interactive hero
-  const { scrollYProgress } = useScroll({
-    target: scrollContainerRef,
-    offset: ["start start", "end end"]
-  });
-
-  // Map scroll progress to a narrative stage (1 to 4)
-  const [scrollStage, setScrollStage] = useState(1);
-
-  useEffect(() => {
-    return scrollYProgress.onChange((latest) => {
-      if (latest < 0.25) {
-        setScrollStage(1);
-      } else if (latest >= 0.25 && latest < 0.55) {
-        setScrollStage(2);
-      } else if (latest >= 0.55 && latest < 0.85) {
-        setScrollStage(3);
-      } else {
-        setScrollStage(4);
-      }
-    });
-  }, [scrollYProgress]);
-
-  // Navbar scroll background trigger
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
-  };
-
-  // Typography Motion Variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 15 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  const stagger = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
-  };
-
-  // Text transitions based on Scroll Stage
-  const STAGE_TEXTS = [
-    {
-      stage: 1,
-      title: "Scattered Fragments",
-      description: "Every dream begins as scattered, mysterious fragments of memory."
-    },
-    {
-      stage: 2,
-      title: "Subconscious Patterns",
-      description: "Connections only begin appearing when you track them over time."
-    },
-    {
-      stage: 3,
-      title: "Visual Clarity",
-      description: "Lucida aligns and interprets these patterns, showing you what maps your thoughts."
-    },
-    {
-      stage: 4,
-      title: "Your Subconscious Journal",
-      description: "A secure, beautiful space designed for quiet, mindful reflection."
-    }
-  ];
 
   return (
-    <div className="min-h-screen bg-[#F8F6F2] dark:bg-[#0A0A09] text-[#17151C] dark:text-[#F3F3F3] font-sans selection:bg-[#B7A9D9]/30 overflow-x-hidden transition-colors duration-300">
-      
-      {/* Navbar */}
-      <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#F8F6F2]/80 dark:bg-[#0A0A09]/80 backdrop-blur-md border-b border-black/5 dark:border-white/5 py-3' : 'bg-transparent py-5'}`}>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-85 transition-opacity">
-            <Compass className="text-[#30265C] dark:text-[#B7A9D9] w-6 h-6 animate-spin-slow" />
-            <span className="font-display font-bold text-xl tracking-wider text-[#17151C] dark:text-white uppercase">
-              Lucida
-            </span>
-          </Link>
-          
-          <div className="hidden md:flex items-center gap-8">
-            <Link href="#features" className="text-xs font-semibold uppercase tracking-wider text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors">Features</Link>
-            <Link href="#how-it-works" className="text-xs font-semibold uppercase tracking-wider text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors">How It Works</Link>
-            <Link href="#privacy" className="text-xs font-semibold uppercase tracking-wider text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors">Privacy</Link>
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans selection:bg-[var(--accent-soft)]">
+      {/* ─────────────────────────────────────────────────────────────
+          1. NAVIGATION
+      ───────────────────────────────────────────────────────────── */}
+      <nav
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? 'bg-[var(--bg-primary)]/90 border-b border-[var(--border-default)] py-3.5 backdrop-blur-md'
+            : 'bg-transparent py-5'
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between">
+          <BrandLogo size="md" href="/" />
+
+          <div className="hidden md:flex items-center gap-7 text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+            <a href="#demo" className="hover:text-[var(--text-primary)] transition-colors">
+              Walkthrough
+            </a>
+            <a href="#journey" className="hover:text-[var(--text-primary)] transition-colors">
+              The Journey
+            </a>
+            <a href="#showcase" className="hover:text-[var(--text-primary)] transition-colors">
+              Showcase
+            </a>
+            <a href="#capture" className="hover:text-[var(--text-primary)] transition-colors">
+              Capture
+            </a>
+            <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
+              Blog
+            </Link>
+            <a href="#pricing" className="hover:text-[var(--text-primary)] transition-colors">
+              Pricing
+            </a>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
             <button
-              onClick={toggleTheme}
-              className="p-2 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5"
+              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors"
               aria-label="Toggle theme"
             >
-              {mounted && resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+              {mounted && resolvedTheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
             </button>
-            <Link href="/login" className="text-sm font-semibold hover:opacity-80 transition-opacity">Log In</Link>
-            <Link href="/signup" className="text-xs font-bold uppercase tracking-wider bg-[#30265C] dark:bg-white text-white dark:text-[#0A0A09] px-6 py-3 rounded-full hover:opacity-95 transition-all shadow-md">
-              Start Journaling
+            <Link
+              href="/login"
+              className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-2 transition-colors"
+            >
+              Log in
+            </Link>
+            <Link
+              href="/signup"
+              className="text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-5 py-2.5 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-sm hover:shadow-md"
+            >
+              Begin your journal
             </Link>
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
             <button
-              onClick={toggleTheme}
-              className="p-2 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors rounded-full"
+              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              className="p-2 text-[var(--text-muted)] rounded-lg"
               aria-label="Toggle theme"
             >
               {mounted && resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <button className="p-2 text-black/80 dark:text-white/80" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X /> : <Menu />}
+            <button
+              className="p-2 text-[var(--text-primary)]"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-[#F8F6F2] dark:bg-[#0A0A09] pt-24 px-6 flex flex-col gap-6 md:hidden text-[#17151C] dark:text-white transition-colors duration-300">
-          <Link href="#features" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-display font-medium">Features</Link>
-          <Link href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-display font-medium">How It Works</Link>
-          <Link href="#privacy" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-display font-medium">Privacy</Link>
-          <hr className="border-black/10 dark:border-white/10" />
-          <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-xl">Log In</Link>
-          <Link href="/signup" onClick={() => setMobileMenuOpen(false)} className="text-xl font-medium text-[#7565A8] dark:text-[#B7A9D9]">Start Journaling</Link>
+        <div className="fixed inset-0 z-40 bg-[var(--bg-primary)] pt-24 px-6 flex flex-col gap-6 md:hidden border-b border-[var(--border-default)]">
+          <a
+            href="#demo"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-display text-[var(--text-primary)]"
+          >
+            Walkthrough
+          </a>
+          <a
+            href="#journey"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-display text-[var(--text-primary)]"
+          >
+            The Journey
+          </a>
+          <a
+            href="#showcase"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-display text-[var(--text-primary)]"
+          >
+            Showcase
+          </a>
+          <a
+            href="#capture"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-display text-[var(--text-primary)]"
+          >
+            Capture
+          </a>
+          <Link
+            href="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-display text-[var(--text-primary)]"
+          >
+            Blog
+          </Link>
+          <a
+            href="#pricing"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-display text-[var(--text-primary)]"
+          >
+            Pricing
+          </a>
+          <div className="pt-6 border-t border-[var(--border-default)] flex flex-col gap-3">
+            <Link
+              href="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-3 text-center text-sm font-medium border border-[var(--border-default)] rounded-xl"
+            >
+              Log in
+            </Link>
+            <Link
+              href="/signup"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-3 text-center text-sm font-semibold bg-[var(--accent)] text-[var(--bg-primary)] rounded-xl"
+            >
+              Begin your journal
+            </Link>
+          </div>
         </div>
       )}
 
-      {/* ========================================================
-          THE LIVING DREAM - STICKY SCROLL CONTAINER (350vh space)
-         ======================================================== */}
-      <section ref={scrollContainerRef} className="relative h-[350vh] w-full z-10">
-        
-        {/* Sticky wrapper pinning the viewport on screen */}
-        <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden">
-          
-          {/* Immersive interactive Canvas particles */}
-          <LivingDreamCanvas stage={scrollStage} />
+      {/* ─────────────────────────────────────────────────────────────
+          2. HERO SECTION (Normal Flow, No Scroll-Jacking)
+      ───────────────────────────────────────────────────────────── */}
+      <header className="relative pt-32 md:pt-40 pb-16 md:pb-24 px-6 md:px-10 overflow-hidden">
+        <div className="max-w-5xl mx-auto space-y-12">
+          {/* Headline & Narrative Lead */}
+          <div className="max-w-3xl space-y-6">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+              <p className="text-[11px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
+                Morning Dream Journal & Subconscious Archive
+              </p>
+            </div>
 
-          {/* Foreground UI container */}
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full h-full flex flex-col justify-center pt-24 pb-8 pointer-events-none">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center h-full">
-              
-              {/* Left Column: Typography Content */}
-              <div className="lg:col-span-6 flex flex-col justify-center space-y-6 z-10 pointer-events-auto">
-                <motion.div initial="hidden" animate="visible" variants={stagger} className="space-y-6">
-                  
-                  {/* Eyebrow */}
-                  <motion.span variants={fadeIn} className="text-xs font-bold uppercase tracking-[0.3em] text-[#7565A8] dark:text-[#B7A9D9] block">
-                    Lucida
-                  </motion.span>
-                  
-                  {/* Headline */}
-                  <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-display font-medium leading-[1.1] tracking-tight">
-                    Your dreams have patterns.<br />
-                    <span className="text-[#7565A8] dark:text-[#B7A9D9] italic font-normal">Start discovering them.</span>
-                  </motion.h1>
-                  
-                  {/* Supporting text */}
-                  <motion.p variants={fadeIn} className="text-base md:text-lg text-black/60 dark:text-white/60 max-w-md leading-relaxed">
-                    Record your dreams, explore what they might mean, and discover recurring patterns over time with clean conceptual mappings.
-                  </motion.p>
-                  
-                  {/* CTA Buttons */}
-                  <motion.div variants={fadeIn} className="flex flex-col sm:flex-row items-center gap-4 pt-2">
-                    <Link 
-                      href="/signup" 
-                      className="w-full sm:w-auto text-xs font-bold uppercase tracking-wider bg-[#30265C] dark:bg-white text-white dark:text-[#0A0A09] px-8 py-4 rounded-full hover:opacity-90 active:scale-98 transition-all shadow-xl shadow-[#30265C]/10 dark:shadow-none flex items-center justify-center gap-2"
-                    >
-                      Start Journaling <ChevronRight size={14} />
-                    </Link>
-                    <button 
-                      onClick={() => setExploreModalOpen(true)}
-                      className="w-full sm:w-auto text-xs font-bold uppercase tracking-wider text-[#30265C] dark:text-white/70 hover:text-black dark:hover:text-white border border-[#30265C]/25 dark:border-white/10 px-8 py-4 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-2"
-                    >
-                      Explore a Dream
-                    </button>
-                  </motion.div>
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-normal leading-[1.06] tracking-tight text-[var(--text-primary)]">
+              Your dreams disappear.
+              <br />
+              <span className="italic font-light text-[var(--text-secondary)]">DREAMOGON remembers.</span>
+            </h1>
 
-                </motion.div>
-                
-                {/* Scroll Narrative Overlay Card */}
-                <div className="pt-10">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={scrollStage}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.4 }}
-                      className="p-5 rounded-2xl bg-white/70 dark:bg-[#121211]/50 backdrop-blur-md border border-black/5 dark:border-white/5 max-w-sm shadow-md"
-                    >
-                      <span className="text-[9px] uppercase tracking-widest font-bold text-[#7565A8] dark:text-[#B7A9D9] block mb-1">
-                        Timeline State 0{scrollStage}
-                      </span>
-                      <h4 className="text-sm font-semibold text-black dark:text-white uppercase tracking-wider mb-1.5">
-                        {(STAGE_TEXTS[scrollStage - 1] || STAGE_TEXTS[0]).title}
-                      </h4>
-                      <p className="text-xs text-black/60 dark:text-white/60 leading-relaxed font-serif italic">
-                        "{(STAGE_TEXTS[scrollStage - 1] || STAGE_TEXTS[0]).description}"
-                      </p>
-                      
-                      {/* Interactive scroll progress indicators */}
-                      <div className="flex items-center gap-1.5 mt-4">
-                        {[1, 2, 3, 4].map((s) => (
-                          <div 
-                            key={s} 
-                            className={`h-1 rounded-full transition-all duration-300 ${s === scrollStage ? 'w-6 bg-[#30265C] dark:bg-white' : 'w-2 bg-black/10 dark:bg-white/10'}`} 
-                          />
-                        ))}
-                        <span className="text-[9px] uppercase tracking-widest text-black/30 dark:text-white/30 font-semibold ml-2">
-                          {scrollStage < 4 ? "Scroll to connect" : "Ready to explore"}
-                        </span>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </div>
-              
-              {/* Right Column: Fading UI Mockup at Stage 4 */}
-              <div className="lg:col-span-6 w-full flex items-center justify-center relative min-h-[300px]">
-                <AnimatePresence>
-                  {scrollStage === 4 && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9, y: 30 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                      transition={{ type: 'spring', damping: 20, stiffness: 120 }}
-                      className="absolute w-full max-w-[420px] bg-white dark:bg-[#121211] border border-black/5 dark:border-white/5 shadow-2xl p-6 rounded-3xl pointer-events-auto overflow-hidden"
-                    >
-                      {/* Gradient ambient back-light */}
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#E9E3F4] dark:bg-[#30265C]/10 rounded-full blur-3xl pointer-events-none" />
+            <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
+              A private journal designed for the moments immediately upon waking. Write or speak raw fragments before they fade, reflect with quiet care, and watch patterns emerge across time.
+            </p>
 
-                      {/* Header */}
-                      <div className="flex justify-between items-center mb-6">
-                        <div>
-                          <p className="text-[10px] text-[#7565A8] uppercase tracking-wider font-semibold">Dream Decoded</p>
-                          <h3 className="text-base font-bold text-black dark:text-white">Recent Reflections</h3>
-                        </div>
-                        <span className="px-2.5 py-1 text-[10px] bg-[#E9E3F4] dark:bg-[#201C30] text-[#30265C] dark:text-[#B7A9D9] font-bold rounded-md">
-                          Pro Analyst
-                        </span>
-                      </div>
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center gap-2 text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-8 py-4 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-lg text-center"
+              >
+                <span>Begin your journal</span>
+                <ChevronRight size={15} />
+              </Link>
 
-                      {/* Content Item */}
-                      <div className="space-y-4">
-                        <div className="p-4 rounded-xl bg-[#F8F6F2] dark:bg-[#1C1C1B] border border-black/5 dark:border-white/5">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Eye size={12} className="text-[#7565A8]" />
-                            <span className="text-[10px] uppercase font-bold text-black/40 dark:text-white/40">October 12 • Shifting City</span>
-                          </div>
-                          <p className="text-xs text-black/70 dark:text-white/70 italic leading-relaxed">
-                            "I was searching for a doorway in an endless corridor. Every door opened to a different ocean shoreline..."
-                          </p>
-                        </div>
-
-                        {/* Themes */}
-                        <div className="flex items-center gap-3">
-                          <div className="flex-1 p-3.5 rounded-xl bg-[#F8F6F2] dark:bg-[#1C1C1B] border border-black/5 dark:border-white/5">
-                            <span className="text-[9px] uppercase tracking-wider text-black/40 dark:text-white/40 block mb-1">Top Theme</span>
-                            <span className="text-xs font-semibold text-black dark:text-white">🌊 Shorelines (5 entries)</span>
-                          </div>
-                          <div className="flex-1 p-3.5 rounded-xl bg-[#F8F6F2] dark:bg-[#1C1C1B] border border-black/5 dark:border-white/5">
-                            <span className="text-[9px] uppercase tracking-wider text-black/40 dark:text-white/40 block mb-1">Emotion</span>
-                            <span className="text-xs font-semibold text-rose-500">❤️ Nostalgia (62%)</span>
-                          </div>
-                        </div>
-
-                        {/* Prompt */}
-                        <div className="p-4 bg-[#30265C] text-white rounded-xl text-xs flex items-start gap-2.5 shadow-lg shadow-[#30265C]/15">
-                          <Sparkles size={14} className="shrink-0 mt-0.5" />
-                          <p className="leading-relaxed text-white/90">
-                            "Water recurred across 5 of your dreams this week, usually associated with high workload stress. Reflect on transitions."
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
+              <button
+                type="button"
+                onClick={() => setExploreModalOpen(true)}
+                className="inline-flex items-center justify-center gap-2 text-xs font-mono uppercase tracking-wider border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-card)]/60 hover:bg-[var(--bg-card)] px-7 py-4 rounded-full transition-all text-center"
+              >
+                <span>Explore a sample dream</span>
+              </button>
             </div>
           </div>
-          
+
+          {/* Cinematic Living Dream Visual */}
+          <div className="pt-2">
+            <CinematicDreamHero />
+          </div>
+        </div>
+      </header>
+
+      {/* ─────────────────────────────────────────────────────────────
+          3. PRODUCT DEMO SECTION ("See DREAMOGON in action")
+      ───────────────────────────────────────────────────────────── */}
+      <ProductDemoSection videoSrc="/dreamogon-demo.mp4" />
+
+      {/* ─────────────────────────────────────────────────────────────
+          4. DREAM → MEMORY → PATTERN → WORLD (The 4 Stages)
+      ───────────────────────────────────────────────────────────── */}
+      <section id="journey" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
+        <div className="max-w-5xl mx-auto space-y-16">
+          <div className="max-w-2xl space-y-4">
+            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+              Core Architecture
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
+              Dream → Memory → Pattern → World
+            </h2>
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+              Dreams are fragile at dawn. DREAMOGON treats them with the respect they deserve — starting with effortless morning capture, gently revealing recurring symbols, and building a living memory map.
+            </p>
+          </div>
+
+          <DreamJourneyWalkthrough />
         </div>
       </section>
 
-      {/* ========================================================
-          HOW IT WORKS SECTION
-         ======================================================== */}
-      <section id="how-it-works" className="relative z-20 py-24 bg-white dark:bg-[#0E0E0D] border-y border-black/5 dark:border-white/5 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-medium mb-4">How it works</h2>
-            <p className="text-black/60 dark:text-white/60 max-w-2xl mx-auto text-lg">A simple process to help you understand the deeper layers of your subconscious.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <motion.div 
-              initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeIn}
-              className="p-8 rounded-3xl bg-[#F8F6F2] dark:bg-[#151514] border border-black/5 dark:border-white/5 hover:shadow-xl dark:hover:shadow-none transition-shadow duration-300"
-            >
-              <div className="w-12 h-12 bg-white dark:bg-[#1C1C1B] rounded-2xl flex items-center justify-center shadow-sm mb-6 border border-black/5 dark:border-white/5">
-                <PenLine className="text-[#30265C] dark:text-[#B7A9D9]" />
-              </div>
-              <h3 className="text-xl font-medium mb-3">Record Your Dream</h3>
-              <p className="text-black/60 dark:text-white/60 leading-relaxed">Write down everything you remember in our distraction-free editor. Use voice input or text as soon as you wake up.</p>
-            </motion.div>
-            
-            <motion.div 
-              initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={{...fadeIn, hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } }}}
-              className="p-8 rounded-3xl bg-[#F8F6F2] dark:bg-[#151514] border border-black/5 dark:border-white/5 hover:shadow-xl dark:hover:shadow-none transition-shadow duration-300"
-            >
-              <div className="w-12 h-12 bg-white dark:bg-[#1C1C1B] rounded-2xl flex items-center justify-center shadow-sm mb-6 border border-black/5 dark:border-white/5">
-                <Sparkles className="text-[#30265C] dark:text-[#B7A9D9]" />
-              </div>
-              <h3 className="text-xl font-medium mb-3">Let AI Explore It</h3>
-              <p className="text-black/60 dark:text-white/60 leading-relaxed">Our AI identifies emotions, themes, symbols, and possible meanings — always presented as gentle reflections, never clinical diagnoses.</p>
-            </motion.div>
-            
-            <motion.div 
-              initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={{...fadeIn, hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }}}
-              className="p-8 rounded-3xl bg-[#F8F6F2] dark:bg-[#151514] border border-black/5 dark:border-white/5 hover:shadow-xl dark:hover:shadow-none transition-shadow duration-300"
-            >
-              <div className="w-12 h-12 bg-white dark:bg-[#1C1C1B] rounded-2xl flex items-center justify-center shadow-sm mb-6 border border-black/5 dark:border-white/5">
-                <TrendingUp className="text-[#30265C] dark:text-[#B7A9D9]" />
-              </div>
-              <h3 className="text-xl font-medium mb-3">Discover Patterns</h3>
-              <p className="text-black/60 dark:text-white/60 leading-relaxed">Over time, see which themes, emotions, and symbols recur across your journal. Watch your personal dream universe unfold.</p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      {/* ─────────────────────────────────────────────────────────────
+          5. INSIDE DREAMOGON (Interactive Product Showcase)
+      ───────────────────────────────────────────────────────────── */}
+      <ProductShowcaseSection />
 
-      {/* ========================================================
-          ANALYSIS SHOWCASE SECTION
-         ======================================================== */}
-      <section id="features" className="relative z-20 py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row items-center gap-16">
-          <div className="flex-1 w-full">
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-              className="relative p-6 md:p-8 rounded-3xl bg-white dark:bg-[#121211] border border-black/5 dark:border-white/5 shadow-2xl shadow-black/5 dark:shadow-none"
-            >
-              <div className="absolute -top-3 -right-3 w-24 h-24 bg-[#E9E3F4] dark:bg-[#30265C]/10 rounded-full blur-2xl opacity-50 z-0 pointer-events-none" />
-              <div className="relative z-10">
-                <p className="text-sm text-black/40 dark:text-white/40 font-medium mb-4">Dream Journal Entry • Oct 12</p>
-                <p className="text-lg leading-relaxed text-black/80 dark:text-white/80 font-display italic">
-                  "I was running through an unfamiliar city. The streets kept changing and I couldn't find my way home. There was a river running through the middle of everything, glowing slightly in the dark."
-                </p>
-              </div>
-            </motion.div>
-          </div>
-          
-          <div className="flex-1 w-full space-y-6">
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
-              <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">Deep, nuanced reflections</h2>
-              <p className="text-black/60 dark:text-white/60 text-lg mb-8">Go beyond simple dream dictionaries. Get personalized insights tailored to your specific narrative context.</p>
-              
-              <div className="space-y-4">
-                <div className="p-5 rounded-2xl bg-[#F8F6F2] dark:bg-[#121211] border border-black/5 dark:border-white/5 shadow-lg shadow-black/5 dark:shadow-none">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Sparkles size={16} className="text-[#30265C] dark:text-[#B7A9D9]" />
-                    <span className="text-sm font-medium">AI Reflection</span>
+      {/* ─────────────────────────────────────────────────────────────
+          6. MORNING CAPTURE EXPERIENCE
+      ───────────────────────────────────────────────────────────── */}
+      <section id="capture" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)]">
+        <div className="max-w-5xl mx-auto space-y-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left explanation */}
+            <div className="lg:col-span-6 space-y-6">
+              <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+                The Dawn Routine
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)] leading-tight">
+                What do you remember?
+              </h2>
+              <p className="text-base text-[var(--text-secondary)] font-light leading-relaxed">
+                Most dream tools demand too much cognition when you wake up. DREAMOGON is built for half-closed eyes and fading thoughts.
+              </p>
+
+              <div className="space-y-4 pt-2">
+                {[
+                  {
+                    title: 'Type raw stream-of-consciousness',
+                    desc: 'A pure, distraction-free text editor that autosaves continuously so nothing is lost.',
+                    icon: PenLine,
+                  },
+                  {
+                    title: 'Speak before words fade',
+                    desc: 'One tap to record your voice. Whisper into your phone while lying in bed.',
+                    icon: Mic,
+                  },
+                  {
+                    title: 'Save immediately',
+                    desc: 'One press secures the entry. Analysis runs asynchronously afterward and never blocks your morning.',
+                    icon: Clock,
+                  },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex gap-4 items-start">
+                    <div className="w-9 h-9 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] flex items-center justify-center shrink-0 mt-0.5">
+                      <item.icon size={16} className="text-[var(--accent)]" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-[var(--text-primary)]">{item.title}</h4>
+                      <p className="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">{item.desc}</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-black/70 dark:text-white/70 leading-relaxed">
-                    This dream seems to touch on feelings of transition or navigating the unknown. The shifting city streets might reflect a situation in your waking life where the rules or environment keep changing...
+                ))}
+              </div>
+            </div>
+
+            {/* Right Mock UI Card */}
+            <div className="lg:col-span-6">
+              <div className="p-6 md:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-xl space-y-5 relative overflow-hidden">
+                <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                    Morning Capture
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[10px] font-mono text-[var(--text-muted)]">Draft Saved</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-xs font-mono uppercase tracking-wider text-[var(--accent)]">
+                    What stayed with you?
+                  </p>
+                  <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed italic">
+                    &ldquo;I woke up with the sound of a foghorn. We were standing in a hallway where all the doors opened directly into open water...&rdquo;
                   </p>
                 </div>
-                
-                <div className="flex gap-4">
-                  <div className="flex-1 p-5 rounded-2xl bg-[#F8F6F2] dark:bg-[#121211] border border-black/5 dark:border-white/5 shadow-sm">
-                    <span className="text-xs text-black/40 dark:text-white/40 font-medium uppercase tracking-wider block mb-2">Key Emotions</span>
-                    <div className="space-y-2">
-                      <div>
-                        <div className="flex justify-between text-xs mb-1"><span>Anxiety</span><span>72%</span></div>
-                        <div className="h-1.5 w-full bg-white dark:bg-[#1C1C1B] rounded-full overflow-hidden"><div className="h-full bg-[#30265C] dark:bg-[#B7A9D9] rounded-full w-[72%]" /></div>
-                      </div>
-                      <div>
-                        <div className="flex justify-between text-xs mb-1"><span>Curiosity</span><span>54%</span></div>
-                        <div className="h-1.5 w-full bg-white dark:bg-[#1C1C1B] rounded-full overflow-hidden"><div className="h-full bg-black/40 dark:bg-white/40 rounded-full w-[54%]" /></div>
-                      </div>
+
+                <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[var(--accent)]/15 flex items-center justify-center text-[var(--accent)]">
+                      <Mic size={14} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-[var(--text-primary)]">Voice capture active</p>
+                      <p className="text-[10px] text-[var(--text-muted)]">Listening with care...</p>
                     </div>
                   </div>
-                  <div className="flex-1 p-5 rounded-2xl bg-[#F8F6F2] dark:bg-[#121211] border border-black/5 dark:border-white/5 shadow-sm">
-                    <span className="text-xs text-black/40 dark:text-white/40 font-medium uppercase tracking-wider block mb-2">Symbols</span>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-2.5 py-1 rounded-md bg-[#E9E3F4] dark:bg-[#30265C]/20 text-[#30265C] dark:text-[#B7A9D9] text-xs font-semibold">City</span>
-                      <span className="px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold">River</span>
-                      <span className="px-2.5 py-1 rounded-md bg-black/5 dark:bg-white/5 text-black/60 dark:text-white/60 text-xs font-semibold font-sans">Running</span>
-                    </div>
-                  </div>
+                  <span className="text-xs font-mono text-[var(--accent)]">00:42</span>
+                </div>
+
+                <div className="pt-2">
+                  <Link
+                    href="/signup"
+                    className="w-full py-3 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider text-center block hover:bg-[var(--accent-hover)] transition-colors"
+                  >
+                    Save dream immediately
+                  </Link>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ========================================================
-          PRIVACY & SECURE VAULT SECTION
-         ======================================================== */}
-      <section id="privacy" className="relative z-20 py-24 bg-white dark:bg-[#0E0E0D] border-y border-black/5 dark:border-white/5 transition-colors duration-300">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <div className="w-16 h-16 bg-[#F8F6F2] dark:bg-[#151514] rounded-full flex items-center justify-center mx-auto mb-6 border border-black/5 dark:border-white/5">
-            <Lock className="text-[#30265C] dark:text-[#B7A9D9] w-8 h-8" />
-          </div>
-          <h2 className="text-3xl md:text-4xl font-display font-medium mb-6">Your dreams are personal.<br />They should stay that way.</h2>
-          <p className="text-black/60 dark:text-white/60 text-lg leading-relaxed font-serif italic">
-            Dream Journal AI is a private, secure vault for your subconscious. Your entries are encrypted, stored securely using row-level security, and are never shared or used to train public models. 
-          </p>
-        </div>
-      </section>
+      {/* ─────────────────────────────────────────────────────────────
+          6b. SCIENCE & PERSPECTIVES (The Dawn Memory Window)
+      ───────────────────────────────────────────────────────────── */}
+      <PerspectivesSection />
 
-      {/* ========================================================
-          CALL TO ACTION (CTA) SECTION
-         ======================================================== */}
-      <section className="relative z-20 py-32 px-6">
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-[#F8F6F2] dark:from-[#151514] to-[#E9E3F4]/40 dark:to-[#30265C]/5 rounded-3xl p-12 md:p-20 text-center border border-black/5 dark:border-white/5 shadow-2xl shadow-[#30265C]/5 dark:shadow-none transition-colors duration-300">
-          <h2 className="text-4xl md:text-5xl font-display font-medium mb-6">Start understanding your dreams.</h2>
-          <p className="text-black/60 dark:text-white/60 text-lg mb-10 max-w-xl mx-auto">
-            Join today and begin recording. Your first pattern might surprise you.
-          </p>
-          <Link href="/signup" className="inline-block text-xs font-bold uppercase tracking-wider bg-[#30265C] dark:bg-white text-white dark:text-[#0A0A09] px-10 py-4.5 rounded-full hover:opacity-90 transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-[#30265C]/15 dark:shadow-none">
-            Start Journaling Free
-          </Link>
-        </div>
-      </section>
-
-      {/* ========================================================
-          FOOTER
-         ======================================================== */}
-      <footer className="relative z-20 py-12 px-6 border-t border-black/5 dark:border-white/5 bg-[#F8F6F2] dark:bg-[#0A0A09] transition-colors duration-300">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <Compass className="text-[#30265C] dark:text-[#B7A9D9] w-5 h-5 animate-spin-slow" />
-            <span className="font-display font-bold uppercase tracking-wider text-xs text-black/60 dark:text-white/60">
-              Lucida
+      {/* ─────────────────────────────────────────────────────────────
+          7. REFLECTION & ETHICAL BOUNDARIES
+      ───────────────────────────────────────────────────────────── */}
+      <section id="reflection" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
+        <div className="max-w-5xl mx-auto space-y-16">
+          <div className="max-w-2xl space-y-4">
+            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+              Ethical AI & Boundaries
             </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)]">
+              Possibilities, never diagnoses.
+            </h2>
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+              DREAMOGON makes a strict, respectful distinction between your authentic memory and reflective suggestions. We believe dream interpretation is a personal contemplative practice, not a clinical prescription.
+            </p>
           </div>
-          <div className="flex gap-8 text-xs font-semibold uppercase tracking-wider text-black/50 dark:text-white/50">
-            <Link href="#" className="hover:text-black dark:hover:text-white transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-black dark:hover:text-white transition-colors">Terms</Link>
-            <Link href="#" className="hover:text-black dark:hover:text-white transition-colors">About</Link>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
+              <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
+                <BookOpen size={18} />
+              </div>
+              <h3 className="font-display text-xl text-[var(--text-primary)] font-medium">
+                1. Your Words
+              </h3>
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+                Your original journal entry remains pristine and unedited. No AI summary replaces your own authentic words.
+              </p>
+              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[11px] font-mono text-[var(--text-muted)]">
+                Status: Authentic Ground Truth
+              </div>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
+              <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
+                <Sparkles size={18} />
+              </div>
+              <h3 className="font-display text-xl text-[var(--text-primary)] font-medium">
+                2. AI Reflection
+              </h3>
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+                Thoughtful inquiries that prompt personal journaling: &ldquo;What did the open water feel like when you stepped toward it?&rdquo;
+              </p>
+              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[11px] font-mono text-[var(--text-muted)]">
+                Framing: Self-Inquiry Prompts
+              </div>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
+              <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
+                <ShieldCheck size={18} />
+              </div>
+              <h3 className="font-display text-xl text-[var(--text-primary)] font-medium">
+                3. Symbolic Patterns
+              </h3>
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+                Cultural and literary associations offered strictly as subjective possibilities. You are always the final authority on your dream.
+              </p>
+              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[11px] font-mono text-[var(--text-muted)]">
+                Disclaimer: Never Medical Advice
+              </div>
+            </div>
           </div>
-          <p className="text-xs text-black/40 dark:text-white/45">© 2026 Lucida. All rights reserved.</p>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          8. EDITORIAL & GUIDES (From the DREAMOGON Library)
+      ───────────────────────────────────────────────────────────── */}
+      <BlogShowcaseSection />
+
+      {/* ─────────────────────────────────────────────────────────────
+          9. PRIVACY BY DESIGN
+      ───────────────────────────────────────────────────────────── */}
+      <section id="privacy" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
+        <div className="max-w-5xl mx-auto space-y-16">
+          <div className="max-w-2xl space-y-4">
+            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+              Subconscious Privacy
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)]">
+              Your dreams stay yours.
+            </h2>
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+              Your journal holds thoughts you may never say out loud. Privacy is not a feature in DREAMOGON; it is the philosophical foundation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+              <Lock size={20} className="text-[var(--accent)]" />
+              <h4 className="font-display text-lg text-[var(--text-primary)] font-medium">Account-level security</h4>
+              <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+                Row Level Security ensures only your authenticated account can ever read or decrypt your dream entries.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+              <ShieldCheck size={20} className="text-[var(--accent)]" />
+              <h4 className="font-display text-lg text-[var(--text-primary)] font-medium">Never sold or advertised</h4>
+              <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+                We will never sell your dream entries or behavioral profile to advertising brokers or data brokers.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+              <Sparkles size={20} className="text-[var(--accent)]" />
+              <h4 className="font-display text-lg text-[var(--text-primary)] font-medium">Model Privacy Boundaries</h4>
+              <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+                DREAMOGON does not use your private journal entries or reflections to train internal public foundation models.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          9b. OBJECTIVE COMPETITIVE COMPARISON MATRIX
+      ───────────────────────────────────────────────────────────── */}
+      <CompetitiveMatrixSection />
+
+      {/* ------------------------------------------------------------
+          10. TRANSPARENT PRICING
+      ------------------------------------------------------------ */}
+      <section id="pricing" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)]">
+        <div className="max-w-7xl mx-auto space-y-16">
+          <div className="text-center max-w-2xl mx-auto space-y-4">
+            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+              Honest Value &amp; Fair Pricing
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)]">
+              Start free. Deepen when you are ready.
+            </h2>
+            <p className="text-base text-[var(--text-secondary)] font-light leading-relaxed">
+              Every core journal tool is free forever without entry caps. Upgrade when you want cross-dream archive synthesis, conversational memory, and visual depth.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Free */}
+            <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-6 shadow-sm">
+              <div className="space-y-4">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] block mb-1">
+                    Free Forever
+                  </span>
+                  <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">Free</h3>
+                  <div className="mt-2 flex items-baseline gap-1">
+                    <span className="text-3xl font-display font-semibold text-[var(--text-primary)]">$0</span>
+                    <span className="text-xs text-[var(--text-muted)]">/ forever</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
+                    Lifelong private dream journaling with basic subconscious reflection.
+                  </p>
+                </div>
+
+                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+                  {[
+                    'Unlimited dream entries & voice capture',
+                    'Full history, instant search & calendar',
+                    '5 AI reflections per month',
+                    'Subconscious pattern overview & trends',
+                    'Dream World spatial constellation',
+                    '2 lifetime preview image generations',
+                    'Full export (JSON/Markdown) & zero lock-in',
+                  ].map((feat, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                      <span className="leading-tight">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Link
+                href="/signup"
+                className="w-full py-3 rounded-full border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)] text-xs font-mono uppercase tracking-wider text-[var(--text-primary)] text-center transition-colors block"
+              >
+                Start free
+              </Link>
+            </div>
+
+            {/* Pro Monthly */}
+            <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-6 shadow-sm">
+              <div className="space-y-4">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                    Monthly
+                  </span>
+                  <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">Pro Monthly</h3>
+                  <div className="mt-2 flex items-baseline gap-1">
+                    <span className="text-3xl font-display font-semibold text-[var(--text-primary)]">$9</span>
+                    <span className="text-xs text-[var(--text-muted)]">/ month</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
+                    Flexible month-to-month access to longitudinal synthesis &amp; visual depth.
+                  </p>
+                </div>
+
+                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+                  {[
+                    'Everything in Free included',
+                    '100 AI reflections & inquiries / month',
+                    'Cross-dream longitudinal pattern synthesis',
+                    'AI Guide with archive conversation memory',
+                    '20 dream images / month + variations',
+                    'Priority analysis queues & direct support',
+                  ].map((feat, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                      <span className="leading-tight">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Link
+                href="/signup?tier=pro"
+                className="w-full py-3 rounded-full border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--bg-primary)] text-xs font-mono uppercase tracking-wider text-center transition-colors block"
+              >
+                Subscribe monthly
+              </Link>
+            </div>
+
+            {/* Pro Annual */}
+            <div className="p-7 rounded-3xl bg-[var(--bg-card)] border-2 border-[var(--accent)] flex flex-col justify-between space-y-6 relative shadow-xl">
+              <div className="absolute -top-3 right-6">
+                <span className="px-2.5 py-0.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-[9px] font-mono uppercase tracking-widest font-semibold">
+                  Save 33%
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                    Most Popular
+                  </span>
+                  <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">Pro Annual</h3>
+                  <div className="mt-2 flex items-baseline gap-1">
+                    <span className="text-3xl font-display font-semibold text-[var(--text-primary)]">$72</span>
+                    <span className="text-xs text-[var(--text-muted)]">/ year</span>
+                  </div>
+                  <p className="text-xs text-[var(--accent)] mt-1 font-mono">
+                    $6/month equivalent &bull; Billed annually
+                  </p>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1 font-light">
+                    For committed dreamers exploring long-term psychological and symbolic arcs.
+                  </p>
+                </div>
+
+                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-xs text-[var(--text-primary)]">
+                  {[
+                    'Everything in Pro Monthly included',
+                    '33% annual savings ($72 vs $108)',
+                    '100 AI reflections & inquiries / month',
+                    'Full subconscious archive pattern synthesis',
+                    '20 dream images / month + variations',
+                    'Early access to new cognitive tools',
+                  ].map((feat, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                      <span className="leading-tight">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Link
+                href="/signup?tier=pro&interval=annual"
+                className="w-full py-3 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider text-center transition-colors block shadow-md"
+              >
+                Start annual
+              </Link>
+            </div>
+
+            {/* Lifetime */}
+            <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-6 shadow-sm">
+              <div className="space-y-4">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] block mb-1">
+                    One-Time Purchase
+                  </span>
+                  <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">Lifetime</h3>
+                  <div className="mt-2 flex items-baseline gap-1">
+                    <span className="text-3xl font-display font-semibold text-[var(--text-primary)]">$149</span>
+                    <span className="text-xs text-[var(--text-muted)]">/ once</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
+                    Pay once, own your private archive forever with zero subscription fatigue.
+                  </p>
+                </div>
+
+                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+                  {[
+                    'Full Pro feature access for life',
+                    'Zero recurring subscription fees',
+                    '100 AI operations / month fair-use allowance',
+                    '20 dream images refreshed each month',
+                    'Permanent archive pattern synthesis',
+                    'All future core feature updates included',
+                  ].map((feat, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                      <span className="leading-tight">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Link
+                href="/signup?tier=lifetime"
+                className="w-full py-3 rounded-full border border-[var(--border-default)] hover:border-[var(--accent)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)] text-xs font-mono uppercase tracking-wider text-[var(--text-primary)] text-center transition-colors block"
+              >
+                Get Lifetime
+              </Link>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
+            >
+              <span>View full feature comparison &amp; tier FAQ</span>
+              <ChevronRight size={14} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------
+          11. FINAL CALL TO ACTION
+      ------------------------------------------------------------ */}
+      <section className="py-28 md:py-36 px-6 md:px-10 border-t border-[var(--border-default)] relative overflow-hidden bg-[var(--bg-secondary)]/30">
+        <div className="max-w-3xl mx-auto text-center space-y-8 relative z-10">
+          <span className="text-[10px] font-mono uppercase tracking-[0.26em] text-[var(--accent)] block">
+            The Morning After
+          </span>
+
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-normal text-[var(--text-primary)] leading-tight tracking-tight">
+            Keep what the night forgets.
+          </h2>
+
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed max-w-xl mx-auto">
+            Tomorrow morning&apos;s dream will be gone before noon unless you write it down. Start your private journal today.
+          </p>
+
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/signup"
+              className="inline-flex items-center justify-center gap-2 text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-9 py-4 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-lg text-center"
+            >
+              <span>Begin your journal</span>
+              <ChevronRight size={15} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------
+          12. FOOTER
+      ------------------------------------------------------------ */}
+      <footer className="py-14 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-card)]/40 text-xs text-[var(--text-muted)]">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <BrandLogo size="sm" href="/" />
+            <span className="text-[var(--text-muted)] opacity-40">/</span>
+            <span>A private place to record your dreams and discover what keeps returning.</span>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-6 text-[11px] font-mono uppercase tracking-wider">
+            <Link href="/pricing" className="hover:text-[var(--text-primary)] transition-colors">
+              Pricing
+            </Link>
+            <Link href="/privacy" className="hover:text-[var(--text-primary)] transition-colors">
+              Privacy
+            </Link>
+            <Link href="/security" className="hover:text-[var(--text-primary)] transition-colors">
+              Security
+            </Link>
+            <Link href="/terms" className="hover:text-[var(--text-primary)] transition-colors">
+              Terms
+            </Link>
+            <Link href="/refunds" className="hover:text-[var(--text-primary)] transition-colors">
+              Refunds
+            </Link>
+            <Link href="/faq" className="hover:text-[var(--text-primary)] transition-colors">
+              FAQ
+            </Link>
+            <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
+              Blog
+            </Link>
+          </div>
+
+          <p className="text-[11px] font-mono">&copy; {new Date().getFullYear()} DREAMOGON. All rights reserved.</p>
         </div>
       </footer>
 
-      {/* Interactive explore dream pop-up modal */}
-      <ExploreDreamModal 
-        isOpen={exploreModalOpen}
-        onClose={() => setExploreModalOpen(false)}
-      />
-
+      {/* Sample Dream Interactive Modal */}
+      <ExploreDreamModal isOpen={exploreModalOpen} onClose={() => setExploreModalOpen(false)} />
     </div>
   );
 }

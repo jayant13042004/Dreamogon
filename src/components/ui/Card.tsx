@@ -19,13 +19,13 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
-    const baseStyles = 'rounded-xl bg-[var(--bg-card)] overflow-hidden';
+    const baseStyles = 'rounded-[var(--radius-panel)] bg-[var(--bg-card)] overflow-hidden border border-[var(--border-subtle)]';
     
     const variants = {
       default: '',
-      elevated: 'shadow-md',
-      interactive: 'cursor-pointer hover:shadow-lg transition-shadow border border-transparent hover:border-[var(--border-default)]',
-      bordered: 'border border-[var(--border-default)]',
+      elevated: 'shadow-sm border-[var(--border-default)]',
+      interactive: 'cursor-pointer hover:border-[var(--border-default)] transition-colors',
+      bordered: 'border-[var(--border-default)]',
     };
 
     const paddings = {

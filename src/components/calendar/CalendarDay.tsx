@@ -34,7 +34,7 @@ export function CalendarDay({
         <span
           className={`
             text-sm font-medium w-7 h-7 flex items-center justify-center rounded-full
-            ${isToday ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-primary)]'}
+            ${isToday ? 'bg-[var(--accent)] text-[var(--bg-primary)] font-semibold' : 'text-[var(--text-primary)]'}
             ${!isCurrentMonth && !isToday ? 'text-[var(--text-muted)]' : ''}
           `}
         >

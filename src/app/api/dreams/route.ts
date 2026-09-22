@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { resolveDreamImageUrl } from '@/lib/storage/dream-images';
 
 // GET /api/dreams - List user's dreams
 export async function GET(request: NextRequest) {
@@ -15,6 +16,10 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
     const mood = searchParams.get('mood');
+    const lucidity = searchParams.get('lucidity');
+    const theme = searchParams.get('theme');
+    const entityType = searchParams.get('entityType');
+    const entityName = searchParams.get('entityName');
     const search = searchParams.get('search');
     const sortBy = searchParams.get('sortBy') || 'dream_date';
     const sortOrder = searchParams.get('sortOrder') || 'desc';
@@ -23,17 +28,60 @@ export async function GET(request: NextRequest) {
 
     const offset = (page - 1) * limit;
 
+    // Optional entity filter → constrain dream IDs first
+    let entityDreamIds: string[] | null = null;
+    if (entityType && entityName) {
+      const { data: entityRows, error: entityError } = await supabase
+        .from('dream_entities')
+        .select('dream_id')
+        .eq('user_id', user.id)
+        .eq('entity_type', entityType)
+        .ilike('entity_name', entityName);
+
+      if (entityError) {
+        console.error('Error filtering entities');
+        return NextResponse.json({ error: 'Failed to fetch dreams' }, { status: 500 });
+      }
+
+      entityDreamIds = [...new Set((entityRows || []).map((r) => r.dream_id))];
+      if (entityDreamIds.length === 0) {
+        return NextResponse.json({
+          dreams: [],
+          total: 0,
+          page,
+          limit,
+          totalPages: 0,
+        });
+      }
+    }
+
     let query = supabase
       .from('dreams')
-      .select('*, dream_tags(tag)', { count: 'exact' })
+      .select('*, dream_tags(tag), dream_entities(id, entity_type, entity_name, confidence)', {
+        count: 'exact',
+      })
       .eq('user_id', user.id);
+
+    if (entityDreamIds) {
+      query = query.in('id', entityDreamIds);
+    }
 
     if (mood) {
       query = query.eq('mood', mood);
     }
 
+    if (lucidity) {
+      query = query.eq('lucidity', lucidity);
+    }
+
+    if (theme) {
+      query = query.contains('ai_themes', [theme]);
+    }
+
     if (search) {
-      query = query.or(`title.ilike.%${search}%,content.ilike.%${search}%`);
+      query = query.or(
+        `title.ilike.%${search}%,content.ilike.%${search}%,ai_summary.ilike.%${search}%`
+      );
     }
 
     if (startDate) {
@@ -48,9 +96,7 @@ export async function GET(request: NextRequest) {
     const column = validSortColumns.includes(sortBy) ? sortBy : 'dream_date';
     const ascending = sortOrder === 'asc';
 
-    query = query
-      .order(column, { ascending })
-      .range(offset, offset + limit - 1);
+    query = query.order(column, { ascending }).range(offset, offset + limit - 1);
 
     const { data: dreams, error, count } = await query;
 
@@ -59,8 +105,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch dreams' }, { status: 500 });
     }
 
+    const resolvedDreams = (dreams || []).map((d: any) => ({
+      ...d,
+      image_url: resolveDreamImageUrl(d),
+    }));
+
     return NextResponse.json({
-      dreams: dreams || [],
+      dreams: resolvedDreams,
       total: count || 0,
       page,
       limit,

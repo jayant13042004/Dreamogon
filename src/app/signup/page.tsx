@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Loader2, Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -37,11 +38,13 @@ export default function SignUpPage() {
     setLoading(true);
     
     try {
-      await signUpWithEmail(email, password, name);
+      const data = await signUpWithEmail(email, password, name);
       setSuccess(true);
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 3000);
+      if (data?.session) {
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 1200);
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to create account');
     } finally {
@@ -74,6 +77,9 @@ export default function SignUpPage() {
       >
         <div className="bg-[var(--bg-card)] rounded-3xl p-8 shadow-xl border border-[var(--border-default)] relative z-10">
           <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <BrandLogo size="md" href="/" />
+            </div>
             <h1 className="text-3xl font-display text-[var(--text-primary)] mb-2">Start your dream journal</h1>
             <p className="text-[var(--text-secondary)]">Create an account to begin tracking your dreams</p>
           </div>
@@ -82,7 +88,7 @@ export default function SignUpPage() {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="bg-red-50 text-red-600 p-3 rounded-xl mb-6 text-sm text-center"
+              className="bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 p-3 rounded-xl mb-6 text-sm text-center"
             >
               {error}
             </motion.div>
@@ -92,7 +98,7 @@ export default function SignUpPage() {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="bg-green-50 text-green-600 p-3 rounded-xl mb-6 text-sm text-center"
+              className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 p-3 rounded-xl mb-6 text-sm text-center"
             >
               Check your email for confirmation or hold on while we redirect you...
             </motion.div>

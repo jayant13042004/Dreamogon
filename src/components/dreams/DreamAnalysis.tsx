@@ -1,156 +1,127 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { BookOpen, Sparkles, HelpCircle } from 'lucide-react';
-import { Dream, DreamAnalysis as IDreamAnalysis } from '@/types/dream';
+import { DreamAnalysis as IDreamAnalysis } from '@/types/dream';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 
 interface DreamAnalysisProps {
   analysis: IDreamAnalysis;
-  dream: Dream;
+  dream?: unknown;
 }
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } },
-};
-
-export function DreamAnalysis({ analysis, dream }: DreamAnalysisProps) {
+export function DreamAnalysis({ analysis }: DreamAnalysisProps) {
+  const reduceMotion = useReducedMotion();
   if (!analysis) return null;
+
+  const containerVariants = reduceMotion
+    ? undefined
+    : {
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.06 } },
+      };
+
+  const itemVariants = reduceMotion
+    ? undefined
+    : {
+        hidden: { opacity: 0, y: 8 },
+        show: { opacity: 1, y: 0 },
+      };
 
   return (
     <motion.div
       variants={containerVariants}
-      initial="hidden"
-      animate="show"
-      className="space-y-6 mt-8"
+      initial={reduceMotion ? undefined : 'hidden'}
+      animate={reduceMotion ? undefined : 'show'}
+      className="space-y-6"
     >
-      {/* Summary */}
+      {/* 1. Reflective summary & note */}
       <motion.div variants={itemVariants}>
-        <Card className="bg-[var(--accent-soft)] border-[var(--accent)]/20 p-6 overflow-hidden relative">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <BookOpen size={100} />
-          </div>
-          <div className="relative z-10">
-            <h3 className="flex items-center gap-2 text-lg font-bold text-[var(--text-primary)] mb-3">
-              <BookOpen size={20} className="text-[var(--accent)]" />
-              Dream Summary
+        <div className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+          <div className="flex items-center gap-2">
+            <BookOpen size={16} className="text-[var(--text-muted)]" />
+            <h3 className="text-sm font-medium text-[var(--text-primary)]">
+              Reflective summary
             </h3>
-            <p className="text-[var(--text-secondary)] leading-relaxed">
-              {analysis.summary}
-            </p>
           </div>
-        </Card>
+          <p className="text-[var(--text-secondary)] leading-relaxed text-sm">
+            {analysis.summary}
+          </p>
+          {analysis.insight && (
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed border-t border-[var(--border-subtle)] pt-3 italic">
+              “{analysis.insight}”
+            </p>
+          )}
+        </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Emotional Landscape */}
+      {/* 2. Emotional undertones (Qualitative tags - NO pseudo-science bars) */}
+      {analysis.emotions && analysis.emotions.length > 0 && (
         <motion.div variants={itemVariants}>
-          <Card className="p-6 h-full">
-            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
-              AI-estimated emotional signals
+          <div className="p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <h3 className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+              Emotional undertones noticed
             </h3>
-            <div className="space-y-4 mb-4">
-              {analysis.emotions?.map((emotion, index) => (
-                <div key={index} className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span className="font-medium capitalize text-[var(--text-primary)]">{emotion.name}</span>
-                    <span className="text-[var(--text-secondary)]">{emotion.percentage}%</span>
-                  </div>
-                  <div className="h-2 w-full bg-[var(--bg-secondary)] rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${emotion.percentage}%` }}
-                      transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
-                      className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)]"
-                    />
-                  </div>
+            <div className="flex flex-wrap gap-2">
+              {analysis.emotions.map((emotion, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-secondary)] capitalize"
+                >
+                  {emotion.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* 3. Reflection questions to ponder */}
+      {analysis.reflection_questions && analysis.reflection_questions.length > 0 && (
+        <motion.div variants={itemVariants}>
+          <div className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
+            <div className="flex items-center gap-2">
+              <HelpCircle className="text-[var(--accent)] shrink-0" size={16} />
+              <h3 className="text-sm font-medium text-[var(--text-primary)]">
+                Questions for morning reflection
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {analysis.reflection_questions.slice(0, 2).map((question: string, index: number) => (
+                <div
+                  key={index}
+                  className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed"
+                >
+                  {question}
                 </div>
               ))}
             </div>
-            <p className="text-xs text-[var(--text-muted)] italic">
-              These percentages represent AI-estimated signals, not scientifically measured values.
-            </p>
-          </Card>
+          </div>
         </motion.div>
+      )}
 
-        {/* Key Elements */}
+      {/* 4. Subjective interpretations framed gently */}
+      {analysis.possible_interpretations && analysis.possible_interpretations.length > 0 && (
         <motion.div variants={itemVariants}>
-          <Card className="p-6 h-full">
-            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
-              Key Elements
+          <div className="p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <h3 className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+              Possible interpretations
             </h3>
-            <div className="flex flex-wrap gap-2">
-              {analysis.key_elements?.map((element: string, index: number) => (
-                <Badge key={index} variant="default" className="px-3 py-1 text-sm font-medium">
-                  {element}
-                </Badge>
+            <div className="space-y-2.5">
+              {analysis.possible_interpretations.map((interpretation: string, index: number) => (
+                <p key={index} className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  • {interpretation}
+                </p>
               ))}
             </div>
-          </Card>
+            <p className="text-[11px] text-[var(--text-muted)] pt-1">
+              Suggestions based on metaphorical patterns — not clinical facts.
+            </p>
+          </div>
         </motion.div>
-      </div>
-
-      {/* Possible Interpretations */}
-      <motion.div variants={itemVariants}>
-        <Card className="p-6">
-          <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
-            Possible Interpretations
-          </h3>
-          <div className="space-y-4">
-            {analysis.possible_interpretations?.map((interpretation: string, index: number) => (
-              <div key={index} className="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-default)]">
-                <p className="italic text-[var(--text-primary)] leading-relaxed">
-                  {interpretation}
-                </p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-4 text-xs text-[var(--text-muted)]">
-            Interpretations are subjective suggestions based on common psychological patterns.
-          </p>
-        </Card>
-      </motion.div>
-
-      {/* Reflection Questions */}
-      <motion.div variants={itemVariants}>
-        <Card className="p-6">
-          <h3 className="text-lg font-bold text-[var(--text-primary)] mb-4">
-            Reflection Questions
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {analysis.reflection_questions?.map((question: string, index: number) => (
-              <div key={index} className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-default)] flex gap-3 shadow-sm hover:shadow-md transition-shadow">
-                <HelpCircle className="text-[var(--accent)] shrink-0 mt-0.5" size={18} />
-                <p className="text-[var(--text-primary)] text-sm font-medium">{question}</p>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </motion.div>
-
-      {/* AI Insight */}
-      <motion.div variants={itemVariants}>
-        <Card className="p-6 bg-gradient-to-br from-[var(--accent-soft)] to-transparent border-[var(--accent)]/30">
-          <h3 className="flex items-center gap-2 text-lg font-bold text-[var(--text-primary)] mb-3">
-            <Sparkles size={20} className="text-[var(--accent)]" />
-            AI Insight
-          </h3>
-          <p className="text-[var(--text-secondary)] leading-relaxed">
-            {analysis.insight}
-          </p>
-        </Card>
-      </motion.div>
+      )}
     </motion.div>
   );
 }

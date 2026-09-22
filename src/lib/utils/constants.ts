@@ -1,7 +1,8 @@
 import type { Mood, Lucidity } from '@/types/dream';
 
-export const APP_NAME = 'Dream Journal AI';
-export const APP_DESCRIPTION = 'Record your dreams, explore possible meanings, and discover recurring patterns across your dream journal with AI.';
+export const APP_NAME = 'Dreamogon';
+export const APP_DESCRIPTION =
+  'A private place to record your dreams and discover what keeps returning.';
 
 export const MOODS: Array<{ label: string; value: Mood; emoji: string; color: string }> = [
   { label: 'Peaceful', value: 'peaceful', emoji: '😌', color: 'bg-blue-100 text-blue-800' },

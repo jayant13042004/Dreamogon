@@ -1,0 +1,2 @@
+# Used by `wrangler` / OpenNext local Workers preview
+NEXTJS_ENV=development

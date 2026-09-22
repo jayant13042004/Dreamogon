@@ -22,16 +22,15 @@ export function MoodSelector({ value, onChange }: MoodSelectorProps) {
               key={moodItem.value}
               type="button"
               onClick={() => onChange(moodItem.value as Mood)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-colors ${
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg border text-xs transition-colors ${
                 isSelected
-                  ? 'bg-[var(--accent)] text-white border-[var(--accent)]'
-                  : 'bg-[var(--bg-secondary)] text-[var(--text-primary)] border-[var(--border-default)] hover:border-[var(--accent-soft)]'
+                  ? 'bg-[var(--accent)] text-[var(--bg-primary)] border-[var(--accent)] font-medium'
+                  : 'bg-[var(--bg-secondary)] text-[var(--text-primary)] border-[var(--border-default)] hover:border-[var(--accent)]'
               }`}
             >
-              <span className="text-lg">{moodItem.emoji}</span>
-              <span className="text-sm font-medium">{moodItem.label}</span>
+              <span>{moodItem.label}</span>
             </motion.button>
           );
         })}

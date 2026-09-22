@@ -1,0 +1,8 @@
+﻿# User-agent: *
+# Disallow:
+#
+# DREAMOGON AdSense Publisher Configuration
+# Note: Insert your official Google AdSense Publisher ID below upon account verification
+# Example: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

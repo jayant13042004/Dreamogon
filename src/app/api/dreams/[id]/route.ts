@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { resolveDreamImageUrl } from '@/lib/storage/dream-images';
 
 // GET /api/dreams/[id] - Get a single dream
 export async function GET(
@@ -26,7 +27,12 @@ export async function GET(
       return NextResponse.json({ error: 'Dream not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ dream });
+    const resolvedDream = {
+      ...dream,
+      image_url: resolveDreamImageUrl(dream),
+    };
+
+    return NextResponse.json({ dream: resolvedDream });
   } catch (error) {
     console.error('Unexpected error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -108,6 +114,18 @@ export async function DELETE(
 
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { data: dream } = await supabase
+      .from('dreams')
+      .select('image_path')
+      .eq('id', id)
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (dream?.image_path) {
+      const { DREAM_IMAGES_BUCKET } = await import('@/lib/storage/dream-images');
+      await supabase.storage.from(DREAM_IMAGES_BUCKET).remove([dream.image_path]).catch(() => {});
     }
 
     const { error } = await supabase

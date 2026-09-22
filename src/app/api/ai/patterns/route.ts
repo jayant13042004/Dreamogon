@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { analyzeDreamPatterns } from '@/lib/ai/analyze-patterns';
+import { getAiQuota, recordAiOperation } from '@/lib/billing';
 
 // POST /api/ai/patterns - Analyze patterns across dreams
 export async function POST(request: NextRequest) {
@@ -10,6 +11,22 @@ export async function POST(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const quota = await getAiQuota(supabase, user.id);
+    if (!quota.allowed) {
+      return NextResponse.json(
+        {
+          error: 'Monthly AI allowance reached. Upgrade to Pro for 100 monthly operations and deep cross-dream pattern synthesis.',
+          code: 'quota_exceeded',
+          isQuotaExceeded: true,
+          limit: quota.limit,
+          used: quota.used,
+          remaining: quota.remaining,
+          planTier: quota.planTier,
+        },
+        { status: 403 }
+      );
     }
 
     // Fetch all user's dreams
@@ -41,7 +58,17 @@ export async function POST(request: NextRequest) {
 
     const patterns = await analyzeDreamPatterns(dreamData);
 
-    return NextResponse.json({ patterns });
+    await recordAiOperation(supabase, user.id);
+
+    return NextResponse.json({
+      patterns,
+      quota: {
+        used: quota.used + 1,
+        limit: quota.limit,
+        remaining: Math.max(0, quota.remaining - 1),
+        planTier: quota.planTier,
+      },
+    });
   } catch (error) {
     console.error('Pattern analysis error:', error);
     const message = error instanceof Error ? error.message : 'Pattern analysis failed';

@@ -1,16 +1,20 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Search, Plus, Moon, Sun, Bell } from 'lucide-react';
+import { Search, Plus, Moon, Sun, Bell, Sparkles, Compass, Settings, LogOut } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/hooks/useAuth';
 
 interface HeaderProps {
   title?: string;
 }
 
 export function Header({ title }: HeaderProps) {
+  const router = useRouter();
+  const { signOut } = useAuth();
   const { theme, resolvedTheme, setTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
 
@@ -26,50 +30,77 @@ export function Header({ title }: HeaderProps) {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };
 
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (err) {
+      console.error('Sign out error:', err);
+      window.location.href = '/login';
+    }
+  };
+
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-200 ${
+      className={`sticky top-0 z-30 w-full transition-all duration-300 ${
         scrolled
-          ? 'bg-[var(--bg-primary)]/80 backdrop-blur-md border-b border-[var(--border-default)]'
+          ? 'bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border-default)]'
           : 'bg-transparent'
       }`}
     >
       <div className="flex items-center justify-between h-16 px-4 md:px-8">
-        <div className="flex items-center gap-4">
-          <h1 className="text-xl md:text-2xl font-display font-semibold text-[var(--text-primary)]">
-            {title || 'Dashboard'}
+        <div className="flex items-center gap-3">
+          <h1 className="text-lg md:text-xl font-display font-medium text-[var(--text-primary)] tracking-tight">
+            {title || 'Journal'}
           </h1>
         </div>
 
-        <div className="flex items-center gap-2 md:gap-4">
-          <button className="p-2 text-[var(--text-secondary)] hover:bg-[var(--bg-card)] rounded-full transition-colors hidden md:block">
-            <Search size={20} />
-          </button>
-          
-          <button className="p-2 text-[var(--text-secondary)] hover:bg-[var(--bg-card)] rounded-full transition-colors hidden md:block">
-            <Bell size={20} />
-          </button>
+        <div className="flex items-center gap-2.5">
+          {/* Quick World Link */}
+          <Link
+            href="/world"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--bg-card)] hover:bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs font-medium transition-colors"
+          >
+            <Compass size={14} />
+            <span>World</span>
+          </Link>
 
+          {/* New Dream Action */}
+          <Link
+            href="/dream/new"
+            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs font-semibold tracking-wide transition-colors"
+          >
+            <Plus size={14} />
+            <span>Record</span>
+          </Link>
+
+          {/* Settings Link */}
+          <Link
+            href="/settings"
+            className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] rounded-lg transition-colors border border-[var(--border-default)]"
+            aria-label="Settings"
+          >
+            <Settings size={15} />
+          </Link>
+
+          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 text-[var(--text-secondary)] hover:bg-[var(--bg-card)] rounded-full transition-colors"
+            className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] rounded-lg transition-colors border border-[var(--border-default)]"
             aria-label="Toggle theme"
           >
-            {resolvedTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            {resolvedTheme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
-          <Link href="/dream/new" className="md:hidden">
-            <motion.div
-              whileTap={{ scale: 0.95 }}
-              className="bg-[var(--accent)] text-white p-2 rounded-full shadow-sm"
-            >
-              <Plus size={20} />
-            </motion.div>
-          </Link>
-          
-          <div className="w-8 h-8 rounded-full bg-[var(--accent-soft)] border border-[var(--border-default)] md:hidden flex items-center justify-center">
-            <span className="text-sm font-medium text-[var(--accent)]">J</span>
-          </div>
+          {/* Sign Out Button */}
+          <button
+            onClick={handleSignOut}
+            className="p-2 text-[var(--text-muted)] hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors border border-[var(--border-default)]"
+            title="Sign out of Dreamogon"
+            aria-label="Sign out"
+          >
+            <LogOut size={15} />
+          </button>
         </div>
       </div>
     </header>

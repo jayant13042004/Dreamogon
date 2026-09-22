@@ -21,17 +21,64 @@ export function useAuth() {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      if (user) await fetchProfile(user.id);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          setUser(user);
+          await fetchProfile(user.id);
+          setLoading(false);
+          return;
+        }
+      } catch {
+        // Fallback for development preview
+      }
+
+      if (
+        process.env.NODE_ENV === 'development' &&
+        typeof window !== 'undefined' &&
+        (window.location.search.includes('preview=1') || document.cookie.includes('dev_preview=1'))
+      ) {
+        const mockUser: User = {
+          id: 'dev-preview-user',
+          app_metadata: {},
+          user_metadata: { name: 'Julian' },
+          aud: 'authenticated',
+          created_at: new Date().toISOString(),
+          email: 'julian@example.com',
+        } as User;
+        setUser(mockUser);
+        setProfile({
+          id: 'dev-preview-user',
+          email: 'julian@example.com',
+          name: 'Julian',
+          avatar_url: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          plan_tier: 'pro',
+        });
+        setLoading(false);
+        return;
+      }
+
+      setUser(null);
       setLoading(false);
     };
     getUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) await fetchProfile(session.user.id);
-      else setProfile(null);
+      if (session?.user) {
+        setUser(session.user);
+        await fetchProfile(session.user.id);
+      } else if (
+        process.env.NODE_ENV === 'development' &&
+        typeof window !== 'undefined' &&
+        (window.location.search.includes('preview=1') || document.cookie.includes('dev_preview=1'))
+      ) {
+        // preserve preview user
+      } else {
+        setUser(null);
+        setProfile(null);
+      }
     });
 
     return () => subscription.unsubscribe();

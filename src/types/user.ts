@@ -1,8 +1,11 @@
+export type PlanTier = 'free' | 'pro' | 'lifetime';
+
 export interface Profile {
   id: string;
   email: string;
   name: string | null;
   avatar_url: string | null;
+  plan_tier?: PlanTier;
   created_at: string;
   updated_at: string;
 }

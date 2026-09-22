@@ -1,22 +1,86 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
-import { Card, EmptyState, Spinner, Badge } from '@/components/ui';
-import { 
-  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell 
-} from 'recharts';
-import { motion } from 'framer-motion';
-import { Sparkles, TrendingUp, Activity, Hash, Fingerprint } from 'lucide-react';
+import { EmptyState, Spinner } from '@/components/ui';
+import {
+  BookOpen,
+  TrendingUp,
+  Users,
+  MapPin,
+  Heart,
+  Sparkles,
+  ArrowRight,
+  type LucideIcon,
+} from 'lucide-react';
 import { Dream, DreamEntity } from '@/types/dream';
-import { PatternAnalysis } from '@/types/ai';
+import {
+  aggregateEntitiesByType,
+  aggregateMoods,
+  aggregateThemes,
+  buildQuietPatternNotes,
+  recurringOnly,
+  type CountedItem,
+} from '@/lib/patterns';
+
+function PatternList({
+  title,
+  icon: Icon,
+  items,
+  empty,
+  hrefBase,
+}: {
+  title: string;
+  icon: LucideIcon;
+  items: CountedItem[];
+  empty: string;
+  hrefBase: string;
+}) {
+  return (
+    <section className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <Icon size={16} className="text-[var(--text-muted)]" />
+        <h2 className="text-sm font-medium text-[var(--text-primary)]">{title}</h2>
+      </div>
+      {items.length === 0 ? (
+        <p className="text-xs text-[var(--text-muted)]">{empty}</p>
+      ) : (
+        <ul className="space-y-2">
+          {items.slice(0, 8).map((item) => (
+            <li key={`${item.type}-${item.name}`} className="flex items-center justify-between rounded-xl px-3 py-2 hover:bg-[var(--bg-elevated)] transition-colors group">
+              <Link
+                href={hrefBase.replace('{name}', encodeURIComponent(item.name))}
+                className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] truncate flex-1"
+              >
+                {item.name}
+              </Link>
+              <div className="flex items-center gap-2 shrink-0 ml-3">
+                <span className="text-[11px] text-[var(--text-muted)] font-mono">
+                  {item.count}×
+                </span>
+                <Link
+                  href={`/chat?q=${encodeURIComponent(`Tell me about the pattern of "${item.name}" in my dreams.`)}`}
+                  className="opacity-0 group-hover:opacity-100 text-[11px] text-[var(--accent)] hover:underline transition-opacity hidden sm:inline"
+                  title={`Reflect on ${item.name}`}
+                >
+                  Discuss
+                </Link>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
 
 export default function InsightsPage() {
   const { user } = useAuth();
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [entities, setEntities] = useState<DreamEntity[]>([]);
-  const [insights, setInsights] = useState<string[]>([]);
+  const [aiNotes, setAiNotes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [insightsLoading, setInsightsLoading] = useState(false);
   const supabase = createClient();
@@ -24,61 +88,66 @@ export default function InsightsPage() {
   useEffect(() => {
     async function fetchData() {
       if (!user) return;
-      
       setLoading(true);
-      
+
       const [dreamsRes, entitiesRes] = await Promise.all([
-        supabase.from('dreams').select('*').eq('user_id', user.id).order('dream_date', { ascending: true }),
-        supabase.from('dream_entities').select('*').eq('user_id', user.id)
+        supabase
+          .from('dreams')
+          .select('id, title, dream_date, mood, ai_themes, ai_summary, ai_analysis')
+          .eq('user_id', user.id)
+          .order('dream_date', { ascending: true }),
+        supabase.from('dream_entities').select('*').eq('user_id', user.id),
       ]);
-      
+
       if (dreamsRes.data) setDreams(dreamsRes.data as Dream[]);
       if (entitiesRes.data) setEntities(entitiesRes.data as DreamEntity[]);
-      
       setLoading(false);
     }
-    
+
     fetchData();
   }, [user, supabase]);
 
   useEffect(() => {
-    async function fetchInsights() {
+    async function fetchAiPatterns() {
       if (dreams.length < 3) return;
       setInsightsLoading(true);
-      
       try {
         const response = await fetch('/api/ai/patterns', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ dreams })
+          body: JSON.stringify({
+            dreams: dreams.map((d) => ({
+              id: d.id,
+              title: d.title,
+              dream_date: d.dream_date,
+              mood: d.mood,
+              ai_themes: d.ai_themes,
+              ai_summary: d.ai_summary,
+            })),
+          }),
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           const patternsObj = data.patterns;
           if (patternsObj) {
-            const mergedInsights = [
+            setAiNotes([
               ...(patternsObj.interesting_observations || []),
               ...(patternsObj.emotional_patterns || []),
-              ...(patternsObj.recurring_themes || []).map((t: string) => `Theme pattern: ${t}`),
-              ...(patternsObj.recurring_symbols || []).map((s: string) => `Symbol pattern: ${s}`),
-            ];
-            setInsights(mergedInsights);
-          } else {
-            setInsights([]);
+            ]);
           }
         }
-      } catch (e) {
-        console.error('Failed to fetch insights', e);
+      } catch {
+        console.error('Failed to fetch insights');
       } finally {
         setInsightsLoading(false);
       }
     }
-    
-    if (dreams.length >= 3 && insights.length === 0) {
-      fetchInsights();
+
+    if (dreams.length >= 3 && aiNotes.length === 0) {
+      fetchAiPatterns();
     }
-  }, [dreams, insights.length]);
+  }, [dreams, aiNotes.length]);
 
   if (loading) {
     return (
@@ -88,175 +157,126 @@ export default function InsightsPage() {
     );
   }
 
-  if (dreams.length < 3) {
+  const themes = aggregateThemes(dreams);
+  const moods = aggregateMoods(dreams);
+  const people = aggregateEntitiesByType(entities, 'person');
+  const places = aggregateEntitiesByType(entities, 'place');
+  const quietNotes = buildQuietPatternNotes({
+    dreamCount: dreams.length,
+    themes,
+    people,
+    places,
+    moods,
+  });
+
+  if (dreams.length < 2) {
     return (
-      <div className="p-6 max-w-4xl mx-auto h-full flex flex-col">
-        <h1 className="text-3xl font-bold mb-8 text-[var(--text-primary)]">Insights</h1>
-        <div className="flex-1 flex items-center justify-center">
-          <EmptyState 
-            title="Not enough data yet" 
-            description="You need a few more dreams before patterns start appearing. Keep journaling!"
-            icon={TrendingUp}
-          />
-        </div>
+      <div className="p-6 max-w-4xl mx-auto">
+        <h1 className="text-3xl font-display font-medium mb-2 text-[var(--text-primary)]">Insights</h1>
+        <p className="text-sm text-[var(--text-muted)] mb-8">
+          Patterns appear after a few dreams. Keep recording when you remember something.
+        </p>
+        <EmptyState
+          title="Not enough dreams yet"
+          description="Record at least a couple of dreams to start noticing recurring themes, people, and places."
+          icon={TrendingUp}
+          action={{ label: 'Record a dream', onClick: () => (window.location.href = '/dream/new') }}
+        />
       </div>
     );
   }
 
-  // Prepare data for charts
-  const frequencyData = dreams.reduce((acc, dream) => {
-    const month = new Date(dream.dream_date).toLocaleString('default', { month: 'short' });
-    const existing = acc.find(item => item.name === month);
-    if (existing) existing.count += 1;
-    else acc.push({ name: month, count: 1 });
-    return acc;
-  }, [] as any[]);
-
-  const emotionsData = dreams.reduce((acc, dream) => {
-    const emotions = dream.ai_analysis?.emotions || [];
-    emotions.forEach((emotion: any) => {
-      const name = typeof emotion === 'string' ? emotion : emotion.name;
-      const existing = acc.find(item => item.name === name);
-      if (existing) existing.value += 1;
-      else acc.push({ name, value: 1 });
-    });
-    return acc;
-  }, [] as any[]).sort((a, b) => b.value - a.value).slice(0, 5);
-
-  const themeData = dreams.reduce((acc, dream) => {
-    if (dream.ai_themes) {
-      dream.ai_themes.forEach(theme => {
-        const existing = acc.find(item => item.name === theme);
-        if (existing) existing.value += 1;
-        else acc.push({ name: theme, value: 1 });
-      });
-    }
-    return acc;
-  }, [] as any[]).sort((a, b) => b.value - a.value).slice(0, 8);
-
-  const colors = ['#818cf8', '#a78bfa', '#c084fc', '#e879f9', '#f472b6'];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-  };
-
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-8">
-      <h1 className="text-3xl font-bold text-[var(--text-primary)]">Insights</h1>
+    <div className="p-6 max-w-5xl mx-auto space-y-8 pb-20">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-display font-medium text-[var(--text-primary)]">Insights</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">
+            Recurring threads across {dreams.length} dreams — framed as possibilities, not conclusions.
+          </p>
+        </div>
+        <Link
+          href="/dreams"
+          className="inline-flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+        >
+          <BookOpen size={14} />
+          Browse journal
+        </Link>
+      </div>
 
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
-        className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-      >
-        <motion.div variants={itemVariants}>
-          <Card className="p-6 h-96 flex flex-col">
-            <div className="flex items-center gap-2 mb-4">
-              <Activity className="text-[var(--accent)]" />
-              <h2 className="text-xl font-semibold text-[var(--text-primary)]">Dream Frequency</h2>
+      {(quietNotes.length > 0 || insightsLoading || aiNotes.length > 0) && (
+        <section className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Sparkles size={16} className="text-[var(--text-muted)]" />
+              <h2 className="text-sm font-medium text-[var(--text-primary)]">What keeps returning</h2>
             </div>
-            <div className="flex-1 min-h-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={frequencyData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border-default)" vertical={false} />
-                  <XAxis dataKey="name" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
-                    itemStyle={{ color: 'var(--accent)' }}
-                  />
-                  <Line type="monotone" dataKey="count" stroke="var(--accent)" strokeWidth={3} dot={{ r: 4, fill: 'var(--bg-card)', strokeWidth: 2 }} activeDot={{ r: 6 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div variants={itemVariants}>
-          <Card className="p-6 h-96 flex flex-col">
-            <div className="flex items-center gap-2 mb-4">
-              <Hash className="text-[var(--accent)]" />
-              <h2 className="text-xl font-semibold text-[var(--text-primary)]">Recurring Themes</h2>
-            </div>
-            <div className="flex-1 min-h-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={themeData} layout="vertical" margin={{ top: 0, right: 0, left: 40, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border-default)" horizontal={true} vertical={false} />
-                  <XAxis type="number" stroke="var(--text-muted)" fontSize={12} hide />
-                  <YAxis dataKey="name" type="category" stroke="var(--text-primary)" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
-                    cursor={{ fill: 'var(--bg-secondary)', opacity: 0.4 }}
-                  />
-                  <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                    {themeData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div variants={itemVariants} className="lg:col-span-2">
-          <Card className="p-6">
-            <div className="flex items-center gap-2 mb-6">
-              <Sparkles className="text-[var(--accent)]" />
-              <h2 className="text-xl font-semibold text-[var(--text-primary)]">AI Insights</h2>
-            </div>
-            
-            {insightsLoading ? (
-              <div className="flex justify-center p-8">
-                <Spinner />
-              </div>
-            ) : insights.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {insights.map((insight, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-default)] flex items-start gap-3">
-                    <Sparkles className="text-[var(--accent)] shrink-0 w-5 h-5 mt-0.5" />
-                    <p className="text-[var(--text-primary)] text-sm leading-relaxed">{insight}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center p-8 text-[var(--text-muted)]">
-                AI is analyzing your dreams to find deeper patterns. Check back later.
-              </div>
+            <Link
+              href={`/chat?q=${encodeURIComponent('What recurring patterns or themes appear most frequently across my dreams?')}`}
+              className="inline-flex items-center gap-1.5 text-xs text-[var(--accent)] hover:underline"
+            >
+              <span>Reflect on patterns with Dreamogon</span>
+              <ArrowRight size={12} />
+            </Link>
+          </div>
+          <ul className="space-y-3">
+            {quietNotes.map((note, i) => (
+              <li key={`q-${i}`} className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                {note}
+              </li>
+            ))}
+            {insightsLoading && (
+              <li className="text-xs text-[var(--text-muted)] flex items-center gap-2">
+                <Spinner size="sm" /> Looking for quieter cross-dream patterns...
+              </li>
             )}
-          </Card>
-        </motion.div>
+            {aiNotes.slice(0, 4).map((note, i) => (
+              <li key={`a-${i}`} className="text-sm text-[var(--text-secondary)] leading-relaxed border-t border-[var(--border-subtle)] pt-3">
+                {note}
+                <span className="block text-[10px] text-[var(--text-muted)] mt-1 uppercase tracking-wider">
+                  Reflective suggestion
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
-        <motion.div variants={itemVariants} className="lg:col-span-2">
-          <Card className="p-6">
-            <div className="flex items-center gap-2 mb-6">
-              <Fingerprint className="text-[var(--accent)]" />
-              <h2 className="text-xl font-semibold text-[var(--text-primary)]">Common Symbols</h2>
-            </div>
-            
-            <div className="flex flex-wrap gap-3">
-              {entities.slice(0, 20).map((entity, idx) => (
-                <Badge key={entity.id || idx} variant="default" className="px-3 py-1.5 text-sm">
-                  {entity.entity_name}
-                </Badge>
-              ))}
-              {entities.length === 0 && (
-                <p className="text-[var(--text-muted)] text-sm">No significant symbols detected yet.</p>
-              )}
-            </div>
-          </Card>
-        </motion.div>
-      </motion.div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <PatternList
+          title="Recurring themes"
+          icon={TrendingUp}
+          items={recurringOnly(themes)}
+          empty="Themes will appear here after dreams are analyzed."
+          hrefBase="/dreams?theme={name}"
+        />
+        <PatternList
+          title="Emotions you marked"
+          icon={Heart}
+          items={recurringOnly(moods)}
+          empty="Add a mood when you record to see emotional patterns."
+          hrefBase="/dreams?mood={name}"
+        />
+        <PatternList
+          title="People who return"
+          icon={Users}
+          items={recurringOnly(people)}
+          empty="People extracted from analyzed dreams will show here."
+          hrefBase="/dreams?entityType=person&entityName={name}"
+        />
+        <PatternList
+          title="Places that return"
+          icon={MapPin}
+          items={recurringOnly(places)}
+          empty="Places extracted from analyzed dreams will show here."
+          hrefBase="/dreams?entityType=place&entityName={name}"
+        />
+      </div>
+
+      <p className="text-[11px] text-[var(--text-muted)] text-center max-w-lg mx-auto leading-relaxed">
+        These lists are built from your journal and AI extractions labels. They are for self-reflection —
+        not medical or psychological diagnosis.
+      </p>
     </div>
   );
 }

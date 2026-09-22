@@ -1,9 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
 
 export const GENERATION_MODELS = [
-  'gemini-3.5-flash',
+  'gemini-3.6-flash',
   'gemini-3.5-flash-lite',
-  'gemini-2.5-flash',
 ] as const;
 
 export const GENERATION_MODEL = GENERATION_MODELS[0];
@@ -16,8 +15,6 @@ export function getAIClient(): GoogleGenAI {
   if (!apiKey) {
     throw new Error('GEMINI_API_KEY is missing from .env.local');
   }
-
-  console.log('Gemini API key loaded:', apiKey.slice(0, 3) + '...');
 
   return new GoogleGenAI({
     apiKey,
@@ -39,6 +36,7 @@ export function shouldFallbackToNextModel(error: unknown): boolean {
   const status = err?.status ?? err?.code;
 
   return (
+    status === 404 ||
     status === 429 ||
     status === 500 ||
     status === 502 ||

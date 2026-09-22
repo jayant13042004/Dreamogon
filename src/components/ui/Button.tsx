@@ -29,13 +29,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:pointer-events-none disabled:opacity-50 rounded-lg';
+    const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:pointer-events-none disabled:opacity-50 rounded-[var(--radius-control)]';
     
     const variants = {
-      primary: 'bg-[#8B5CF6] hover:bg-[#7C3AED] text-white', // lavender-500 and 600
-      secondary: 'bg-transparent border border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--bg-card)]',
-      ghost: 'bg-transparent hover:bg-[var(--bg-card)] text-[var(--text-primary)]',
-      danger: 'bg-red-500 hover:bg-red-600 text-white',
+      primary: 'bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)]',
+      secondary: 'bg-transparent border border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--accent-soft)]',
+      ghost: 'bg-transparent hover:bg-[var(--accent-soft)] text-[var(--text-primary)]',
+      danger: 'bg-red-700/90 hover:bg-red-700 text-white',
     };
 
     const sizes = {

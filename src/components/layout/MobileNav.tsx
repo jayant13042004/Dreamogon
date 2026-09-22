@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BookOpen, MessageCircle, Settings, Plus } from 'lucide-react';
+import { LayoutDashboard, Compass, MessageCircle, TrendingUp, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function MobileNav() {
@@ -11,10 +11,10 @@ export function MobileNav() {
 
   const navItems = [
     { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Dreams', href: '/dreams', icon: BookOpen },
-    { name: 'New', href: '/dream/new', icon: Plus, isFab: true },
-    { name: 'Chat', href: '/chat', icon: MessageCircle },
-    { name: 'Profile', href: '/settings', icon: Settings },
+    { name: 'World', href: '/world', icon: Compass },
+    { name: 'Record', href: '/dream/new', icon: Plus, isFab: true },
+    { name: 'Insights', href: '/insights', icon: TrendingUp },
+    { name: 'Guide', href: '/chat', icon: MessageCircle },
   ];
 
   return (
@@ -28,7 +28,7 @@ export function MobileNav() {
               <Link key={item.name} href={item.href} className="relative -top-5">
                 <motion.div
                   whileTap={{ scale: 0.9 }}
-                  className="w-14 h-14 rounded-full bg-[var(--accent)] text-white flex items-center justify-center shadow-lg shadow-[var(--accent-soft)] border-4 border-[var(--bg-primary)]"
+                  className="w-14 h-14 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] flex items-center justify-center shadow-lg shadow-[var(--accent-soft)] border-4 border-[var(--bg-primary)]"
                 >
                   <item.icon size={24} />
                 </motion.div>
