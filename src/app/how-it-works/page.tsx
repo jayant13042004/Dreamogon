@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { constructMetadata } from '@/lib/seo/metadata';
 import { PublicNavbar, PublicFooter } from '@/components/layout/PublicNav';
@@ -112,7 +112,7 @@ export default function HowItWorksPage() {
                   },
                   {
                     title: 'Asynchronous Processing',
-                    desc: 'Save immediately and go about your morning. Analysis and visual memory creation run quietly in the background without holding you hostage.',
+                    desc: 'Save immediately and go about your morning. Subconscious reflection and cross-dream connections run quietly in the background without holding you hostage.',
                   },
                 ].map((item, idx) => (
                   <div key={idx} className="p-4 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)]">
@@ -207,7 +207,7 @@ export default function HowItWorksPage() {
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
-                  <span><strong>Visual Memory Canvas:</strong> Private visual impressions generated to crystallize the atmosphere before memory fades.</span>
+                  <span><strong>Entity Continuity Tracking:</strong> Automatically connects recurring people, places, and motifs across your archive over time.</span>
                 </li>
               </ul>
             </div>

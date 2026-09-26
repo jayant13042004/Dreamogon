@@ -12,6 +12,7 @@ interface DreamWorldCanvasProps {
   onSelectArtifact?: (artifact: DreamArtifact | null) => void;
   highlightedArtifactId?: string | null;
   temporalFilter?: string;
+  onBackToOverview?: () => void;
 }
 
 export function DreamWorldCanvas({
@@ -19,11 +20,17 @@ export function DreamWorldCanvas({
   connections = [],
   onSelectArtifact,
   highlightedArtifactId,
-  temporalFilter = 'all'
+  temporalFilter = 'all',
+  onBackToOverview
 }: DreamWorldCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<DreamArtifact | null>(null);
+  const [densityMode, setDensityMode] = useState<'recurring' | 'all'>('recurring');
+
+  const recurringCount = artifacts.filter(
+    (a) => a.appearance_count > 1 || a.temporal_status === 'anchor'
+  ).length;
 
   // Camera State
   const cameraRef = useRef({
@@ -91,12 +98,26 @@ export function DreamWorldCanvas({
     const getNodes = () => {
       return artifacts.map((a) => {
         const count = a.appearance_count || 1;
-        const baseSize = count === 1 ? 16 : count === 2 ? 24 : count < 5 ? 32 : Math.min(46, 34 + count * 2);
+        const isSingleton = count === 1 && a.temporal_status !== 'anchor';
+        const isHighlighted = a.id === highlightedArtifactId;
+
+        // Scalability: in recurring mode, singletons are quiet points of light; recurring are full landmarks
+        const baseSize =
+          densityMode === 'recurring' && isSingleton && !isHighlighted
+            ? 7
+            : count === 1
+              ? 14
+              : count === 2
+                ? 22
+                : count < 5
+                  ? 30
+                  : Math.min(44, 32 + count * 2);
 
         const temporal = a.temporal_status || 'recurring';
 
         return {
           ...a,
+          isSingleton,
           worldX: (a.position_x * width) / 100,
           worldY: (a.position_y * height) / 100,
           z: a.position_z || 0,
@@ -512,62 +533,85 @@ export function DreamWorldCanvas({
         ctx.translate(posX, posY);
 
         // Radial aura
-        const auraMultiplier = n.temporalStatus === 'anchor' ? 2.5 : n.temporalStatus === 'emerging' ? 2.2 : 2.0;
-        const auraGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, curSize * auraMultiplier);
-        const auraAlpha = isHovered ? 0.38 : n.temporalStatus === 'dormant' ? 0.06 : 0.14;
-        auraGrad.addColorStop(0, `rgba(${n.colorHue}, ${auraAlpha})`);
-        auraGrad.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = auraGrad;
-        ctx.beginPath();
-        ctx.arc(0, 0, curSize * auraMultiplier, 0, Math.PI * 2);
-        ctx.fill();
+        const isSingletonQuiet = densityMode === 'recurring' && n.isSingleton && !isHovered && !isHighlighted;
 
-        // Emerging motif ripple effect
-        if (n.temporalStatus === 'emerging' && !prefersReducedMotion) {
-          const ripple = ((time * 0.6 + n.phase) % 1);
+        if (isSingletonQuiet) {
+          // Draw quiet celestial point of light
           ctx.beginPath();
-          ctx.arc(0, 0, curSize * (1.1 + ripple * 0.6), 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(52, 211, 153, ${(1 - ripple) * 0.35})`;
-          ctx.lineWidth = 1 * zoom;
-          ctx.stroke();
-        }
+          ctx.arc(0, 0, Math.max(3, curSize * 0.7), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${n.colorHue}, ${0.35 * globalDim})`;
+          ctx.fill();
+        } else {
+          // Full silhouette & aura for recurring landmarks or active nodes
+          const auraMultiplier = n.temporalStatus === 'anchor' ? 2.5 : n.temporalStatus === 'emerging' ? 2.2 : 2.0;
+          const auraGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, curSize * auraMultiplier);
+          const auraAlpha = isHovered ? 0.38 : n.temporalStatus === 'dormant' ? 0.06 : 0.14;
+          auraGrad.addColorStop(0, `rgba(${n.colorHue}, ${auraAlpha})`);
+          auraGrad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = auraGrad;
+          ctx.beginPath();
+          ctx.arc(0, 0, curSize * auraMultiplier, 0, Math.PI * 2);
+          ctx.fill();
 
-        // Draw silhouette
-        drawEntitySilhouette(n.artifact_type, n.name, curSize, n.colorHue, isHovered || isHighlighted);
+          // Emerging motif ripple effect
+          if (n.temporalStatus === 'emerging' && !prefersReducedMotion) {
+            const ripple = ((time * 0.6 + n.phase) % 1);
+            ctx.beginPath();
+            ctx.arc(0, 0, curSize * (1.1 + ripple * 0.6), 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(52, 211, 153, ${(1 - ripple) * 0.35})`;
+            ctx.lineWidth = 1 * zoom;
+            ctx.stroke();
+          }
 
-        // Anchor status: double concentric ring
-        if (n.temporalStatus === 'anchor') {
-          ctx.beginPath();
-          ctx.arc(0, 0, curSize * 1.45, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(242, 237, 230, 0.35)';
-          ctx.lineWidth = 1.2 * zoom;
-          ctx.stroke();
+          // Draw silhouette
+          drawEntitySilhouette(n.artifact_type, n.name, curSize, n.colorHue, isHovered || isHighlighted);
 
-          ctx.beginPath();
-          ctx.arc(0, 0, curSize * 1.65, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(242, 237, 230, 0.2)';
-          ctx.lineWidth = 0.8 * zoom;
-          ctx.stroke();
-        } else if (n.appearance_count > 1) {
-          ctx.beginPath();
-          ctx.arc(0, 0, curSize * 1.45, 0, Math.PI * 2);
-          ctx.strokeStyle = n.temporalStatus === 'dormant' ? 'rgba(242, 237, 230, 0.16)' : 'rgba(242, 237, 230, 0.28)';
-          ctx.setLineDash([3 * zoom, 4 * zoom]);
-          ctx.lineWidth = 1 * zoom;
-          ctx.stroke();
-          ctx.setLineDash([]);
+          // Anchor status: double concentric ring
+          if (n.temporalStatus === 'anchor') {
+            ctx.beginPath();
+            ctx.arc(0, 0, curSize * 1.45, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(242, 237, 230, 0.35)';
+            ctx.lineWidth = 1.2 * zoom;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(0, 0, curSize * 1.65, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(242, 237, 230, 0.2)';
+            ctx.lineWidth = 0.8 * zoom;
+            ctx.stroke();
+          } else if (n.appearance_count > 1) {
+            ctx.beginPath();
+            ctx.arc(0, 0, curSize * 1.45, 0, Math.PI * 2);
+            ctx.strokeStyle = n.temporalStatus === 'dormant' ? 'rgba(242, 237, 230, 0.16)' : 'rgba(242, 237, 230, 0.28)';
+            ctx.setLineDash([3 * zoom, 4 * zoom]);
+            ctx.lineWidth = 1 * zoom;
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
         }
 
         ctx.restore();
 
-        // Node label
-        ctx.save();
-        ctx.globalAlpha = globalDim;
-        ctx.font = `${Math.round((isHovered ? 13 : 11) * zoom)}px 'Source Sans 3', system-ui, sans-serif`;
-        ctx.fillStyle = isHovered ? '#F2EDE6' : 'rgba(242, 237, 230, 0.72)';
-        ctx.textAlign = 'center';
-        ctx.fillText(n.name, posX, posY + curSize + 14 * zoom);
-        ctx.restore();
+        // Progressive label disclosure: only show text on prominent or focused nodes
+        const isNeighborOfHover = hoveredNode && (hoveredNode.connected_artifact_ids || []).includes(n.id);
+        const shouldShowLabel =
+          isHovered ||
+          isHighlighted ||
+          isNeighborOfHover ||
+          (n.temporalStatus === 'anchor') ||
+          (n.appearance_count >= 3) ||
+          (zoom >= 1.25 && n.appearance_count >= 2) ||
+          (zoom >= 1.6);
+
+        if (shouldShowLabel && !isSingletonQuiet) {
+          ctx.save();
+          ctx.globalAlpha = isHovered || isHighlighted ? 1 : globalDim * (n.appearance_count > 1 ? 0.85 : 0.45);
+          ctx.font = `${Math.round((isHovered ? 13 : 11) * zoom)}px 'Source Sans 3', system-ui, sans-serif`;
+          ctx.fillStyle = isHovered || isHighlighted ? '#F2EDE6' : 'rgba(242, 237, 230, 0.72)';
+          ctx.textAlign = 'center';
+          ctx.fillText(n.name, posX, posY + curSize + 14 * zoom);
+          ctx.restore();
+        }
       });
 
       animId = requestAnimationFrame(render);
@@ -584,7 +628,7 @@ export function DreamWorldCanvas({
       container.removeEventListener('wheel', onWheel);
       container.removeEventListener('click', onClick);
     };
-  }, [artifacts, connections, hoveredNode, focusOnNode, onSelectArtifact, highlightedArtifactId, temporalFilter]);
+  }, [artifacts, connections, hoveredNode, focusOnNode, onSelectArtifact, highlightedArtifactId, temporalFilter, densityMode]);
 
   return (
     <div
@@ -595,6 +639,20 @@ export function DreamWorldCanvas({
 
       {/* World HUD Controls */}
       <div className="absolute bottom-6 right-6 flex items-center gap-2 z-30 pointer-events-auto">
+        {/* Scalability Focus Toggle */}
+        <button
+          onClick={() => setDensityMode((prev) => (prev === 'recurring' ? 'all' : 'recurring'))}
+          className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors flex items-center gap-1.5 ${
+            densityMode === 'recurring'
+              ? 'bg-[var(--accent-soft)] text-[var(--accent)] border-[var(--accent)]/40 shadow-xs'
+              : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border-[var(--border-default)] hover:bg-[var(--bg-secondary)]'
+          }`}
+          title="Toggle density between recurring landmarks and full archive"
+        >
+          <Sparkles size={13} className={densityMode === 'recurring' ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'} />
+          <span>{densityMode === 'recurring' ? `Recurring (${recurringCount})` : `All (${artifacts.length})`}</span>
+        </button>
+
         <button
           onClick={() => adjustZoom(0.2)}
           className="p-2.5 rounded-lg bg-[var(--bg-card)] hover:bg-[var(--accent-soft)] text-[var(--text-primary)] border border-[var(--border-default)] transition-colors"
@@ -616,6 +674,15 @@ export function DreamWorldCanvas({
         >
           <Maximize2 size={16} />
         </button>
+
+        {onBackToOverview && (
+          <button
+            onClick={onBackToOverview}
+            className="px-3.5 py-2 rounded-lg bg-[var(--bg-card)] hover:bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-default)] transition-colors text-xs font-medium ml-1"
+          >
+            Back to Overview
+          </button>
+        )}
       </div>
 
       {/* Navigation Hint */}

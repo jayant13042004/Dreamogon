@@ -14,8 +14,6 @@ import {
   Trash2,
   Calendar,
   Sparkles,
-  Image as ImageIcon,
-  RotateCw,
   Compass,
   ArrowLeft,
   Lock,
@@ -27,7 +25,6 @@ import { toast } from '@/components/ui/Toast';
 import { Analytics } from '@/lib/analytics';
 import Link from 'next/link';
 import { resolveDreamImageUrl } from '@/lib/storage/dream-images';
-import type { PlanTier } from '@/types/user';
 
 type AnalysisUiState = 'idle' | 'analyzing' | 'complete' | 'failed';
 
@@ -41,15 +38,6 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
   const [analyzing, setAnalyzing] = useState(false);
   const [analysisUi, setAnalysisUi] = useState<AnalysisUiState>('idle');
   const [showDeeperDetails, setShowDeeperDetails] = useState(false);
-  const [generatingImage, setGeneratingImage] = useState(false);
-  const [imageError, setImageError] = useState<string | null>(null);
-  const [imageQuota, setImageQuota] = useState<{
-    kind: string;
-    limit: number;
-    used: number;
-    remaining: number;
-    planTier: PlanTier;
-  } | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeReason, setUpgradeReason] = useState<'quota_exceeded' | 'regeneration_not_allowed'>(
@@ -82,29 +70,9 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
     }
   }, [dreamId, supabase]);
 
-  const fetchImageQuota = useCallback(async () => {
-    try {
-      const res = await fetch('/api/billing/status');
-      if (!res.ok) return;
-      const data = await res.json();
-      if (data.imageQuota) {
-        setImageQuota({
-          kind: data.imageQuota.kind,
-          limit: data.imageQuota.limit,
-          used: data.imageQuota.used,
-          remaining: data.imageQuota.remaining,
-          planTier: (data.planTier === 'lifetime' ? 'lifetime' : data.planTier === 'pro' ? 'pro' : 'free') as PlanTier,
-        });
-      }
-    } catch {
-      // non-blocking
-    }
-  }, []);
-
   useEffect(() => {
     fetchDream();
-    fetchImageQuota();
-  }, [fetchDream, fetchImageQuota]);
+  }, [fetchDream]);
 
   const runAnalysis = useCallback(
     async (id: string, content: string, opts?: { silent?: boolean }) => {
@@ -225,82 +193,6 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
     await runAnalysis(dream.id, dream.content);
   };
 
-  const handleGenerateVisual = async (isRegenerate: boolean) => {
-    if (!dream) return;
-    setGeneratingImage(true);
-    setImageError(null);
-
-    try {
-      const res = await fetch('/api/ai/generate-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          dreamId: dream.id,
-          content: dream.content,
-          title: dream.title,
-          mood: dream.mood,
-          forceRegenerate: isRegenerate,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.status === 403 && data.isQuotaExceeded) {
-        setUpgradeReason(
-          data.reason === 'regeneration_not_allowed' ? 'regeneration_not_allowed' : 'quota_exceeded'
-        );
-        setShowUpgradeModal(true);
-        if (typeof data.used === 'number' && typeof data.limit === 'number') {
-          setImageQuota((prev) => ({
-            kind: data.kind || prev?.kind || 'lifetime',
-            limit: data.limit,
-            used: data.used,
-            remaining: data.remaining ?? 0,
-            planTier: data.plan_tier === 'lifetime' ? 'lifetime' : data.plan_tier === 'pro' ? 'pro' : 'free',
-          }));
-        }
-        return;
-      }
-
-      if (!res.ok) {
-        throw new Error(data.message || data.error || 'Failed to generate visual memory');
-      }
-
-      setDream((prev) =>
-        prev
-          ? {
-              ...prev,
-              image_url: data.imageUrl,
-              image_path: data.imagePath,
-              image_status: 'completed',
-              image_prompt: data.prompt,
-              image_generation_count: (prev.image_generation_count || 0) + 1,
-            }
-          : null
-      );
-
-      if (data.quota) {
-        setImageQuota({
-          kind: data.quota.kind || (data.quota.plan_tier === 'pro' ? 'monthly' : 'lifetime'),
-          limit: data.quota.limit,
-          used: data.quota.used,
-          remaining: data.quota.remaining,
-          planTier: data.quota.plan_tier === 'pro' ? 'pro' : 'free',
-        });
-      } else {
-        void fetchImageQuota();
-      }
-
-      toast.success(isRegenerate ? 'Visual memory updated.' : 'Visual memory captured.');
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to generate visual memory. Please try again.';
-      setImageError(message);
-      toast.error(message);
-    } finally {
-      setGeneratingImage(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -333,12 +225,6 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
     (dream.ai_analysis as { image_url?: string } | null)?.image_url ||
     null;
   const hasImage = Boolean(dream.image_url || dream.image_path || analysisImageUrl);
-  const isFreePlan = !imageQuota || imageQuota.planTier === 'free';
-  const quotaLabel = imageQuota
-    ? imageQuota.kind === 'monthly'
-      ? `${imageQuota.used}/${imageQuota.limit} images this month`
-      : `${imageQuota.used}/${imageQuota.limit} free visual memories used`
-    : null;
 
   if (isEditing) {
     return (
@@ -521,7 +407,7 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
       {/* 3. Living Archive Connections & Entity Continuity */}
       <ConnectedDreamsSection dreamId={dream.id} />
 
-      {/* 4. Deeper Exploration (Collapsed by default: entities, visual memory, world) */}
+      {/* 4. Deeper Exploration (Collapsed by default: entities, landmarks, world) */}
       <section className="space-y-4">
         <button
           type="button"
@@ -608,113 +494,29 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
               </div>
             )}
 
-            {/* Visual memory (optional) */}
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-[var(--border-default)] pb-4">
-                <div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] mb-1">
-                    Dream image
-                  </p>
-                  <h2 className="text-2xl font-display font-medium text-[var(--text-primary)]">
-                    Visual memory
-                  </h2>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">
-                    Optional — an atmospheric still of this dream, never required to journal.
+            {/* Archived Visual Impression (if previously recorded) */}
+            {hasImage && (dream.image_url || analysisImageUrl) && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-b border-[var(--border-default)] pb-3">
+                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                    Archived Visual Impression
                   </p>
                 </div>
-                {quotaLabel && (
-                  <p className="text-xs text-[var(--text-muted)] font-mono shrink-0">{quotaLabel}</p>
-                )}
-              </div>
-
-              <div className="relative w-full rounded-3xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border-default)]">
-                {generatingImage && (
-                  <div
-                    className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[var(--bg-card)]/80 backdrop-blur-xs"
-                    role="status"
-                    aria-live="polite"
-                  >
-                    <RotateCw size={28} className="animate-spin text-[var(--accent)]" />
-                    <p className="text-sm text-[var(--text-primary)] font-medium">Creating visual memory...</p>
-                    <p className="text-xs text-[var(--text-muted)]">This can take a moment</p>
+                <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border-default)]">
+                  <img
+                    src={dream.image_url || analysisImageUrl || ''}
+                    alt={dream.title ? `Visual impression of ${dream.title}` : 'Dream visual impression'}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-[11px] text-white/80 max-w-sm">
+                      Archived visual impression from this entry.
+                    </p>
                   </div>
-                )}
-
-                {hasImage && (dream.image_url || analysisImageUrl) ? (
-                  <div className="relative w-full aspect-[16/9] overflow-hidden">
-                    <img
-                      src={dream.image_url || analysisImageUrl || ''}
-                      alt={dream.title ? `Visual memory of ${dream.title}` : 'Dream visual memory'}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-                    <div className="absolute bottom-4 left-4 right-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                      <p className="text-[11px] text-white/80 max-w-sm">
-                        A visual impression of this dream — not a literal photograph.
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => handleGenerateVisual(true)}
-                        disabled={generatingImage}
-                        className="px-4 py-2 rounded-full bg-black/60 hover:bg-black/80 border border-white/20 text-white text-xs font-medium flex items-center justify-center gap-2 self-start sm:self-auto disabled:opacity-60 cursor-pointer"
-                      >
-                        <RotateCw size={13} className={generatingImage ? 'animate-spin' : ''} />
-                        <span>Regenerate</span>
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="p-10 md:p-12 text-center flex flex-col items-center justify-center space-y-4">
-                    <div className="w-14 h-14 rounded-2xl bg-[var(--bg-secondary)] flex items-center justify-center text-[var(--text-muted)]">
-                      <ImageIcon size={24} />
-                    </div>
-                    <div className="max-w-md space-y-1.5">
-                      <h3 className="text-lg font-display font-semibold text-[var(--text-primary)]">No image yet</h3>
-                      <p className="text-[var(--text-secondary)] text-sm font-normal leading-relaxed">
-                        Generate one atmospheric still from this entry when you want it. Free includes{' '}
-                        {imageQuota?.limit ?? 2} lifetime images
-                        {isFreePlan && imageQuota ? ` (${imageQuota.remaining} remaining)` : ''}.
-                      </p>
-                    </div>
-                    <Button
-                      onClick={() => handleGenerateVisual(false)}
-                      disabled={generatingImage}
-                      variant="secondary"
-                      className="px-5 py-2.5 text-xs font-semibold flex items-center gap-2"
-                    >
-                      <ImageIcon size={14} />
-                      <span>Generate visual memory</span>
-                    </Button>
-                  </div>
-                )}
-              </div>
-
-              {imageError && (
-                <div
-                  className="rounded-2xl border border-amber-400/25 bg-amber-400/10 px-4 py-3 text-sm text-amber-900 dark:text-amber-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-                  role="alert"
-                >
-                  <p>{imageError}</p>
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    disabled={generatingImage}
-                    onClick={() => handleGenerateVisual(hasImage)}
-                  >
-                    Retry
-                  </Button>
                 </div>
-              )}
-
-              {isFreePlan && imageQuota && imageQuota.remaining === 0 && !hasImage && (
-                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] px-4 py-3 text-sm text-[var(--text-secondary)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <p>You&apos;ve used your free visual memories. Upgrade for 20 images/month and style variations.</p>
-                  <Button size="sm" onClick={() => { setUpgradeReason('quota_exceeded'); setShowUpgradeModal(true); }}>
-                    Upgrade to Pro
-                  </Button>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Dream World connection */}
             <div className="p-6 md:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -748,14 +550,10 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
             </div>
             <div className="space-y-2">
               <h3 className="text-2xl font-display font-semibold text-[var(--text-primary)]">
-                {upgradeReason === 'regeneration_not_allowed'
-                  ? 'Regeneration on Pro'
-                  : 'Visual memory limit reached'}
+                AI reflection allowance reached
               </h3>
               <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-normal">
-                {upgradeReason === 'regeneration_not_allowed'
-                  ? 'Free includes 2 preview dream images. Pro unlocks regeneration and 20 monthly visual memories. Your journal entries remain unlimited either way.'
-                  : 'Free includes 2 preview dream images. Pro unlocks 20 monthly memories, regeneration, and deep cross-dream pattern synthesis. Your journal entries remain unlimited either way.'}
+                Free includes your monthly allowance of AI dream reflections. Pro unlocks 100 monthly reflections, deep cross-dream pattern synthesis, and grounded memory retrieval across your full archive. Your private journal entries remain unlimited either way.
               </p>
             </div>
             <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-2">

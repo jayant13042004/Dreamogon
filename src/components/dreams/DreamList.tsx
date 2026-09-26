@@ -129,12 +129,12 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
               <Link key={dream.id} href={`/dream/${dream.id}`} className="group block h-full">
                 <div className="h-full flex flex-col rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] hover:border-[var(--accent)] transition-all duration-300 overflow-hidden">
                   
-                  {/* Visual Memory Header */}
+                  {/* Visual Impression Header if present */}
                   {visualUrl ? (
                     <div className="relative w-full h-44 overflow-hidden bg-[var(--bg-secondary)] border-b border-[var(--border-default)]">
                       <img
                         src={visualUrl}
-                        alt={dream.title || 'Dream visual memory'}
+                        alt={dream.title || 'Dream impression'}
                         className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500 opacity-95 group-hover:opacity-100"
                       />
                     </div>

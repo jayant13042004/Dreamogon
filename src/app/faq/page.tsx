@@ -73,13 +73,13 @@ const FAQS = [
     category: 'Plans & Pricing',
     question: 'What is the Lifetime tier?',
     answer:
-      'Subconscious Log Lifetime is a single one-time purchase ($149). It provides permanent Pro feature entitlement with zero recurring subscriptions. Lifetime members receive a monthly recurring fair-use allowance of 100 AI operations and 20 dream images every month, forever.',
+      'Subconscious Log Lifetime is a single one-time purchase ($149). It provides permanent Pro feature entitlement with zero recurring subscriptions. Lifetime members receive a monthly recurring fair-use allowance of 100 AI reflections, deep cross-dream pattern analyses, and grounded memory queries every month, forever.',
   },
   {
-    category: 'Visual Memories',
-    question: 'How does dream-image generation work?',
+    category: 'Dream Memory',
+    question: 'How does Dream Memory & Evolution work?',
     answer:
-      'When you choose to generate a visual memory, Subconscious Log creates a private, atmospheric digital canvas that distills the visual mood and key sensory elements of your dream. These images serve as artistic anchors to help you instantly recall the dream atmosphere months later. Pro and Lifetime members receive 20 image generations refreshed every month.',
+      'Subconscious Log analyzes your dream archive over time to surface recurring people, places, themes, and emotional shifts across eras. Unlike generic chatbots, Ask Your Dream History uses strict grounded retrieval across your personal entries so you can ask "When did I last dream about an airport?" or "What keeps recurring this season?" without hallucination.',
   },
   {
     category: 'Privacy & Ownership',

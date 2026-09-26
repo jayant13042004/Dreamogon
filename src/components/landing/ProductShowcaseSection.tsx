@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -62,7 +62,7 @@ const TABS: ShowcaseTab[] = [
       'Strict separation of authentic memory and AI notes',
       'Contemplative inquiries tailored to your symbols',
       'Emotional spectrum & mood resonance analysis',
-      'Private visual memory canvas generated from your words',
+      'Cross-dream connection threads & subconscious recurring motifs',
     ],
   },
   {

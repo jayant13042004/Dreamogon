@@ -38,7 +38,7 @@ export function DreamCard({ dream, index }: DreamCardProps) {
             <div className="relative w-full h-44 overflow-hidden bg-[var(--bg-secondary)] border-b border-[var(--border-default)]">
               <img
                 src={visualUrl}
-                alt={dream.title || 'Dream visual memory'}
+                alt={dream.title || 'Dream impression'}
                 className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500 opacity-95 group-hover:opacity-100"
               />
               <div className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-[var(--bg-card)]/90 backdrop-blur-sm border border-[var(--border-default)] text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">

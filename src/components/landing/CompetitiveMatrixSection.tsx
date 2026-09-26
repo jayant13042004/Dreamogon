@@ -46,10 +46,10 @@ const COMPARISON_DATA: ComparisonRow[] = [
     genericAi: 'Requires typing complex conversational prompts in bright UI',
   },
   {
-    dimension: 'Visual Memory Generation',
-    subconsciouslog: 'Cinematic, memory-like art directive avoiding cartoonish clichés',
-    traditionalApps: 'Generic stock art or no visual memory',
-    genericAi: 'Uncontrolled commercial art style with cartoon elements',
+    dimension: 'Subconscious Archive Intelligence',
+    subconsciouslog: 'Grounded retrieval connecting motifs across months and years of dreams',
+    traditionalApps: 'Isolated text entries with zero cross-dream continuity',
+    genericAi: 'Forgets context every session; no persistent archive intelligence',
   },
   {
     dimension: 'Ownership Model',

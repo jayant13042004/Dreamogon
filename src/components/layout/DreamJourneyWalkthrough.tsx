@@ -14,11 +14,11 @@ const STAGES = [
     icon: BookOpen,
   },
   {
-    id: 'memory',
+    id: 'connections',
     step: '02',
-    label: 'Memory',
-    title: 'Visual Memory',
-    tagline: 'Preserving atmosphere before it dissolves',
+    label: 'Connections',
+    title: 'Living Archive Echoes',
+    tagline: 'Discover how this dream connects to earlier nights',
     icon: Sparkles,
   },
   {
@@ -174,26 +174,27 @@ export function DreamJourneyWalkthrough() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                  {/* Visual memory card */}
+                  {/* Living connection card */}
                   <div className="md:col-span-7 relative rounded-2xl overflow-hidden border border-[var(--border-default)] h-64 bg-[#0A0908] flex flex-col justify-end p-6">
                     {/* Atmospheric artwork backdrop */}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0A0908] via-[#141210]/70 to-[#221F1B]/40" />
                     <svg className="absolute inset-0 w-full h-full opacity-35" viewBox="0 0 600 300">
-                      <line x1="0" y1="200" x2="600" y2="200" stroke="#C8B89E" strokeWidth="1" opacity="0.4" />
-                      <polygon points="260,200 340,200 480,300 120,300" fill="#141210" />
-                      <line x1="300" y1="210" x2="300" y2="290" stroke="#C8B89E" strokeWidth="2" strokeDasharray="8 12" />
-                      <ellipse cx="420" cy="180" rx="90" ry="25" fill="#C8B89E" opacity="0.1" />
+                      <line x1="100" y1="150" x2="300" y2="100" stroke="#C8B89E" strokeWidth="1.5" strokeDasharray="4 6" opacity="0.6" />
+                      <line x1="300" y1="100" x2="500" y2="180" stroke="#C8B89E" strokeWidth="1.5" strokeDasharray="4 6" opacity="0.6" />
+                      <circle cx="100" cy="150" r="14" fill="#141210" stroke="#C8B89E" strokeWidth="1.5" />
+                      <circle cx="300" cy="100" r="20" fill="#141210" stroke="#C8B89E" strokeWidth="2" />
+                      <circle cx="500" cy="180" r="16" fill="#141210" stroke="#C8B89E" strokeWidth="1.5" />
                     </svg>
 
                     <div className="relative z-10 space-y-1.5">
                       <p className="text-[10px] font-mono text-[var(--accent)] tracking-[0.2em] uppercase">
-                        Cinematic Still #241
+                        Subconscious Resonance · Connected to 3 Earlier Dreams
                       </p>
                       <p className="font-display text-lg text-white font-medium">
-                        Two-lane highway disappearing into twilight tide
+                        The Foggy Coastal Highway
                       </p>
                       <p className="text-xs text-white/70 font-light">
-                        Distilled from your descriptions of wet asphalt and cold coastal air.
+                        First appeared in October · Connected to earlier dreams sharing the silent passenger and ocean mist.
                       </p>
                     </div>
                   </div>
