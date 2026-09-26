@@ -783,14 +783,26 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-[11px] font-mono uppercase tracking-wider">
+            <Link href="/how-it-works" className="hover:text-[var(--text-primary)] transition-colors">
+              How It Works
+            </Link>
             <Link href="/pricing" className="hover:text-[var(--text-primary)] transition-colors">
               Pricing
             </Link>
+            <Link href="/about" className="hover:text-[var(--text-primary)] transition-colors">
+              About
+            </Link>
+            <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
+              Blog
+            </Link>
+            <Link href="/faq" className="hover:text-[var(--text-primary)] transition-colors">
+              FAQ
+            </Link>
+            <Link href="/contact" className="hover:text-[var(--text-primary)] transition-colors">
+              Contact
+            </Link>
             <Link href="/privacy" className="hover:text-[var(--text-primary)] transition-colors">
               Privacy
-            </Link>
-            <Link href="/security" className="hover:text-[var(--text-primary)] transition-colors">
-              Security
             </Link>
             <Link href="/terms" className="hover:text-[var(--text-primary)] transition-colors">
               Terms
@@ -798,11 +810,14 @@ export default function LandingPage() {
             <Link href="/refunds" className="hover:text-[var(--text-primary)] transition-colors">
               Refunds
             </Link>
-            <Link href="/faq" className="hover:text-[var(--text-primary)] transition-colors">
-              FAQ
+            <Link href="/security" className="hover:text-[var(--text-primary)] transition-colors">
+              Security
             </Link>
-            <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
-              Blog
+            <Link href="/cookies" className="hover:text-[var(--text-primary)] transition-colors">
+              Cookies
+            </Link>
+            <Link href="/ai-disclaimer" className="hover:text-[var(--text-primary)] transition-colors">
+              AI Disclaimer
             </Link>
           </div>
 
