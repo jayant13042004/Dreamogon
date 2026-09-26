@@ -373,14 +373,14 @@ export default function LandingPage() {
       ───────────────────────────────────────────────────────────── */}
       <section id="journey" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
         <div className="max-w-5xl mx-auto space-y-16">
-          <div className="max-w-2xl space-y-4">
+          <div className="max-w-4xl space-y-4">
             <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
               Core Architecture
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)] md:whitespace-nowrap">
               Dream → Memory → Pattern → World
             </h2>
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
               Dreams are fragile at dawn. SUBCONSCIOUS LOG treats them with the respect they deserve — starting with effortless morning capture, gently revealing recurring symbols, and building a living memory map.
             </p>
           </div>
