@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { createServiceClient } from '@/lib/supabase/service';
-import { grantLifetimeAccess, syncSubscriptionAccess } from '@/lib/billing/access';
+import { syncSubscriptionAccess } from '@/lib/billing/access';
 import { getStripe, mapStripeSubscriptionStatus } from '@/lib/billing/stripe-provider';
 import type { PlanInterval } from '@/lib/billing/types';
 
@@ -119,36 +119,6 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
-
-        if (session.mode === 'payment') {
-          // Lifetime one-time checkout
-          const userId = await resolveUserId(supabase, {
-            clientReferenceId: session.client_reference_id,
-            metadataUserId: session.metadata?.user_id,
-            customerId: typeof session.customer === 'string' ? session.customer : session.customer?.id,
-          });
-
-          if (userId) {
-            const customerId =
-              typeof session.customer === 'string'
-                ? session.customer
-                : session.customer?.id;
-
-            await grantLifetimeAccess(supabase, {
-              userId,
-              provider: 'stripe',
-              providerCustomerId: customerId,
-              currency: session.currency || 'usd',
-              rawMeta: {
-                stripe_session_id: session.id,
-                amount_total: session.amount_total,
-                payment_status: session.payment_status,
-                plan: session.metadata?.plan || 'lifetime',
-              },
-            });
-          }
-          break;
-        }
 
         if (session.mode === 'subscription') {
           const subscriptionId =

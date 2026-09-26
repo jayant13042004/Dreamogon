@@ -542,7 +542,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Free */}
             <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-6 shadow-sm">
               <div className="space-y-4">
@@ -621,7 +621,7 @@ export default function LandingPage() {
               </div>
 
               <Link
-                href="/signup?tier=pro"
+                href="/signup?tier=pro_monthly"
                 className="w-full py-3 rounded-full border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--bg-primary)] text-xs font-mono uppercase tracking-wider text-center transition-colors block"
               >
                 Subscribe monthly
@@ -672,52 +672,10 @@ export default function LandingPage() {
               </div>
 
               <Link
-                href="/signup?tier=pro&interval=annual"
+                href="/signup?tier=pro_annual"
                 className="w-full py-3 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider text-center transition-colors block shadow-md"
               >
                 Start annual
-              </Link>
-            </div>
-
-            {/* Lifetime */}
-            <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-6 shadow-sm">
-              <div className="space-y-4">
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] block mb-1">
-                    One-Time Purchase
-                  </span>
-                  <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">Lifetime</h3>
-                  <div className="mt-2 flex items-baseline gap-1">
-                    <span className="text-3xl font-display font-semibold text-[var(--text-primary)]">$149</span>
-                    <span className="text-xs text-[var(--text-muted)]">/ once</span>
-                  </div>
-                  <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
-                    Pay once, own your private archive forever with zero subscription fatigue.
-                  </p>
-                </div>
-
-                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
-                  {[
-                    'Full Pro feature access for life',
-                    'Zero recurring subscription fees',
-                    '100 AI operations / month fair-use allowance',
-                    'Ask Your Dream History retrieval',
-                    'Permanent archive pattern synthesis',
-                    'All future core feature updates included',
-                  ].map((feat, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
-                      <span className="leading-tight">{feat}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <Link
-                href="/signup?tier=lifetime"
-                className="w-full py-3 rounded-full border border-[var(--border-default)] hover:border-[var(--accent)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)] text-xs font-mono uppercase tracking-wider text-[var(--text-primary)] text-center transition-colors block"
-              >
-                Get Lifetime
               </Link>
             </div>
           </div>

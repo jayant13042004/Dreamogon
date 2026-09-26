@@ -14,10 +14,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    let planId: 'pro_monthly' | 'pro_annual' | 'lifetime' = 'pro_monthly';
+    let planId: 'pro_monthly' | 'pro_annual' = 'pro_monthly';
     try {
       const body = await request.json();
-      if (body?.planId && ['pro_monthly', 'pro_annual', 'lifetime'].includes(body.planId)) {
+      if (body?.planId && ['pro_monthly', 'pro_annual'].includes(body.planId)) {
         planId = body.planId;
       }
     } catch {

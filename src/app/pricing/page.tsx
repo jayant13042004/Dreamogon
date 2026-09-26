@@ -6,16 +6,15 @@ import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo/structure
 import { Check, Sparkles, ShieldCheck, ArrowRight, Infinity as InfinityIcon } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'Pricing — Free, Pro & Lifetime | Subconscious Log',
+  title: 'Pricing — Free & Pro | Subconscious Log',
   description:
-    'Honest, transparent pricing for Subconscious Log. Unlimited dream journaling is free forever. Upgrade to Pro or Lifetime for deep archive understanding, longitudinal pattern synthesis, and expanded AI reflection.',
+    'Honest, transparent pricing for Subconscious Log. Unlimited dream journaling is free forever. Upgrade to Pro for deep archive understanding, longitudinal pattern synthesis, and expanded AI reflection.',
   path: '/pricing',
   keywords: [
     'dream journal pricing',
     'Subconscious Log cost',
     'free dream journal app',
     'Subconscious Log Pro subscription',
-    'Subconscious Log Lifetime',
     'AI dream journal plans',
   ],
 });
@@ -30,11 +29,6 @@ const PRICING_FAQS = [
     question: 'What is the core difference between Free and Pro?',
     answer:
       'Free allows you to record, organize, and begin reflecting on your dreams with a monthly allowance of 5 contemplative AI inquiries. Pro unlocks understanding across your dream archive over time: longitudinal pattern synthesis, recurring people/places/motifs across months and years, and conversational AI Guide exploration with full archive context.',
-  },
-  {
-    question: 'What is the Lifetime plan?',
-    answer:
-      'Lifetime is a single, one-time payment of $149. It grants permanent entitlement to all Pro features with a sustainable recurring monthly fair-use AI allowance (100 operations per month) without any recurring subscription fees.',
   },
   {
     question: 'Can I cancel my subscription at any time?',
@@ -105,8 +99,8 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* 4 Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 3 Plans Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* FREE */}
           <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-7 shadow-xs">
             <div className="space-y-5">
@@ -244,50 +238,6 @@ export default function PricingPage() {
               Choose Annual ($72/yr)
             </Link>
           </div>
-
-          {/* LIFETIME */}
-          <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-7 shadow-xs">
-            <div className="space-y-5">
-              <div>
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] block mb-1">
-                  One-Time Investment
-                </span>
-                <h2 className="text-2xl font-display font-medium text-[var(--text-primary)]">Lifetime</h2>
-                <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-4xl font-display font-semibold text-[var(--text-primary)]">$149</span>
-                  <span className="text-xs text-[var(--text-muted)]">one-time</span>
-                </div>
-                <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
-                  Own the full Pro experience without a recurring subscription.
-                </p>
-              </div>
-
-              <div className="space-y-2.5 pt-4 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
-                {[
-                  'Full Pro product access permanently',
-                  'No recurring subscription fee ever',
-                  '100 AI operations / month recurring fair-use',
-                  'Cross-dream pattern synthesis & memory',
-                  'Recurring people, places & themes',
-                  'AI Guide with full archive context',
-                  'Ask Your Dream History grounded retrieval',
-                  'Lifetime entitlement',
-                ].map((feat, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
-                    <span>{feat}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <Link
-              href="/signup?tier=lifetime"
-              className="w-full py-3 rounded-full border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)] text-xs font-mono uppercase tracking-wider text-[var(--text-primary)] text-center transition-colors block"
-            >
-              Get Lifetime ($149)
-            </Link>
-          </div>
         </div>
 
         {/* Meaningful Feature Comparison Table */}
@@ -309,29 +259,27 @@ export default function PricingPage() {
                     <th className="p-4 sm:p-5">Capability</th>
                     <th className="p-4 sm:p-5">Free</th>
                     <th className="p-4 sm:p-5 text-[var(--accent)]">Pro (Monthly / Annual)</th>
-                    <th className="p-4 sm:p-5 text-[var(--text-primary)]">Lifetime</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--border-subtle)]">
                   {[
-                    ['Dream Entries & Voice Capture', 'Unlimited', 'Unlimited', 'Unlimited'],
-                    ['Timeline, Search & Calendar View', 'Included', 'Included', 'Included'],
-                    ['Basic Pattern Radar (Local)', 'Included', 'Included', 'Included'],
-                    ['Spatial Dream World Constellation', 'Included', 'Included', 'Included'],
-                    ['Monthly AI Reflection Allowance', '5 / month', '100 / month', '100 / month (recurring)'],
-                    ['Cross-Dream Longitudinal Synthesis', '—', 'Included', 'Included'],
-                    ['Recurring People, Places & Themes', '—', 'Included', 'Included'],
-                    ['Conversational AI Guide Context', 'Preview', 'Full Archive Memory', 'Full Archive Memory'],
-                    ['Ask Your Dream History (Grounded Retrieval)', 'Preview', 'Included', 'Included'],
-                    ['Full Data Export (JSON & Markdown)', 'Included', 'Included', 'Included'],
-                    ['Row-Level Security & Privacy', 'Included', 'Included', 'Included'],
-                    ['Subscription Fee', '$0', '$9/mo or $72/yr', 'None ($149 one-time)'],
-                  ].map(([feature, freeVal, proVal, lifeVal], idx) => (
+                    ['Dream Entries & Voice Capture', 'Unlimited', 'Unlimited'],
+                    ['Timeline, Search & Calendar View', 'Included', 'Included'],
+                    ['Basic Pattern Radar (Local)', 'Included', 'Included'],
+                    ['Spatial Dream World Constellation', 'Included', 'Included'],
+                    ['Monthly AI Reflection Allowance', '5 / month', '100 / month'],
+                    ['Cross-Dream Longitudinal Synthesis', '—', 'Included'],
+                    ['Recurring People, Places & Themes', '—', 'Included'],
+                    ['Conversational AI Guide Context', 'Preview', 'Full Archive Memory'],
+                    ['Ask Your Dream History (Grounded Retrieval)', 'Preview', 'Included'],
+                    ['Full Data Export (JSON & Markdown)', 'Included', 'Included'],
+                    ['Row-Level Security & Privacy', 'Included', 'Included'],
+                    ['Subscription Fee', '$0', '$9/mo or $72/yr'],
+                  ].map(([feature, freeVal, proVal], idx) => (
                     <tr key={idx} className="hover:bg-[var(--bg-primary)]/50 transition-colors">
                       <td className="p-4 sm:p-5 font-medium text-[var(--text-primary)]">{feature}</td>
                       <td className="p-4 sm:p-5 text-[var(--text-secondary)] font-mono">{freeVal}</td>
                       <td className="p-4 sm:p-5 text-[var(--accent)] font-mono font-medium">{proVal}</td>
-                      <td className="p-4 sm:p-5 text-[var(--text-primary)] font-mono font-medium">{lifeVal}</td>
                     </tr>
                   ))}
                 </tbody>

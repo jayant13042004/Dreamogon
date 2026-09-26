@@ -12,7 +12,7 @@ export type SubscriptionStatus =
   | 'incomplete_expired'
   | 'paused';
 
-export type PlanInterval = 'month' | 'year' | 'one_time' | null;
+export type PlanInterval = 'month' | 'year' | null;
 
 export type SubscriptionRecord = {
   id: string;

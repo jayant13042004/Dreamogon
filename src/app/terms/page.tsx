@@ -8,7 +8,7 @@ import { ShieldCheck, FileText, CheckCircle2 } from 'lucide-react';
 export const metadata = constructMetadata({
   title: 'Terms of Service — Subconscious Log',
   description:
-    'Terms of service for Subconscious Log: personal ownership of your dream entries, subscription and lifetime terms, acceptable use, and service boundaries.',
+    'Terms of service for Subconscious Log: personal ownership of your dream entries, subscription terms, acceptable use, and service boundaries.',
   path: '/terms',
   keywords: ['dream journal terms', 'Subconscious Log terms of service', 'user ownership dream writing'],
 });
@@ -93,13 +93,12 @@ export default function TermsPage() {
 
           <section className="space-y-3">
             <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
-              5. Plans, Billing, &amp; Lifetime Entitlements
+              5. Plans, Billing, &amp; Subscriptions
             </h2>
             <ul className="list-disc pl-5 space-y-2">
               <li><strong>Free Tier:</strong> Provided free of charge forever. Includes unlimited dream journal recording, calendar views, search, and 5 AI reflections per month.</li>
               <li><strong>Pro Monthly Tier:</strong> Billed at $9 USD per month on a recurring monthly cycle via Stripe. Includes 100 AI operations per month.</li>
               <li><strong>Pro Annual Tier:</strong> Billed at $72 USD per year (equivalent to $6/month, representing a 33% discount) on a recurring annual cycle via Stripe. Includes all Pro entitlements.</li>
-              <li><strong>Lifetime Tier:</strong> A single, one-time payment of $149 USD granting permanent Pro feature entitlements with no recurring fees. Includes a recurring fair-use allowance of 100 AI operations per calendar month.</li>
               <li><strong>Subscription Cancellation:</strong> Recurring subscriptions may be cancelled at any time via Settings &rarr; Subscription & Plan. Access remains active through the end of the paid billing period.</li>
             </ul>
           </section>

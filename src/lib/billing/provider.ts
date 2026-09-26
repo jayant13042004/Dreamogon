@@ -9,7 +9,7 @@ export type CreateCheckoutInput = {
   /** Existing provider customer id if known */
   customerId?: string | null;
   /** The requested plan to checkout */
-  planId?: 'pro_monthly' | 'pro_annual' | 'lifetime';
+  planId?: 'pro_monthly' | 'pro_annual';
 };
 
 export type CreatePortalInput = {

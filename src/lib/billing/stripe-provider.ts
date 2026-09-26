@@ -19,8 +19,7 @@ function isStripeConfigured(): boolean {
   return Boolean(
     process.env.STRIPE_SECRET_KEY &&
       (process.env.STRIPE_PRICE_ID_PRO_MONTHLY ||
-        process.env.STRIPE_PRICE_ID_PRO_ANNUAL ||
-        process.env.STRIPE_PRICE_ID_LIFETIME) &&
+        process.env.STRIPE_PRICE_ID_PRO_ANNUAL) &&
       process.env.STRIPE_WEBHOOK_SECRET
   );
 }
@@ -31,16 +30,11 @@ export const stripeBillingProvider: BillingProvider = {
 
   async createCheckoutSession(input: CreateCheckoutInput) {
     const stripe = getStripe();
-    const requestedPlan = input.planId || 'pro_monthly';
+    const requestedPlan = input.planId === 'pro_annual' ? 'pro_annual' : 'pro_monthly';
 
     let priceId: string | undefined;
-    let isLifetime = false;
 
-    if (requestedPlan === 'lifetime') {
-      priceId = process.env.STRIPE_PRICE_ID_LIFETIME;
-      isLifetime = true;
-      if (!priceId) throw new Error('STRIPE_PRICE_ID_LIFETIME is not configured');
-    } else if (requestedPlan === 'pro_annual') {
+    if (requestedPlan === 'pro_annual') {
       priceId = process.env.STRIPE_PRICE_ID_PRO_ANNUAL;
       if (!priceId) throw new Error('STRIPE_PRICE_ID_PRO_ANNUAL is not configured');
     } else {
@@ -49,7 +43,7 @@ export const stripeBillingProvider: BillingProvider = {
     }
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
-      mode: isLifetime ? 'payment' : 'subscription',
+      mode: 'subscription',
       customer: input.customerId || undefined,
       customer_email: input.customerId ? undefined : input.email,
       client_reference_id: input.userId,
@@ -62,16 +56,13 @@ export const stripeBillingProvider: BillingProvider = {
         user_id: input.userId,
         plan: requestedPlan,
       },
-    };
-
-    if (!isLifetime) {
-      sessionParams.subscription_data = {
+      subscription_data: {
         metadata: {
           user_id: input.userId,
           plan: requestedPlan,
         },
-      };
-    }
+      },
+    };
 
     const session = await stripe.checkout.sessions.create(sessionParams);
 

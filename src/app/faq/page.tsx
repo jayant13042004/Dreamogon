@@ -8,7 +8,7 @@ import { HelpCircle, ChevronDown, Compass, ArrowRight, ShieldCheck } from 'lucid
 export const metadata = constructMetadata({
   title: 'Frequently Asked Questions (FAQ) — Subconscious Log',
   description:
-    'Answers to frequently asked questions about Subconscious Log: morning voice capture, AI reflection ethics, privacy guarantees, Free vs Pro vs Lifetime plans, and data export.',
+    'Answers to frequently asked questions about Subconscious Log: morning voice capture, AI reflection ethics, privacy guarantees, Free vs Pro plans, and data export.',
   path: '/faq',
   keywords: [
     'dream journal FAQ',
@@ -68,12 +68,6 @@ const FAQS = [
     question: 'What does Subconscious Log Pro include?',
     answer:
       'Subconscious Log Pro is available as Pro Monthly ($9/mo) or Pro Annual ($72/yr — saving 33%). It includes everything in Free, plus 100 AI reflections & inquiries refreshed monthly, cross-dream longitudinal pattern synthesis across your entire archive, and conversational exploration with the AI Guide (with full archive memory).',
-  },
-  {
-    category: 'Plans & Pricing',
-    question: 'What is the Lifetime tier?',
-    answer:
-      'Subconscious Log Lifetime is a single one-time purchase ($149). It provides permanent Pro feature entitlement with zero recurring subscriptions. Lifetime members receive a monthly recurring fair-use allowance of 100 AI reflections, deep cross-dream pattern analyses, and grounded memory queries every month, forever.',
   },
   {
     category: 'Dream Memory',

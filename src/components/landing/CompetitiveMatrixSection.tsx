@@ -53,7 +53,7 @@ const COMPARISON_DATA: ComparisonRow[] = [
   },
   {
     dimension: 'Ownership Model',
-    subconsciouslog: 'Free forever core + Fair-use Lifetime option ($149) or Annual',
+    subconsciouslog: 'Free forever core + Pro Monthly ($9/mo) or Annual ($6/mo eq.)',
     traditionalApps: 'Aggressive recurring paywalls or ad-supported degradation',
     genericAi: '$20/month recurring subscription with zero dream tooling',
     highlight: true,

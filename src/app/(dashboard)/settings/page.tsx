@@ -21,7 +21,7 @@ type BillingCatalogItem = {
 };
 
 type BillingStatus = {
-  planTier: 'free' | 'pro' | 'lifetime';
+  planTier: 'free' | 'pro';
   plan: {
     id: string;
     name: string;
@@ -37,7 +37,6 @@ type BillingStatus = {
     free: BillingCatalogItem;
     pro_monthly: BillingCatalogItem;
     pro_annual: BillingCatalogItem;
-    lifetime: BillingCatalogItem;
   };
   subscription: {
     status: string;
@@ -227,10 +226,10 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
     }
   };
 
-  const startCheckout = async (planId: 'pro_monthly' | 'pro_annual' | 'lifetime' = 'pro_monthly') => {
+  const startCheckout = async (planId: 'pro_monthly' | 'pro_annual' = 'pro_monthly') => {
     setBillingAction(true);
     Analytics.upgradeViewed('settings', 0);
-    Analytics.beginCheckout(planId, planId === 'lifetime' ? 149 : planId === 'pro_annual' ? 72 : 9);
+    Analytics.beginCheckout(planId, planId === 'pro_annual' ? 72 : 9);
     try {
       const res = await fetch('/api/billing/checkout', {
         method: 'POST',
@@ -279,9 +278,8 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
     );
   }
 
-  const isLifetime = billing?.planTier === 'lifetime';
   const isPro = billing?.planTier === 'pro';
-  const isPaid = isPro || isLifetime;
+  const isPaid = isPro;
 
   const aiPercent = billing?.aiUsage
     ? Math.min(100, Math.round((billing.aiUsage.used / Math.max(1, billing.aiUsage.limit)) * 100))
@@ -314,8 +312,8 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Plan & Entitlements</h2>
           {isPaid && (
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent)]/30">
-              {isLifetime ? <InfinityIcon size={13} /> : <Sparkles size={13} />}
-              {isLifetime ? 'Lifetime Member' : 'Pro Active'}
+              <Sparkles size={13} />
+              Pro Active
             </span>
           )}
         </div>
@@ -346,12 +344,6 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
                       day: 'numeric',
                     })}
                     {billing.subscription.cancelAtPeriodEnd ? ' · Cancels at period end' : ''}
-                  </p>
-                )}
-
-                {isLifetime && (
-                  <p className="text-xs text-[var(--accent)] mt-2 font-mono">
-                    Lifetime entitlement · No recurring renewals
                   </p>
                 )}
               </div>
@@ -387,7 +379,7 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
                   Upgrade to understand your dream archive over time
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Pro Monthly */}
                   <div className="p-5 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] flex flex-col justify-between space-y-4">
                     <div className="space-y-2">
@@ -426,27 +418,9 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
                       {billingAction ? 'Redirecting…' : 'Upgrade Annual'}
                     </Button>
                   </div>
-
-                  {/* Lifetime */}
-                  <div className="p-5 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">One-Time</span>
-                      <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">Lifetime</h3>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-display font-semibold text-[var(--text-primary)]">$149</span>
-                        <span className="text-xs text-[var(--text-muted)]">one-time</span>
-                      </div>
-                      <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
-                        Own the full Pro product with recurring fair-use AI. Zero subscriptions.
-                      </p>
-                    </div>
-                    <Button variant="secondary" onClick={() => startCheckout('lifetime')} disabled={billingAction} size="sm">
-                      {billingAction ? 'Redirecting…' : 'Get Lifetime'}
-                    </Button>
-                  </div>
                 </div>
               </div>
-            ) : isPro ? (
+            ) : (
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-default)]">
                 <div>
                   <h4 className="text-sm font-medium text-[var(--text-primary)]">Subscription Management</h4>
@@ -458,15 +432,7 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
                   <Button variant="secondary" onClick={openPortal} disabled={billingAction} size="sm">
                     {billingAction ? 'Opening…' : 'Manage subscription'}
                   </Button>
-                  <Button variant="ghost" onClick={() => startCheckout('lifetime')} disabled={billingAction} size="sm" className="text-xs">
-                    Switch to Lifetime ($149)
-                  </Button>
                 </div>
-              </div>
-            ) : (
-              <div className="p-4 rounded-xl bg-[var(--accent-soft)]/40 border border-[var(--accent)]/30 text-xs text-[var(--text-secondary)] leading-relaxed">
-                <span className="font-medium text-[var(--text-primary)]">Lifetime Pro Member: </span>
-                Your account is permanently entitled to the full Subconscious Log Pro feature set with 100 monthly recurring AI operations. No subscription fees or renewals apply.
               </div>
             )}
           </div>

@@ -1,4 +1,4 @@
-export type PlanTier = 'free' | 'pro' | 'lifetime';
+export type PlanTier = 'free' | 'pro';
 
 export interface Profile {
   id: string;

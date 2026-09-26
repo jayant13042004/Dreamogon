@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { getBillingProvider, getPlanTier, getSubscription } from '@/lib/billing';
+import { getBillingProvider, getSubscription } from '@/lib/billing';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,16 +14,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const planTier = await getPlanTier(supabase, user.id);
-    if (planTier === 'lifetime') {
-      return NextResponse.json(
-        {
-          error: 'Lifetime members do not have a recurring subscription to manage.',
-          isLifetime: true,
-        },
-        { status: 400 }
-      );
-    }
 
     const provider = getBillingProvider();
     if (!provider.isConfigured()) {

@@ -8,9 +8,9 @@ import { CreditCard, CheckCircle2, AlertCircle } from 'lucide-react';
 export const metadata = constructMetadata({
   title: 'Refund & Cancellation Policy — Subconscious Log',
   description:
-    'Subconscious Log’s transparent refund and cancellation policy: self-serve cancellation for subscriptions and clear terms for Lifetime purchases.',
+    'Subconscious Log’s transparent refund and cancellation policy: self-serve cancellation for monthly and annual subscriptions.',
   path: '/refunds',
-  keywords: ['Subconscious Log refund policy', 'cancel Subconscious Log pro subscription', 'lifetime guarantee terms', 'subscription billing terms'],
+  keywords: ['Subconscious Log refund policy', 'cancel Subconscious Log pro subscription', 'subscription billing terms'],
 });
 
 export default function RefundPolicyPage() {
@@ -64,19 +64,7 @@ export default function RefundPolicyPage() {
 
           <section className="space-y-3">
             <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
-              2. Lifetime Access Purchases
-            </h2>
-            <p>
-              Subconscious Log Lifetime is a single, non-recurring purchase ($149 one-time). There are no recurring charges, renewals, or subscription maintenance fees.
-            </p>
-            <p>
-              Because digital entitlements and AI quota allocations are provisioned immediately upon transaction confirmation, Lifetime purchases are intended to be final. However, if you experience insurmountable technical issues or accidental duplicate purchases, you may contact our support desk within 7 days of purchase for review.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
-              3. Refund Inquiries & Technical Review
+              2. Refund Inquiries & Technical Review
             </h2>
             <p>
               If you experience technical errors or unexpected behavior during your initial upgrade, we want to make it right. Contact our support desk within 7 days of the initial transaction:
@@ -98,7 +86,7 @@ export default function RefundPolicyPage() {
 
           <section className="space-y-3">
             <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
-              4. Data Preservation Following Plan Changes
+              3. Data Preservation Following Plan Changes
             </h2>
             <p>
               Canceling a subscription never deletes your recorded dreams. Your full text entries, audio transcripts, and AI reflections remain permanently preserved in your account on the Free plan, with complete export capabilities always available.

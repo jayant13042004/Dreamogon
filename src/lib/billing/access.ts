@@ -42,8 +42,7 @@ export async function getPlanTier(
       .eq('id', userId)
       .maybeSingle();
 
-    if (!error && data?.plan_tier === 'lifetime') return 'lifetime';
-    if (!error && data?.plan_tier === 'pro') return 'pro';
+    if (!error && (data?.plan_tier === 'pro' || data?.plan_tier === 'lifetime')) return 'pro';
   } catch {
     // Fall back to free
   }
@@ -212,13 +211,6 @@ export async function syncSubscriptionAccess(
     rawMeta?: Record<string, unknown>;
   }
 ): Promise<void> {
-  // CRITICAL: Lifetime users must NEVER be downgraded by a subscription event
-  const currentTier = await getPlanTier(supabase, args.userId);
-  if (currentTier === 'lifetime') {
-    console.log('syncSubscriptionAccess: user already has lifetime tier; preserving lifetime status for', args.userId);
-    return;
-  }
-
   const planTier = planTierFromSubscriptionStatus(args.status, 'pro');
 
   await supabase.from('subscriptions').upsert(
@@ -246,42 +238,3 @@ export async function syncSubscriptionAccess(
     .eq('id', args.userId);
 }
 
-/**
- * Grant permanent Lifetime entitlement without subscription expiration.
- * Intended for one-time payment webhooks.
- */
-export async function grantLifetimeAccess(
-  supabase: SupabaseClient,
-  args: {
-    userId: string;
-    provider: SubscriptionRecord['provider'];
-    providerCustomerId?: string | null;
-    currency?: string;
-    priceId?: string | null;
-    rawMeta?: Record<string, unknown>;
-  }
-): Promise<void> {
-  await supabase.from('subscriptions').upsert(
-    {
-      user_id: args.userId,
-      provider: args.provider,
-      provider_customer_id: args.providerCustomerId ?? null,
-      provider_subscription_id: null,
-      status: 'active',
-      plan_tier: 'lifetime',
-      currency: (args.currency || 'usd').toLowerCase(),
-      current_period_end: null, // Lifetime never expires
-      cancel_at_period_end: false,
-      price_id: args.priceId ?? null,
-      interval: 'one_time',
-      raw_meta: args.rawMeta ?? {},
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: 'user_id' }
-  );
-
-  await supabase
-    .from('profiles')
-    .update({ plan_tier: 'lifetime', updated_at: new Date().toISOString() })
-    .eq('id', args.userId);
-}

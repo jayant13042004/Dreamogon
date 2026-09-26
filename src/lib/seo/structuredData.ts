@@ -121,9 +121,9 @@ export function generateSoftwareApplicationSchema() {
       },
       {
         '@type': 'Offer',
-        price: '149',
+        price: '72',
         priceCurrency: 'USD',
-        name: 'Lifetime Archive Entitlement',
+        name: 'Pro Annual Plan',
       },
     ],
     description: SITE_CONFIG.description,

@@ -28,7 +28,6 @@ const navItems = [
 ];
 
 function planLabel(planTier?: string | null) {
-  if (planTier === 'lifetime') return 'Lifetime';
   if (planTier === 'pro') return 'Pro';
   return 'Free';
 }

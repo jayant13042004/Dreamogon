@@ -12,7 +12,6 @@ export const PLAN_IDS = {
   free: 'free',
   pro_monthly: 'pro_monthly',
   pro_annual: 'pro_annual',
-  lifetime: 'lifetime',
 } as const;
 
 export type PlanDefinition = {
@@ -97,38 +96,15 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
       'Grounded dream history search & evolution',
     ],
   },
-  lifetime: {
-    id: PLAN_IDS.lifetime,
-    tier: 'lifetime',
-    name: 'Lifetime',
-    headline: 'Own the full Pro experience without a recurring subscription',
-    description: 'One-time payment for permanent Pro entitlement and sustainable recurring fair-use AI.',
-    priceDisplay: 149,
-    currency: BILLING_CURRENCY,
-    interval: 'one_time',
-    intervalLabel: 'one-time payment',
-    aiAllowance: { monthlyLimit: 100 },
-    features: [
-      'Full Pro product access permanently',
-      'No recurring Subconscious Log subscription fee',
-      '100 AI operations / month recurring fair-use allowance',
-      'Deep cross-dream pattern synthesis & archive queries',
-      'Longitudinal theme tracking across months & years',
-      'Conversational AI Guide with full dream-history context',
-      'Grounded dream history search & evolution',
-    ],
-  },
 };
 
 export function getPlanDefinition(tier: PlanTier): PlanDefinition {
-  if (tier === 'lifetime') return PLANS.lifetime;
-  if (tier === 'pro') return PLANS.pro_monthly;
+  if (tier === 'pro' || (tier as string) === 'lifetime') return PLANS.pro_monthly;
   return PLANS.free;
 }
 
 export function getPlanById(id: string): PlanDefinition {
   if (id === PLAN_IDS.pro_annual) return PLANS.pro_annual;
-  if (id === PLAN_IDS.lifetime) return PLANS.lifetime;
   if (id === PLAN_IDS.pro_monthly || id === 'pro') return PLANS.pro_monthly;
   return PLANS.free;
 }

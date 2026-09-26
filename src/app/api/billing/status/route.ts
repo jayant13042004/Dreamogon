@@ -67,15 +67,6 @@ export async function GET() {
           features: PLANS.pro_annual.features,
           aiLimit: PLANS.pro_annual.aiAllowance.monthlyLimit,
         },
-        lifetime: {
-          id: PLANS.lifetime.id,
-          name: PLANS.lifetime.name,
-          headline: PLANS.lifetime.headline,
-          priceLabel: formatPlanPrice(PLANS.lifetime),
-          intervalLabel: PLANS.lifetime.intervalLabel,
-          features: PLANS.lifetime.features,
-          aiLimit: PLANS.lifetime.aiAllowance.monthlyLimit,
-        },
       },
       subscription: subscription
         ? {
@@ -83,7 +74,7 @@ export async function GET() {
             provider: subscription.provider,
             currentPeriodEnd: subscription.current_period_end,
             cancelAtPeriodEnd: subscription.cancel_at_period_end,
-            interval: subscription.interval || (planTier === 'lifetime' ? 'one_time' : 'month'),
+            interval: subscription.interval || 'month',
           }
         : null,
       aiUsage: {
