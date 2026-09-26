@@ -1,7 +1,7 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useRef } from 'react';
-import { Play, Pause, Compass, Volume2, VolumeX, Maximize2, Sparkles, Mic, Brain, Globe } from 'lucide-react';
+import { Play, Pause, Compass, Volume2, VolumeX, Maximize2 } from 'lucide-react';
 import { ExploreDreamModal } from '@/components/layout/ExploreDreamModal';
 
 interface ProductDemoSectionProps {
@@ -12,17 +12,9 @@ interface ProductDemoSectionProps {
   videoSrc?: string;
 }
 
-const DEMO_CHAPTERS = [
-  { time: '0:00', label: 'Dawn Capture', icon: Mic, desc: 'Speaking fragments while lying in bed' },
-  { time: '0:15', label: 'Quiet Reflection', icon: Brain, desc: 'Socratic prompts, never clinical labels' },
-  { time: '0:32', label: 'Pattern Detection', icon: Sparkles, desc: 'Recurring motifs across seasons' },
-  { time: '0:48', label: 'Dream World', icon: Globe, desc: 'Spatial constellation of memories' },
-];
-
 export function ProductDemoSection({ videoSrc = '/subconsciouslog-demo.mp4' }: ProductDemoSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [activeChapter, setActiveChapter] = useState(0);
   const [hasVideoError, setHasVideoError] = useState(false);
   const [showSampleModal, setShowSampleModal] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -201,49 +193,6 @@ export function ProductDemoSection({ videoSrc = '/subconsciouslog-demo.mp4' }: P
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Chapters & Timestamp Bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
-            {DEMO_CHAPTERS.map((ch, idx) => {
-              const Icon = ch.icon;
-              const isCurrent = activeChapter === idx;
-
-              return (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => {
-                    setActiveChapter(idx);
-                    if (videoRef.current && !hasVideoError) {
-                      const times = [0, 15, 32, 48];
-                      videoRef.current.currentTime = times[idx] || 0;
-                      if (!isPlaying) {
-                        videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
-                      }
-                    } else {
-                      setShowSampleModal(true);
-                    }
-                  }}
-                  className={`p-4 rounded-2xl border text-left transition-all duration-200 ${
-                    isCurrent
-                      ? 'bg-[var(--bg-card)] border-[var(--accent)] shadow-md'
-                      : 'bg-[var(--bg-card)]/50 border-[var(--border-default)] hover:border-[var(--border-hover)] hover:bg-[var(--bg-card)]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <Icon size={14} className={isCurrent ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'} />
-                      <span className="text-xs font-medium text-[var(--text-primary)]">{ch.label}</span>
-                    </div>
-                    <span className="text-[10px] font-mono text-[var(--accent)]">{ch.time}</span>
-                  </div>
-                  <p className="text-[11px] text-[var(--text-muted)] font-light leading-relaxed line-clamp-2">
-                    {ch.desc}
-                  </p>
-                </button>
-              );
-            })}
           </div>
         </div>
       </div>
