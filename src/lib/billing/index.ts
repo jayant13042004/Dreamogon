@@ -2,16 +2,19 @@ import { BILLING_PROVIDER } from './config';
 import type { BillingProvider } from './provider';
 import { stripeBillingProvider } from './stripe-provider';
 
+import { dodoBillingProvider } from './dodo-provider';
+
 /**
  * Provider-agnostic entrypoint.
- * Stripe is the first concrete adapter (global SaaS checkout).
- * Razorpay (or others) can implement the same BillingProvider interface later.
+ * Stripe and Dodo Payments are supported.
  */
 export function getBillingProvider(): BillingProvider {
   switch (BILLING_PROVIDER) {
+    case 'dodo':
+      return dodoBillingProvider;
     case 'razorpay':
       throw new Error(
-        'Razorpay adapter is not enabled. Set BILLING_PROVIDER=stripe or implement lib/billing/razorpay-provider.ts.'
+        'Razorpay adapter is not enabled. Set BILLING_PROVIDER=dodo or BILLING_PROVIDER=stripe.'
       );
     case 'stripe':
     default:

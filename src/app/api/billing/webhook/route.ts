@@ -4,6 +4,7 @@ import { createServiceClient } from '@/lib/supabase/service';
 import { syncSubscriptionAccess } from '@/lib/billing/access';
 import { getStripe, mapStripeSubscriptionStatus } from '@/lib/billing/stripe-provider';
 import type { PlanInterval } from '@/lib/billing/types';
+import { POST as handleDodoWebhook } from './dodo/route';
 
 export const runtime = 'nodejs';
 
@@ -82,6 +83,11 @@ async function applyStripeSubscription(
 }
 
 export async function POST(request: NextRequest) {
+  // Support Dodo Payments webhooks sent to /api/billing/webhook
+  if (request.headers.get('webhook-signature')) {
+    return handleDodoWebhook(request);
+  }
+
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!webhookSecret || !process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });

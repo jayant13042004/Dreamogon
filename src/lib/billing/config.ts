@@ -4,7 +4,7 @@ import type { PlanInterval } from './types';
 /** Global default presentment currency — configurable, not hardcoded */
 export const BILLING_CURRENCY = (process.env.BILLING_CURRENCY || 'usd').toLowerCase();
 
-export type BillingProviderId = 'stripe' | 'razorpay';
+export type BillingProviderId = 'stripe' | 'dodo' | 'razorpay';
 
 export const BILLING_PROVIDER = (process.env.BILLING_PROVIDER || 'stripe') as BillingProviderId;
 
