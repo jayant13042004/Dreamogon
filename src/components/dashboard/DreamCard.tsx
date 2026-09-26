@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { getRelativeDate } from '@/lib/utils/date';
 import { MOODS } from '@/lib/utils/constants';
 import type { Dream } from '@/types/dream';
-import { ArrowRight, Image as ImageIcon } from 'lucide-react';
+import { ArrowRight, Moon } from 'lucide-react';
 import { resolveDreamImageUrl } from '@/lib/storage/dream-images';
 
 interface DreamCardProps {
@@ -48,7 +48,7 @@ export function DreamCard({ dream, index }: DreamCardProps) {
           ) : (
             <div className="relative w-full h-20 bg-[var(--bg-secondary)] border-b border-[var(--border-default)] flex items-center justify-between px-5">
               <div className="flex items-center gap-2 text-[var(--text-muted)] text-xs">
-                <ImageIcon size={14} className="opacity-70" />
+                <Moon size={14} className="opacity-70" />
                 <span className="text-[10px] uppercase font-mono tracking-wider">Dream Record</span>
               </div>
               <div className="px-2 py-0.5 rounded-md bg-[var(--bg-card)] border border-[var(--border-default)] text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">

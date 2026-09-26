@@ -53,12 +53,6 @@ type BillingStatus = {
     remaining: number;
     periodKey: string;
   };
-  imageQuota: {
-    kind: string;
-    limit: number;
-    used: number;
-    remaining: number;
-  };
 };
 
 function BillingSuccessToast() {
@@ -382,14 +376,6 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
                   <p className="text-[11px] text-[var(--text-muted)] mt-1.5">
                     {billing?.aiUsage.remaining ?? 0} reflections remaining this month. Resets monthly.
                   </p>
-                </div>
-
-                <div className="text-[11px] text-[var(--text-secondary)] border-t border-[var(--border-subtle)] pt-2">
-                  <span className="text-[var(--text-muted)]">Visual Memories (Secondary): </span>
-                  <span className="font-mono text-[var(--text-primary)]">
-                    {billing?.imageQuota.used ?? 0} / {billing?.imageQuota.limit ?? 2}
-                  </span>{' '}
-                  ({billing?.imageQuota.kind === 'monthly' ? 'this month' : 'lifetime'})
                 </div>
               </div>
             </div>

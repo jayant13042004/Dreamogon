@@ -56,34 +56,59 @@ export async function POST() {
       console.warn('Error removing user dream images from storage:', storageErr);
     }
 
-    // 3. Delete user data across all tables
-    try {
-      await supabase.from('chat_messages').delete().eq('user_id', userId);
-      await supabase.from('dream_connections').delete().eq('user_id', userId);
-      await supabase.from('dream_artifacts').delete().eq('user_id', userId);
-      await supabase.from('dream_insights').delete().eq('user_id', userId);
-      await supabase.from('dream_entities').delete().eq('user_id', userId);
-      await supabase.from('dream_tags').delete().eq('user_id', userId);
-      await supabase.from('dreams').delete().eq('user_id', userId);
-      await supabase.from('usage_meters').delete().eq('user_id', userId);
-      await supabase.from('subscriptions').delete().eq('user_id', userId);
-      await supabase.from('user_preferences').delete().eq('user_id', userId);
-      await supabase.from('profiles').delete().eq('id', userId);
-    } catch (dbErr) {
-      console.error('Error cleaning up user tables:', dbErr);
+    // 3. Delete user data across all tables explicitly
+    const deleteResults = await Promise.allSettled([
+      supabase.from('chat_messages').delete().eq('user_id', userId),
+      supabase.from('dream_connections').delete().eq('user_id', userId),
+      supabase.from('dream_artifacts').delete().eq('user_id', userId),
+      supabase.from('dream_insights').delete().eq('user_id', userId),
+      supabase.from('dream_entities').delete().eq('user_id', userId),
+      supabase.from('dream_tags').delete().eq('user_id', userId),
+      supabase.from('dreams').delete().eq('user_id', userId),
+      supabase.from('dream_world_state').delete().eq('user_id', userId),
+      supabase.from('usage_meters').delete().eq('user_id', userId),
+      supabase.from('subscriptions').delete().eq('user_id', userId),
+      supabase.from('user_preferences').delete().eq('user_id', userId),
+      supabase.from('profiles').delete().eq('id', userId),
+    ]);
+
+    for (const res of deleteResults) {
+      if (res.status === 'rejected') {
+        console.error('Error during user tables cleanup:', res.reason);
+      }
     }
 
-    // 4. Delete user from auth via service client if configured
+    // 4. Delete user from auth.users via service client
+    let authDeleted = false;
     try {
       const serviceClient = createServiceClient();
-      await serviceClient.auth.admin.deleteUser(userId);
+      const { error: adminDeleteError } = await serviceClient.auth.admin.deleteUser(userId);
+      if (adminDeleteError) {
+        console.error('auth.admin.deleteUser error:', adminDeleteError);
+        throw adminDeleteError;
+      }
+      authDeleted = true;
     } catch (adminErr) {
-      console.warn('Could not delete from auth.admin directly (service role key may not be set):', adminErr);
-      // Fallback: sign out user session
-      await supabase.auth.signOut();
+      console.error('Could not delete user from auth.admin:', adminErr);
+      if (process.env.NODE_ENV === 'production') {
+        return NextResponse.json(
+          {
+            error:
+              'Account data cleared, but authentication identity removal failed. Please contact support to complete account removal.',
+          },
+          { status: 500 }
+        );
+      }
     }
 
-    return NextResponse.json({ success: true, message: 'Account and associated data deleted' });
+    // Sign out user session
+    await supabase.auth.signOut();
+
+    return NextResponse.json({
+      success: true,
+      authDeleted,
+      message: 'Account and associated data deleted completely',
+    });
   } catch (error) {
     console.error('Account deletion error:', error);
     return NextResponse.json(

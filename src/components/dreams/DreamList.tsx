@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LayoutGrid, List as ListIcon, Calendar as CalendarIcon, CalendarDays, ArrowRight, Image as ImageIcon, ChevronRight, Plus } from 'lucide-react';
+import { LayoutGrid, List as ListIcon, Calendar as CalendarIcon, CalendarDays, ArrowRight, Moon, ChevronRight, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Dream } from '@/types/dream';
@@ -73,7 +73,7 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
               ? 'bg-[var(--accent)] border-[var(--accent)] text-[var(--bg-primary)]'
               : 'bg-[var(--bg-card)] border-[var(--border-default)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
           }`}
-          title="Grid View (Visual Memories)"
+          title="Grid View"
         >
           <LayoutGrid size={14} />
           <span className="hidden sm:inline">Grid</span>
@@ -141,7 +141,7 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
                   ) : (
                     <div className="relative w-full h-20 bg-[var(--bg-secondary)] border-b border-[var(--border-default)] flex items-center justify-between px-5">
                       <div className="flex items-center gap-2 text-[var(--text-muted)] text-xs">
-                        <ImageIcon size={14} className="opacity-70" />
+                        <Moon size={14} className="opacity-70" />
                         <span className="text-[10px] uppercase font-mono tracking-wider">Dream Record</span>
                       </div>
                       {moodInfo && (
@@ -227,7 +227,7 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
                       />
                     ) : (
                       <div className="w-12 h-12 rounded-lg bg-[var(--bg-secondary)] flex items-center justify-center text-[var(--text-muted)] shrink-0 border border-[var(--border-default)]">
-                        <ImageIcon size={16} />
+                        <Moon size={16} />
                       </div>
                     )}
 

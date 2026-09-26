@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { analyzeDreamPatterns } from '@/lib/ai/analyze-patterns';
 import { getAiQuota, recordAiOperation } from '@/lib/billing';
+import { rateLimit } from '@/lib/rate-limit';
 
 // POST /api/ai/patterns - Analyze patterns across dreams
 export async function POST(request: NextRequest) {
@@ -11,6 +12,14 @@ export async function POST(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const limited = rateLimit(`ai:patterns:${user.id}`, { limit: 10, windowMs: 60_000 });
+    if (!limited.allowed) {
+      return NextResponse.json(
+        { error: 'Too many pattern analysis requests. Please wait a moment.' },
+        { status: 429, headers: { 'Retry-After': String(limited.retryAfterSec) } }
+      );
     }
 
     const quota = await getAiQuota(supabase, user.id);

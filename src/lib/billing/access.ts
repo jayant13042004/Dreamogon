@@ -4,14 +4,12 @@ import { getPlanDefinition } from './config';
 import type {
   AiQuotaDecision,
   AiUsageSummary,
-  ImageQuotaDecision,
   PlanInterval,
   SubscriptionRecord,
   SubscriptionStatus,
 } from './types';
 import { planTierFromSubscriptionStatus } from './types';
 
-const IMAGE_METRIC = 'dream_images';
 const AI_METRIC = 'ai_operations';
 
 export function currentUtcMonthKey(date = new Date()): string {
@@ -85,7 +83,8 @@ export async function getAiQuota(
 
   let used = 0;
   try {
-    const { data: meter, error } = await supabase
+    const db = getPrivilegedClient(supabase);
+    const { data: meter, error } = await db
       .from('usage_meters')
       .select('quantity')
       .eq('user_id', userId)
@@ -93,10 +92,22 @@ export async function getAiQuota(
       .eq('period_key', periodKey)
       .maybeSingle();
 
-    if (!error && meter) {
+    if (error) {
+      console.warn('Could not read usage_meters, falling back to authenticated client:', error);
+      // Fallback to client provided
+      const { data: clientMeter } = await supabase
+        .from('usage_meters')
+        .select('quantity')
+        .eq('user_id', userId)
+        .eq('metric', AI_METRIC)
+        .eq('period_key', periodKey)
+        .maybeSingle();
+      if (clientMeter) used = clientMeter.quantity ?? 0;
+    } else if (meter) {
       used = meter.quantity ?? 0;
     }
-  } catch {
+  } catch (err) {
+    console.error('Error in getAiQuota:', err);
     used = 0;
   }
 
@@ -131,176 +142,49 @@ export async function recordAiOperation(
   supabase: SupabaseClient,
   userId: string
 ): Promise<void> {
-  try {
-    const db = getPrivilegedClient(supabase);
-    const periodKey = currentUtcMonthKey();
-
-    const { data: existing, error } = await db
-      .from('usage_meters')
-      .select('id, quantity')
-      .eq('user_id', userId)
-      .eq('metric', AI_METRIC)
-      .eq('period_key', periodKey)
-      .maybeSingle();
-
-    if (error) return;
-
-    if (existing) {
-      await db
-        .from('usage_meters')
-        .update({ quantity: (existing.quantity || 0) + 1, updated_at: new Date().toISOString() })
-        .eq('id', existing.id);
-    } else {
-      await db.from('usage_meters').insert({
-        user_id: userId,
-        metric: AI_METRIC,
-        period_key: periodKey,
-        quantity: 1,
-      });
-    }
-  } catch {
-    // non-fatal
+  if (process.env.NODE_ENV === 'production' && !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.error('CRITICAL: SUPABASE_SERVICE_ROLE_KEY is missing in production. Quota metering cannot proceed securely.');
+    throw new Error('Service configuration error: Quota metering is temporarily unavailable.');
   }
-}
-
-/* ==========================================================================
-   Dream Image Quota System (Secondary / Experimental Feature)
-   ========================================================================== */
-
-function dreamHasImage(d: {
-  image_path?: string | null;
-  image_url?: string | null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ai_analysis?: any;
-}): boolean {
-  return !!(
-    d.image_path ||
-    d.image_url ||
-    d.ai_analysis?.image_url ||
-    d.ai_analysis?.image_path
-  );
-}
-
-export async function getImageQuota(
-  supabase: SupabaseClient,
-  userId: string,
-  opts: { isRegenerate: boolean; dreamAlreadyHasImage: boolean }
-): Promise<ImageQuotaDecision> {
-  const planTier = await getPlanTier(supabase, userId);
-  const plan = getPlanDefinition(planTier);
-
-  if (opts.isRegenerate && !plan.allowImageRegeneration) {
-    return {
-      allowed: false,
-      planTier,
-      limit: plan.dreamImages.limit,
-      used: 0,
-      remaining: 0,
-      kind: plan.dreamImages.kind,
-      reason: 'regeneration_not_allowed',
-    };
-  }
-
-  if (plan.dreamImages.kind === 'lifetime') {
-    let dreams: Array<{
-      id: string;
-      image_url?: string | null;
-      image_path?: string | null;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ai_analysis?: any;
-    }> | null = null;
-
-    const { data: dreamCols, error: colErr } = await supabase
-      .from('dreams')
-      .select('id, image_url, image_path, ai_analysis')
-      .eq('user_id', userId);
-
-    if (!colErr && dreamCols) {
-      dreams = dreamCols;
-    } else {
-      const { data: baseDreams } = await supabase
-        .from('dreams')
-        .select('id, ai_analysis')
-        .eq('user_id', userId);
-      dreams = baseDreams;
-    }
-
-    const used = (dreams || []).filter(dreamHasImage).length;
-    const wouldConsumeSlot = !opts.dreamAlreadyHasImage;
-    const allowed = wouldConsumeSlot ? used < plan.dreamImages.limit : false;
-
-    return {
-      allowed,
-      planTier,
-      limit: plan.dreamImages.limit,
-      used,
-      remaining: Math.max(0, plan.dreamImages.limit - used),
-      kind: 'lifetime',
-      reason: allowed ? 'ok' : 'quota_exceeded',
-    };
-  }
-
-  // Monthly meter for Pro & Lifetime
-  const periodKey = currentUtcMonthKey();
-  let used = 0;
-  try {
-    const { data: meter, error } = await supabase
-      .from('usage_meters')
-      .select('quantity')
-      .eq('user_id', userId)
-      .eq('metric', IMAGE_METRIC)
-      .eq('period_key', periodKey)
-      .maybeSingle();
-
-    if (!error && meter) {
-      used = meter.quantity ?? 0;
-    }
-  } catch {
-    used = 0;
-  }
-  const allowed = used < plan.dreamImages.limit;
-
-  return {
-    allowed,
-    planTier,
-    limit: plan.dreamImages.limit,
-    used,
-    remaining: Math.max(0, plan.dreamImages.limit - used),
-    kind: 'monthly',
-    reason: allowed ? 'ok' : 'quota_exceeded',
-  };
-}
-
-export async function recordImageGeneration(
-  supabase: SupabaseClient,
-  userId: string,
-  planTier: PlanTier
-): Promise<void> {
-  const plan = getPlanDefinition(planTier);
-  if (plan.dreamImages.kind !== 'monthly') return;
 
   const db = getPrivilegedClient(supabase);
   const periodKey = currentUtcMonthKey();
-  const { data: existing } = await db
+
+  const { data: existing, error: selectError } = await db
     .from('usage_meters')
     .select('id, quantity')
     .eq('user_id', userId)
-    .eq('metric', IMAGE_METRIC)
+    .eq('metric', AI_METRIC)
     .eq('period_key', periodKey)
     .maybeSingle();
 
+  if (selectError) {
+    console.error('Error querying usage_meters in recordAiOperation:', selectError);
+    throw new Error('Failed to verify usage quota.');
+  }
+
   if (existing) {
-    await db
+    const { error: updateError } = await db
       .from('usage_meters')
       .update({ quantity: (existing.quantity || 0) + 1, updated_at: new Date().toISOString() })
       .eq('id', existing.id);
+
+    if (updateError) {
+      console.error('Error updating usage_meters:', updateError);
+      throw new Error('Failed to record AI usage.');
+    }
   } else {
-    await db.from('usage_meters').insert({
+    const { error: insertError } = await db.from('usage_meters').insert({
       user_id: userId,
-      metric: IMAGE_METRIC,
+      metric: AI_METRIC,
       period_key: periodKey,
       quantity: 1,
     });
+
+    if (insertError) {
+      console.error('Error inserting usage_meters:', insertError);
+      throw new Error('Failed to record AI usage.');
+    }
   }
 }
 

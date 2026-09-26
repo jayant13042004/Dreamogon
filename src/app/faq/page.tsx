@@ -61,13 +61,13 @@ const FAQS = [
     category: 'Plans & Pricing',
     question: 'What is included in the Free tier?',
     answer:
-      'The Free tier includes unlimited text journaling, one-tap voice capture & speech transcription, full chronological history & calendar views, 5 AI reflections per month, basic pattern overview, spatial Dream World exploration, full data export, and 2 lifetime dream preview images.',
+      'The Free tier includes unlimited text journaling, one-tap voice capture & speech transcription, full chronological history & calendar views, 5 AI reflections per month, basic pattern overview, spatial Dream World exploration, and full data export.',
   },
   {
     category: 'Plans & Pricing',
     question: 'What does Subconscious Log Pro include?',
     answer:
-      'Subconscious Log Pro is available as Pro Monthly ($9/mo) or Pro Annual ($72/yr — saving 33%). It includes everything in Free, plus 100 AI reflections & inquiries refreshed monthly, cross-dream longitudinal pattern synthesis across your entire archive, conversational exploration with the AI Guide (with archive memory), and 20 dream images per month with style variations.',
+      'Subconscious Log Pro is available as Pro Monthly ($9/mo) or Pro Annual ($72/yr — saving 33%). It includes everything in Free, plus 100 AI reflections & inquiries refreshed monthly, cross-dream longitudinal pattern synthesis across your entire archive, and conversational exploration with the AI Guide (with full archive memory).',
   },
   {
     category: 'Plans & Pricing',
@@ -85,7 +85,7 @@ const FAQS = [
     category: 'Privacy & Ownership',
     question: 'How can I delete my account and data?',
     answer:
-      'You can permanently delete your Subconscious Log account at any time directly from the Account Settings page. When you delete your account, all personal profile records, dream entries, audio transcripts, and generated images are permanently removed from our databases.',
+      'You can permanently delete your Subconscious Log account at any time directly from the Account Settings page. When you delete your account, all personal profile records, dream entries, and audio transcripts are permanently removed from our databases.',
   },
 ];
 

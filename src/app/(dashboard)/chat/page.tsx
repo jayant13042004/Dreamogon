@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, Suspense } from 'react';
+import { useState, useEffect, useRef, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
@@ -16,12 +16,104 @@ import {
   Trash2, 
   Clock, 
   MessageSquare,
-  ArrowUpRight,
   Compass,
 } from 'lucide-react';
 import { ChatMessage } from '@/types/ai';
 import { DreamReference } from '@/components/chat/DreamReference';
 import { toast } from '@/components/ui/Toast';
+
+export interface ChatConversation {
+  id: string;
+  title: string;
+  preview: string;
+  timestamp: string;
+  messageCount: number;
+  messages: ChatMessage[];
+}
+
+function buildConversation(msgs: ChatMessage[]): ChatConversation {
+  const firstUserMsg = msgs.find((m) => m.role === 'user') || msgs[0];
+  const lastAiMsg = [...msgs].reverse().find((m) => m.role === 'assistant');
+  const lastMsg = msgs[msgs.length - 1];
+
+  let title = firstUserMsg.content.trim();
+  if (title.length > 55) {
+    title = title.substring(0, 52) + '...';
+  }
+
+  const rawPreview = lastAiMsg?.content || lastMsg.content || '';
+  const cleanPreview = rawPreview.replace(/^[>#*\s`]+/, '').trim();
+
+  return {
+    id: firstUserMsg.id || msgs[0].id,
+    title: title || 'Untitled Reflection',
+    preview: cleanPreview,
+    timestamp: lastMsg.created_at || firstUserMsg.created_at,
+    messageCount: msgs.length,
+    messages: msgs,
+  };
+}
+
+function groupMessagesIntoConversations(allMessages: ChatMessage[]): ChatConversation[] {
+  if (!allMessages || allMessages.length === 0) return [];
+
+  // Sort chronologically ascending
+  const sorted = [...allMessages].sort(
+    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+  );
+
+  const conversations: ChatConversation[] = [];
+  let currentGroup: ChatMessage[] = [];
+
+  const SESSION_GAP_MS = 25 * 60 * 1000; // 25 minutes between conversation sessions
+
+  for (let i = 0; i < sorted.length; i++) {
+    const msg = sorted[i];
+
+    if (currentGroup.length === 0) {
+      currentGroup.push(msg);
+      continue;
+    }
+
+    const prevMsg = currentGroup[currentGroup.length - 1];
+    const prevTime = new Date(prevMsg.created_at).getTime();
+    const currTime = new Date(msg.created_at).getTime();
+    const gap = currTime - prevTime;
+
+    // Start a new conversation when there is a significant gap between turns
+    if ((gap > SESSION_GAP_MS && msg.role === 'user') || gap > 2 * 60 * 60 * 1000) {
+      conversations.push(buildConversation(currentGroup));
+      currentGroup = [msg];
+    } else {
+      currentGroup.push(msg);
+    }
+  }
+
+  if (currentGroup.length > 0) {
+    conversations.push(buildConversation(currentGroup));
+  }
+
+  // Return newest conversations first
+  return conversations.reverse();
+}
+
+function formatConversationDate(dateStr: string): string {
+  try {
+    const d = new Date(dateStr);
+    const now = new Date();
+    const isToday = d.toDateString() === now.toDateString();
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const isYesterday = d.toDateString() === yesterday.toDateString();
+
+    const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (isToday) return `Today, ${timeStr}`;
+    if (isYesterday) return `Yesterday, ${timeStr}`;
+    return d.toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return dateStr;
+  }
+}
 
 function ChatPageContent() {
   const { user } = useAuth();
@@ -40,6 +132,11 @@ function ChatPageContent() {
   const [historyMessages, setHistoryMessages] = useState<ChatMessage[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [clearingHistory, setClearingHistory] = useState(false);
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+
+  const conversations = useMemo(() => {
+    return groupMessagesIntoConversations(historyMessages);
+  }, [historyMessages]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
@@ -99,16 +196,43 @@ function ChatPageContent() {
   const handleNewChat = () => {
     setMessages([]);
     setInputValue('');
+    setActiveConversationId(null);
     setShowHistory(false);
   };
 
-  const handleRestoreHistory = (historyItems: ChatMessage[]) => {
-    // Sort chronologically for active chat
-    const sorted = [...historyItems].sort(
+  const handleSelectConversation = (conv: ChatConversation) => {
+    setActiveConversationId(conv.id);
+    const sorted = [...conv.messages].sort(
       (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     );
     setMessages(sorted);
     setShowHistory(false);
+    toast.success('Loaded past conversation');
+  };
+
+  const handleDeleteConversation = async (e: React.MouseEvent, conv: ChatConversation) => {
+    e.stopPropagation();
+    if (!user) return;
+    if (!confirm(`Delete conversation "${conv.title}"?`)) return;
+
+    const idsToDelete = conv.messages.map((m) => m.id);
+    try {
+      const { error } = await supabase.from('chat_messages').delete().in('id', idsToDelete);
+      if (error) {
+        toast.error('Failed to delete conversation');
+        return;
+      }
+
+      setHistoryMessages((prev) => prev.filter((m) => !idsToDelete.includes(m.id)));
+      if (activeConversationId === conv.id || messages.some((m) => idsToDelete.includes(m.id))) {
+        setMessages([]);
+        setActiveConversationId(null);
+      }
+      toast.success('Conversation deleted');
+    } catch (err) {
+      console.error('Error deleting conversation:', err);
+      toast.error('Failed to delete conversation');
+    }
   };
 
   const handleClearHistory = async () => {
@@ -120,6 +244,7 @@ function ChatPageContent() {
       await supabase.from('chat_messages').delete().eq('user_id', user.id);
       setHistoryMessages([]);
       setMessages([]);
+      setActiveConversationId(null);
     } catch (err) {
       console.error('Failed to clear history:', err);
     } finally {
@@ -297,9 +422,14 @@ function ChatPageContent() {
                     </div>
                     {msg.dream_references && msg.dream_references.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
-                        {msg.dream_references.map((ref, idx) => (
-                          <DreamReference key={idx} dreamId={ref.id} title={ref.title} date={ref.date} />
-                        ))}
+                        {msg.dream_references.map((ref: any, idx: number) => {
+                          const dreamId = typeof ref === 'string' ? ref : ref.id;
+                          const title = typeof ref === 'string' ? 'Referenced Dream' : ref.title;
+                          const date = typeof ref === 'string' ? undefined : ref.date;
+                          return (
+                            <DreamReference key={idx} dreamId={dreamId} title={title} date={date} />
+                          );
+                        })}
                       </div>
                     )}
                     {msg.role === 'assistant' && msg.provenance && msg.provenance.totalArchiveSearched > 0 && (
@@ -388,15 +518,15 @@ function ChatPageContent() {
                 <div className="flex items-center gap-2">
                   <Clock className="text-[var(--accent)]" size={18} />
                   <h2 className="text-lg font-semibold text-[var(--text-primary)]">Chat History</h2>
-                  {historyMessages.length > 0 && (
+                  {conversations.length > 0 && (
                     <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] font-medium">
-                      {Math.ceil(historyMessages.length / 2)} {Math.ceil(historyMessages.length / 2) === 1 ? 'chat' : 'chats'}
+                      {conversations.length} {conversations.length === 1 ? 'chat' : 'chats'}
                     </span>
                   )}
                 </div>
 
                 <div className="flex items-center gap-1">
-                  {historyMessages.length > 0 && (
+                  {conversations.length > 0 && (
                     <button
                       onClick={handleClearHistory}
                       disabled={clearingHistory}
@@ -416,60 +546,77 @@ function ChatPageContent() {
               </div>
 
               {/* Drawer Body */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {loadingHistory ? (
                   <div className="h-64 flex flex-col items-center justify-center gap-3">
                     <Spinner size="md" />
                     <p className="text-xs text-[var(--text-muted)]">Loading past conversations...</p>
                   </div>
-                ) : historyMessages.length === 0 ? (
+                ) : conversations.length === 0 ? (
                   <div className="h-64 flex flex-col items-center justify-center text-center p-6 text-[var(--text-muted)]">
                     <MessageSquare size={32} className="mb-2 opacity-40" />
-                    <p className="text-sm font-medium text-[var(--text-primary)]">No history yet</p>
-                    <p className="text-xs mt-1">Conversations with your AI Dream Guide will be preserved here.</p>
+                    <p className="text-sm font-medium text-[var(--text-primary)]">No conversations yet</p>
+                    <p className="text-xs mt-1">Reflections and inquiries with your Dream Guide will appear here.</p>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     <div className="flex items-center justify-between pb-1">
-                      <span className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                        Past Messages ({historyMessages.length})
+                      <span className="text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
+                        Past Chats ({conversations.length})
                       </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRestoreHistory(historyMessages)}
-                        className="text-xs text-[var(--accent)] hover:bg-[var(--accent-soft)] h-7 px-2"
-                      >
-                        <ArrowUpRight size={13} className="mr-1" />
-                        Load all to chat
-                      </Button>
                     </div>
 
-                    {historyMessages.map((msg) => (
-                      <div
-                        key={msg.id}
-                        className={`p-3 rounded-xl border transition-all ${
-                          msg.role === 'user'
-                            ? 'bg-[var(--bg-secondary)] border-[var(--border-default)]'
-                            : 'bg-[var(--accent-soft)]/20 border-[var(--accent-soft)]'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className={`text-[11px] font-medium flex items-center gap-1.5 ${
-                            msg.role === 'user' ? 'text-[var(--text-secondary)]' : 'text-[var(--accent)]'
-                          }`}>
-                            {msg.role === 'user' ? <UserIcon size={12} /> : <Sparkles size={12} />}
-                            {msg.role === 'user' ? 'You' : 'SUBCONSCIOUS LOG AI'}
-                          </span>
-                          <span className="text-[10px] text-[var(--text-muted)]">
-                            {new Date(msg.created_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                          </span>
+                    {conversations.map((conv) => {
+                      const isActive = activeConversationId === conv.id;
+                      return (
+                        <div
+                          key={conv.id}
+                          onClick={() => handleSelectConversation(conv)}
+                          role="button"
+                          tabIndex={0}
+                          className={`w-full text-left p-3.5 rounded-2xl border transition-all cursor-pointer group relative ${
+                            isActive
+                              ? 'bg-[var(--accent-soft)]/25 border-[var(--accent)] shadow-sm'
+                              : 'bg-[var(--bg-secondary)]/50 border-[var(--border-default)] hover:bg-[var(--bg-card)] hover:border-[var(--accent)]'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2 mb-1.5">
+                            <span className="text-xs font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] line-clamp-1 flex-1">
+                              {conv.title}
+                            </span>
+                            <span className="text-[10px] font-mono text-[var(--text-muted)] shrink-0">
+                              {formatConversationDate(conv.timestamp)}
+                            </span>
+                          </div>
+
+                          {conv.preview && (
+                            <p className="text-[11px] text-[var(--text-muted)] line-clamp-2 leading-relaxed">
+                              {conv.preview}
+                            </p>
+                          )}
+
+                          <div className="mt-2.5 flex items-center justify-between text-[10px]">
+                            <span className="px-2 py-0.5 rounded-md bg-[var(--bg-card)] border border-[var(--border-default)] text-[var(--text-muted)] font-mono">
+                              {conv.messageCount} {conv.messageCount === 1 ? 'message' : 'messages'}
+                            </span>
+
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={(e) => handleDeleteConversation(e, conv)}
+                                className="p-1 text-[var(--text-muted)] hover:text-red-400 rounded transition-colors opacity-0 group-hover:opacity-100"
+                                title="Delete this chat"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                              <span className="text-[var(--accent)] font-medium flex items-center gap-0.5">
+                                {isActive ? 'Current' : 'Open'} &rarr;
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-xs text-[var(--text-primary)] leading-relaxed line-clamp-3">
-                          {msg.content}
-                        </p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>

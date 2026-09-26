@@ -5,6 +5,7 @@ import { DreamArtifact, EntityType, TemporalStatus } from '@/types/dream';
 import { DreamArtifactConnection } from '@/lib/dreamWorld';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, ZoomIn, ZoomOut, Maximize2, Sparkles } from 'lucide-react';
+import { useTheme } from '@/components/layout/ThemeProvider';
 
 interface DreamWorldCanvasProps {
   artifacts: DreamArtifact[];
@@ -27,6 +28,12 @@ export function DreamWorldCanvas({
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<DreamArtifact | null>(null);
   const [densityMode, setDensityMode] = useState<'recurring' | 'all'>('recurring');
+  const { resolvedTheme } = useTheme();
+  const isDarkRef = useRef(resolvedTheme === 'dark');
+
+  useEffect(() => {
+    isDarkRef.current = resolvedTheme === 'dark';
+  }, [resolvedTheme]);
 
   const recurringCount = artifacts.filter(
     (a) => a.appearance_count > 1 || a.temporal_status === 'anchor'
@@ -96,6 +103,8 @@ export function DreamWorldCanvas({
 
     // Map artifacts into rich spatial visual nodes with refined palettes and temporal states
     const getNodes = () => {
+      const isDark = isDarkRef.current;
+
       return artifacts.map((a) => {
         const count = a.appearance_count || 1;
         const isSingleton = count === 1 && a.temporal_status !== 'anchor';
@@ -115,6 +124,34 @@ export function DreamWorldCanvas({
 
         const temporal = a.temporal_status || 'recurring';
 
+        const colorHue = isDark
+          ? (a.artifact_type === 'emotion'
+              ? '210, 130, 125'
+              : a.artifact_type === 'place'
+                ? '120, 165, 185'
+                : a.artifact_type === 'person'
+                  ? '195, 155, 130'
+                  : a.artifact_type === 'animal'
+                    ? '200, 165, 115'
+                    : a.artifact_type === 'theme'
+                      ? '170, 140, 195'
+                      : a.artifact_type === 'activity'
+                        ? '175, 175, 170'
+                        : '205, 175, 125')
+          : (a.artifact_type === 'emotion'
+              ? '185, 80, 75'
+              : a.artifact_type === 'place'
+                ? '55, 115, 140'
+                : a.artifact_type === 'person'
+                  ? '150, 100, 65'
+                  : a.artifact_type === 'animal'
+                    ? '155, 115, 45'
+                    : a.artifact_type === 'theme'
+                      ? '115, 80, 150'
+                      : a.artifact_type === 'activity'
+                        ? '90, 95, 100'
+                        : '145, 110, 50');
+
         return {
           ...a,
           isSingleton,
@@ -127,20 +164,7 @@ export function DreamWorldCanvas({
           connectedCount: (a.connected_artifact_ids || []).length,
           pulseSpeed: temporal === 'emerging' ? 0.035 : 0.02 + Math.random() * 0.012,
           phase: Math.random() * Math.PI * 2,
-          colorHue:
-            a.artifact_type === 'emotion'
-              ? '195, 135, 130'
-              : a.artifact_type === 'place'
-                ? '120, 155, 170'
-                : a.artifact_type === 'person'
-                  ? '185, 155, 135'
-                  : a.artifact_type === 'animal'
-                    ? '190, 165, 125'
-                    : a.artifact_type === 'theme'
-                      ? '165, 145, 180'
-                      : a.artifact_type === 'activity'
-                        ? '175, 170, 160'
-                        : '195, 170, 130',
+          colorHue,
         };
       });
     };
@@ -165,14 +189,16 @@ export function DreamWorldCanvas({
       name: string,
       size: number,
       hue: string,
-      hovered: boolean
+      hovered: boolean,
+      isDark: boolean
     ) => {
-      const fill = `rgba(${hue}, ${hovered ? 0.88 : 0.68})`;
-      const stroke = 'rgba(242, 237, 230, 0.55)';
+      const fillAlpha = isDark ? (hovered ? 0.90 : 0.72) : (hovered ? 0.95 : 0.82);
+      const stroke = isDark ? 'rgba(242, 237, 230, 0.60)' : 'rgba(26, 24, 20, 0.65)';
+      const fill = `rgba(${hue}, ${fillAlpha})`;
       const n = name.toLowerCase();
       ctx.fillStyle = fill;
       ctx.strokeStyle = stroke;
-      ctx.lineWidth = Math.max(0.8, size * 0.06);
+      ctx.lineWidth = Math.max(0.9, size * (isDark ? 0.06 : 0.08));
 
       const isWater =
         type === 'place' &&
@@ -253,7 +279,7 @@ export function DreamWorldCanvas({
         ctx.beginPath();
         ctx.moveTo(0, size * 0.85);
         ctx.lineTo(0, -size * 0.85);
-        ctx.strokeStyle = 'rgba(242, 237, 230, 0.35)';
+        ctx.strokeStyle = isDark ? 'rgba(242, 237, 230, 0.35)' : 'rgba(26, 24, 20, 0.50)';
         ctx.stroke();
         ctx.setLineDash([]);
         return;
@@ -266,7 +292,7 @@ export function DreamWorldCanvas({
         ctx.stroke();
         ctx.beginPath();
         ctx.arc(0, -size * 0.55, size * 0.2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${hue}, 0.35)`;
+        ctx.fillStyle = isDark ? `rgba(${hue}, 0.35)` : `rgba(${hue}, 0.50)`;
         ctx.fill();
         return;
       }
@@ -397,7 +423,7 @@ export function DreamWorldCanvas({
     // Render loop
     const render = () => {
       time += 0.015;
-      ctx.clearRect(0, 0, width, height);
+      const isDark = isDarkRef.current;
 
       // Smooth camera interpolation
       cameraRef.current.x += (cameraRef.current.targetX - cameraRef.current.x) * 0.08;
@@ -410,13 +436,31 @@ export function DreamWorldCanvas({
       const cx = width / 2 + camX;
       const cy = height / 2 + camY;
 
+      if (!isDark) {
+        // High quality warm parchment paper backdrop with subtle vignette in light mode
+        const bgGrad = ctx.createRadialGradient(cx, cy, 40 * zoom, cx, cy, Math.max(width, height) * 0.85);
+        bgGrad.addColorStop(0, '#FAF7F2');
+        bgGrad.addColorStop(1, '#ECE6DC');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
+      } else {
+        ctx.clearRect(0, 0, width, height);
+      }
+
       // 1. Soft regional atmosphere (memory landscape — not game zones)
-      const regions = [
-        { name: 'Memory', x: -22, y: -12, color: 'rgba(120, 150, 165, 0.06)' },
-        { name: 'Horizon', x: 22, y: -12, color: 'rgba(190, 165, 130, 0.05)' },
-        { name: 'Quiet', x: -18, y: 18, color: 'rgba(170, 160, 150, 0.05)' },
-        { name: 'Depth', x: 22, y: 18, color: 'rgba(100, 120, 130, 0.06)' }
-      ];
+      const regions = isDark
+        ? [
+            { name: 'Memory', x: -22, y: -12, color: 'rgba(120, 150, 165, 0.06)' },
+            { name: 'Horizon', x: 22, y: -12, color: 'rgba(190, 165, 130, 0.05)' },
+            { name: 'Quiet', x: -18, y: 18, color: 'rgba(170, 160, 150, 0.05)' },
+            { name: 'Depth', x: 22, y: 18, color: 'rgba(100, 120, 130, 0.06)' }
+          ]
+        : [
+            { name: 'Memory', x: -22, y: -12, color: 'rgba(70, 110, 130, 0.07)' },
+            { name: 'Horizon', x: 22, y: -12, color: 'rgba(160, 120, 60, 0.07)' },
+            { name: 'Quiet', x: -18, y: 18, color: 'rgba(120, 110, 95, 0.07)' },
+            { name: 'Depth', x: 22, y: 18, color: 'rgba(60, 85, 100, 0.07)' }
+          ];
 
       regions.forEach(r => {
         const regX = cx + (r.x * width / 100) * zoom;
@@ -433,7 +477,7 @@ export function DreamWorldCanvas({
 
         ctx.save();
         ctx.font = `${Math.round(11 * zoom)}px 'Cormorant Garamond', Georgia, serif`;
-        ctx.fillStyle = 'rgba(242, 237, 230, 0.18)';
+        ctx.fillStyle = isDark ? 'rgba(242, 237, 230, 0.25)' : 'rgba(45, 40, 32, 0.42)';
         ctx.textAlign = 'center';
         ctx.fillText(r.name, regX, regY - regRadius * 0.55);
         ctx.restore();
@@ -446,7 +490,7 @@ export function DreamWorldCanvas({
         const dustY = cy + (d.y + Math.cos(d.phase) * 10) * zoom;
         const alpha = (Math.sin(d.phase) * 0.5 + 0.5) * 0.28;
 
-        ctx.fillStyle = `rgba(201, 184, 160, ${alpha})`;
+        ctx.fillStyle = isDark ? `rgba(201, 184, 160, ${alpha})` : `rgba(80, 70, 55, ${alpha * 0.75})`;
         ctx.beginPath();
         ctx.arc(dustX, dustY, d.size * zoom, 0, Math.PI * 2);
         ctx.fill();
@@ -472,9 +516,11 @@ export function DreamWorldCanvas({
           const isConnectedToHighlight = highlightedArtifactId && (highlightedArtifactId === n1.id || highlightedArtifactId === n2.id);
           const isActiveLink = isConnectedToHover || isConnectedToHighlight;
 
-          let baseAlpha = 0.08 + c.strength * 0.14;
+          let baseAlpha = isDark ? (0.08 + c.strength * 0.14) : (0.22 + c.strength * 0.32);
           if (hoveredNode || highlightedArtifactId) {
-            baseAlpha = isActiveLink ? Math.min(0.85, 0.45 + c.strength * 0.35) : baseAlpha * 0.2;
+            baseAlpha = isActiveLink
+              ? (isDark ? Math.min(0.85, 0.45 + c.strength * 0.35) : Math.min(0.95, 0.65 + c.strength * 0.35))
+              : baseAlpha * 0.2;
           }
 
           // Gentle breathing curvature
@@ -484,8 +530,12 @@ export function DreamWorldCanvas({
           ctx.beginPath();
           ctx.moveTo(p1X, p1Y);
           ctx.quadraticCurveTo(midX, midY, p2X, p2Y);
-          ctx.strokeStyle = isActiveLink ? `rgba(224, 195, 155, ${baseAlpha})` : `rgba(201, 184, 160, ${baseAlpha})`;
-          ctx.lineWidth = (isActiveLink ? 1.75 : 0.9) * zoom;
+          if (isDark) {
+            ctx.strokeStyle = isActiveLink ? `rgba(224, 195, 155, ${baseAlpha})` : `rgba(201, 184, 160, ${baseAlpha})`;
+          } else {
+            ctx.strokeStyle = isActiveLink ? `rgba(165, 110, 35, ${baseAlpha})` : `rgba(65, 55, 45, ${baseAlpha})`;
+          }
+          ctx.lineWidth = (isActiveLink ? (isDark ? 1.75 : 2.2) : (isDark ? 0.9 : 1.25)) * zoom;
           ctx.stroke();
         }
       } else {
@@ -501,12 +551,14 @@ export function DreamWorldCanvas({
             const dist = Math.hypot(p1X - p2X, p1Y - p2Y);
 
             if (dist < 260 * zoom) {
-              const alpha = Math.max(0.03, ((260 * zoom - dist) / (260 * zoom)) * 0.16);
+              const alpha = isDark
+                ? Math.max(0.03, ((260 * zoom - dist) / (260 * zoom)) * 0.16)
+                : Math.max(0.08, ((260 * zoom - dist) / (260 * zoom)) * 0.30);
               ctx.beginPath();
               ctx.moveTo(p1X, p1Y);
               ctx.lineTo(p2X, p2Y);
-              ctx.strokeStyle = `rgba(201, 184, 160, ${alpha})`;
-              ctx.lineWidth = 1 * zoom;
+              ctx.strokeStyle = isDark ? `rgba(201, 184, 160, ${alpha})` : `rgba(75, 65, 55, ${alpha})`;
+              ctx.lineWidth = (isDark ? 1 : 1.2) * zoom;
               ctx.stroke();
             }
           }
@@ -545,7 +597,7 @@ export function DreamWorldCanvas({
           // Full silhouette & aura for recurring landmarks or active nodes
           const auraMultiplier = n.temporalStatus === 'anchor' ? 2.5 : n.temporalStatus === 'emerging' ? 2.2 : 2.0;
           const auraGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, curSize * auraMultiplier);
-          const auraAlpha = isHovered ? 0.38 : n.temporalStatus === 'dormant' ? 0.06 : 0.14;
+          const auraAlpha = isHovered ? (isDark ? 0.38 : 0.32) : n.temporalStatus === 'dormant' ? 0.05 : (isDark ? 0.14 : 0.20);
           auraGrad.addColorStop(0, `rgba(${n.colorHue}, ${auraAlpha})`);
           auraGrad.addColorStop(1, 'rgba(0,0,0,0)');
           ctx.fillStyle = auraGrad;
@@ -564,25 +616,27 @@ export function DreamWorldCanvas({
           }
 
           // Draw silhouette
-          drawEntitySilhouette(n.artifact_type, n.name, curSize, n.colorHue, isHovered || isHighlighted);
+          drawEntitySilhouette(n.artifact_type, n.name, curSize, n.colorHue, isHovered || isHighlighted, isDark);
 
           // Anchor status: double concentric ring
           if (n.temporalStatus === 'anchor') {
             ctx.beginPath();
             ctx.arc(0, 0, curSize * 1.45, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(242, 237, 230, 0.35)';
-            ctx.lineWidth = 1.2 * zoom;
+            ctx.strokeStyle = isDark ? 'rgba(242, 237, 230, 0.38)' : 'rgba(35, 30, 24, 0.50)';
+            ctx.lineWidth = (isDark ? 1.2 : 1.4) * zoom;
             ctx.stroke();
 
             ctx.beginPath();
             ctx.arc(0, 0, curSize * 1.65, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(242, 237, 230, 0.2)';
-            ctx.lineWidth = 0.8 * zoom;
+            ctx.strokeStyle = isDark ? 'rgba(242, 237, 230, 0.22)' : 'rgba(35, 30, 24, 0.30)';
+            ctx.lineWidth = 0.9 * zoom;
             ctx.stroke();
           } else if (n.appearance_count > 1) {
             ctx.beginPath();
             ctx.arc(0, 0, curSize * 1.45, 0, Math.PI * 2);
-            ctx.strokeStyle = n.temporalStatus === 'dormant' ? 'rgba(242, 237, 230, 0.16)' : 'rgba(242, 237, 230, 0.28)';
+            ctx.strokeStyle = isDark
+              ? (n.temporalStatus === 'dormant' ? 'rgba(242, 237, 230, 0.18)' : 'rgba(242, 237, 230, 0.32)')
+              : (n.temporalStatus === 'dormant' ? 'rgba(35, 30, 24, 0.25)' : 'rgba(35, 30, 24, 0.45)');
             ctx.setLineDash([3 * zoom, 4 * zoom]);
             ctx.lineWidth = 1 * zoom;
             ctx.stroke();
@@ -605,11 +659,21 @@ export function DreamWorldCanvas({
 
         if (shouldShowLabel && !isSingletonQuiet) {
           ctx.save();
-          ctx.globalAlpha = isHovered || isHighlighted ? 1 : globalDim * (n.appearance_count > 1 ? 0.85 : 0.45);
-          ctx.font = `${Math.round((isHovered ? 13 : 11) * zoom)}px 'Source Sans 3', system-ui, sans-serif`;
-          ctx.fillStyle = isHovered || isHighlighted ? '#F2EDE6' : 'rgba(242, 237, 230, 0.72)';
+          ctx.globalAlpha = isHovered || isHighlighted ? 1 : globalDim * (n.appearance_count > 1 ? 0.95 : 0.70);
+          ctx.font = `${isHovered ? '600' : '500'} ${Math.round((isHovered ? 13 : 11.5) * zoom)}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
+
+          if (isDark) {
+            ctx.fillStyle = isHovered || isHighlighted ? '#FFFFFF' : 'rgba(242, 237, 230, 0.90)';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+            ctx.shadowBlur = 4;
+          } else {
+            ctx.fillStyle = isHovered || isHighlighted ? '#0E0D0B' : '#2A2620';
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.95)';
+            ctx.shadowBlur = 4;
+          }
+
           ctx.textAlign = 'center';
-          ctx.fillText(n.name, posX, posY + curSize + 14 * zoom);
+          ctx.fillText(n.name, posX, posY + curSize + 15 * zoom);
           ctx.restore();
         }
       });
@@ -628,7 +692,7 @@ export function DreamWorldCanvas({
       container.removeEventListener('wheel', onWheel);
       container.removeEventListener('click', onClick);
     };
-  }, [artifacts, connections, hoveredNode, focusOnNode, onSelectArtifact, highlightedArtifactId, temporalFilter, densityMode]);
+  }, [artifacts, connections, hoveredNode, focusOnNode, onSelectArtifact, highlightedArtifactId, temporalFilter, densityMode, resolvedTheme]);
 
   return (
     <div

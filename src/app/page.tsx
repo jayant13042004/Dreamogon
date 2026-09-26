@@ -538,7 +538,7 @@ export default function LandingPage() {
               Start free. Deepen when you are ready.
             </h2>
             <p className="text-base text-[var(--text-secondary)] font-light leading-relaxed">
-              Every core journal tool is free forever without entry caps. Upgrade when you want cross-dream archive synthesis, conversational memory, and visual depth.
+              Every core journal tool is free forever without entry caps. Upgrade when you want cross-dream archive synthesis, conversational memory, and temporal pattern evolution.
             </p>
           </div>
 
@@ -567,7 +567,7 @@ export default function LandingPage() {
                     '5 AI reflections per month',
                     'Subconscious pattern overview & trends',
                     'Dream World spatial constellation',
-                    '2 lifetime preview image generations',
+                    'Entity continuity & theme radar',
                     'Full export (JSON/Markdown) & zero lock-in',
                   ].map((feat, i) => (
                     <div key={i} className="flex items-start gap-2">
@@ -599,7 +599,7 @@ export default function LandingPage() {
                     <span className="text-xs text-[var(--text-muted)]">/ month</span>
                   </div>
                   <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
-                    Flexible month-to-month access to longitudinal synthesis &amp; visual depth.
+                    Flexible month-to-month access to longitudinal synthesis &amp; temporal pattern tracking.
                   </p>
                 </div>
 
@@ -609,7 +609,7 @@ export default function LandingPage() {
                     '100 AI reflections & inquiries / month',
                     'Cross-dream longitudinal pattern synthesis',
                     'AI Guide with archive conversation memory',
-                    '20 dream images / month + variations',
+                    'Ask Your Dream History retrieval',
                     'Priority analysis queues & direct support',
                   ].map((feat, i) => (
                     <div key={i} className="flex items-start gap-2">
@@ -660,7 +660,7 @@ export default function LandingPage() {
                     '33% annual savings ($72 vs $108)',
                     '100 AI reflections & inquiries / month',
                     'Full subconscious archive pattern synthesis',
-                    '20 dream images / month + variations',
+                    'Ask Your Dream History retrieval',
                     'Early access to new cognitive tools',
                   ].map((feat, i) => (
                     <div key={i} className="flex items-start gap-2">
@@ -701,7 +701,7 @@ export default function LandingPage() {
                     'Full Pro feature access for life',
                     'Zero recurring subscription fees',
                     '100 AI operations / month fair-use allowance',
-                    '20 dream images refreshed each month',
+                    'Ask Your Dream History retrieval',
                     'Permanent archive pattern synthesis',
                     'All future core feature updates included',
                   ].map((feat, i) => (

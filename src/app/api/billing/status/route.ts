@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server';
 import {
   formatPlanPrice,
   getAiUsageSummary,
-  getImageQuota,
   getPlanDefinition,
   getPlanTier,
   getSubscription,
@@ -26,10 +25,6 @@ export async function GET() {
     const plan = getPlanDefinition(planTier);
     const subscription = await getSubscription(supabase, user.id);
     const aiUsage = await getAiUsageSummary(supabase, user.id);
-    const imageQuota = await getImageQuota(supabase, user.id, {
-      isRegenerate: false,
-      dreamAlreadyHasImage: false,
-    });
 
     return NextResponse.json({
       planTier,
@@ -97,12 +92,6 @@ export async function GET() {
         used: aiUsage.used,
         remaining: aiUsage.remaining,
         periodKey: aiUsage.periodKey,
-      },
-      imageQuota: {
-        kind: imageQuota.kind,
-        limit: imageQuota.limit,
-        used: imageQuota.used,
-        remaining: imageQuota.remaining,
       },
     });
   } catch (error) {

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 interface BrandLogoProps {
   variant?: 'icon' | 'full';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   iconOnly?: boolean;
   href?: string;
@@ -37,9 +37,6 @@ export function SubconsciousLogSymbol({ size = 28, className = '' }: { size?: nu
   );
 }
 
-/** Legacy alias for compatibility */
-export const DreamogonSymbol = SubconsciousLogSymbol;
-
 export function BrandLogo({
   variant = 'full',
   size = 'md',
@@ -48,22 +45,23 @@ export function BrandLogo({
   href = '/',
 }: BrandLogoProps) {
   const sizeMap = {
-    sm: { icon: 20, text: 'text-base', tracking: 'tracking-[0.24em]' },
-    md: { icon: 26, text: 'text-xl', tracking: 'tracking-[0.28em]' },
-    lg: { icon: 34, text: 'text-2xl', tracking: 'tracking-[0.32em]' },
-    xl: { icon: 44, text: 'text-3xl', tracking: 'tracking-[0.36em]' },
+    xs: { icon: 18, text: 'text-xs', tracking: 'tracking-[0.14em]', gap: 'gap-2' },
+    sm: { icon: 20, text: 'text-xs sm:text-[13px]', tracking: 'tracking-[0.14em]', gap: 'gap-2.5' },
+    md: { icon: 22, text: 'text-[13.5px] sm:text-sm', tracking: 'tracking-[0.14em]', gap: 'gap-2.5' },
+    lg: { icon: 28, text: 'text-base sm:text-lg', tracking: 'tracking-[0.16em]', gap: 'gap-3' },
+    xl: { icon: 36, text: 'text-xl sm:text-2xl', tracking: 'tracking-[0.18em]', gap: 'gap-3.5' },
   };
 
-  const { icon, text, tracking } = sizeMap[size] || sizeMap.md;
+  const { icon, text, tracking, gap } = sizeMap[size] || sizeMap.md;
 
   const content = (
-    <div className={`inline-flex items-center gap-3 group select-none ${className}`}>
-      <div className="text-[var(--accent)] group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+    <div className={`inline-flex items-center ${gap} group select-none ${className}`}>
+      <div className="text-[var(--accent)] group-hover:scale-105 transition-transform duration-300 flex items-center justify-center shrink-0">
         <SubconsciousLogSymbol size={icon} />
       </div>
       {!iconOnly && variant === 'full' && (
         <span
-          className={`font-display font-medium ${text} ${tracking} text-[var(--text-primary)] uppercase leading-none transition-colors duration-300`}
+          className={`font-display font-semibold ${text} ${tracking} text-[var(--text-primary)] uppercase leading-none whitespace-nowrap transition-colors duration-300`}
         >
           Subconscious Log
         </span>

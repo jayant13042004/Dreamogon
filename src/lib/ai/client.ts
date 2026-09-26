@@ -1,7 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
 
 export const GENERATION_MODELS = [
-  'gemini-3.6-flash',
+  'gemini-3.8-flash',
+  'gemini-3.5-flash',
   'gemini-3.5-flash-lite',
 ] as const;
 

@@ -38,16 +38,6 @@ export type PortalSessionResult = {
   url: string;
 };
 
-export type ImageQuotaDecision = {
-  allowed: boolean;
-  planTier: PlanTier;
-  limit: number;
-  used: number;
-  remaining: number;
-  kind: 'lifetime' | 'monthly';
-  reason?: 'quota_exceeded' | 'regeneration_not_allowed' | 'ok';
-};
-
 export type AiQuotaDecision = {
   allowed: boolean;
   planTier: PlanTier;

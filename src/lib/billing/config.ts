@@ -29,12 +29,6 @@ export type PlanDefinition = {
   aiAllowance: {
     monthlyLimit: number;
   };
-  /** Lifetime image slots for free; monthly generations for pro / lifetime */
-  dreamImages: {
-    kind: 'lifetime' | 'monthly';
-    limit: number;
-  };
-  allowImageRegeneration: boolean;
   features: string[];
 };
 
@@ -50,15 +44,13 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
     interval: null,
     intervalLabel: '/ forever',
     aiAllowance: { monthlyLimit: 5 },
-    dreamImages: { kind: 'lifetime', limit: 2 },
-    allowImageRegeneration: false,
     features: [
       'Unlimited dream recording (text & voice)',
       'Full archive, instant search & calendar views',
       '5 quiet AI reflections / month',
       'Basic subconscious pattern overview & themes',
       'Spatial Dream World constellation',
-      '2 lifetime preview visual memories',
+      'Entity continuity & theme radar',
       'Full data export (JSON & Markdown) & privacy baseline',
     ],
   },
@@ -73,8 +65,6 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
     interval: 'month',
     intervalLabel: '/ month',
     aiAllowance: { monthlyLimit: 100 },
-    dreamImages: { kind: 'monthly', limit: 20 },
-    allowImageRegeneration: true,
     features: [
       'Everything included in Free',
       '100 AI operations / month',
@@ -82,7 +72,7 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
       'Longitudinal dream-memory & pattern evolution',
       'Recurring people, places & emotional patterns over time',
       'Conversational AI Guide with full dream-history context',
-      '20 experimental visual memories / month + regeneration',
+      'Grounded dream history search & evolution',
       'Direct support desk access',
     ],
   },
@@ -97,8 +87,6 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
     interval: 'year',
     intervalLabel: '/ year',
     aiAllowance: { monthlyLimit: 100 },
-    dreamImages: { kind: 'monthly', limit: 20 },
-    allowImageRegeneration: true,
     features: [
       'Everything included in Pro Monthly',
       '$6/month equivalent (save 33% compared to monthly)',
@@ -106,7 +94,7 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
       'Billed annually at $72/year',
       'Cross-dream archive understanding & recurring pattern radar',
       'Conversational AI Guide with full context',
-      '20 experimental visual memories / month + regeneration',
+      'Grounded dream history search & evolution',
     ],
   },
   lifetime: {
@@ -120,8 +108,6 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
     interval: 'one_time',
     intervalLabel: 'one-time payment',
     aiAllowance: { monthlyLimit: 100 },
-    dreamImages: { kind: 'monthly', limit: 20 },
-    allowImageRegeneration: true,
     features: [
       'Full Pro product access permanently',
       'No recurring Subconscious Log subscription fee',
@@ -129,7 +115,7 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
       'Deep cross-dream pattern synthesis & archive queries',
       'Longitudinal theme tracking across months & years',
       'Conversational AI Guide with full dream-history context',
-      '20 experimental visual memories / month + regeneration',
+      'Grounded dream history search & evolution',
     ],
   },
 };

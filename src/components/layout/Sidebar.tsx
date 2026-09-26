@@ -62,11 +62,11 @@ export function Sidebar() {
   const tier = profile?.plan_tier ?? 'free';
 
   return (
-    <aside className="hidden md:flex flex-col w-[260px] fixed inset-y-0 left-0 bg-[var(--bg-sidebar)] border-r border-[var(--border-default)] z-30 select-none">
+    <aside className="hidden md:flex flex-col w-[260px] fixed inset-y-0 left-0 bg-[var(--bg-sidebar)] border-r border-[var(--border-default)] z-30 select-none overflow-x-hidden">
       {/* Brand Header */}
-      <div className="p-7 pb-5">
+      <div className="px-5 pt-6 pb-5">
         <BrandLogo size="md" href="/dashboard" />
-        <span className="text-[9px] uppercase tracking-[0.22em] text-[var(--text-muted)] font-medium block mt-2 ml-9">
+        <span className="text-[8.5px] uppercase tracking-[0.20em] text-[var(--text-muted)] font-medium block mt-1.5 ml-[32px] whitespace-nowrap">
           Private Dream Archive
         </span>
       </div>

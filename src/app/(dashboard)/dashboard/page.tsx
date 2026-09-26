@@ -18,12 +18,14 @@ export default function DashboardPage() {
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [worldData, setWorldData] = useState<DreamWorldData>({
     artifacts: [],
+    connections: [],
     insights: [],
     dreamCount: 0,
     topThemes: [],
     mostRecurringElement: null,
     topEmotion: null,
-    hasUnfamiliarConnection: false
+    hasUnfamiliarConnection: false,
+    totalMilestone: 0,
   });
   const [loading, setLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);

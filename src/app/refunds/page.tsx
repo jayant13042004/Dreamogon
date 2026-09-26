@@ -101,7 +101,7 @@ export default function RefundPolicyPage() {
               4. Data Preservation Following Plan Changes
             </h2>
             <p>
-              Canceling a subscription never deletes your recorded dreams. Your full text entries, audio transcripts, AI reflections, and visual images remain permanently preserved in your account on the Free plan, with complete export capabilities always available.
+              Canceling a subscription never deletes your recorded dreams. Your full text entries, audio transcripts, and AI reflections remain permanently preserved in your account on the Free plan, with complete export capabilities always available.
             </p>
           </section>
         </div>

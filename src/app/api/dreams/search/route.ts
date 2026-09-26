@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { generateEmbedding } from '@/lib/ai/embeddings';
+import { sanitizePostgrestSearch } from '@/lib/utils/search';
 
 // POST /api/dreams/search - Semantic + text search
 export async function POST(request: NextRequest) {
@@ -19,6 +20,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Search query is required' }, { status: 400 });
     }
 
+    const sanitizedQuery = sanitizePostgrestSearch(query);
+
     // Try semantic search first
     let semanticResults: Array<Record<string, unknown>> = [];
     try {
@@ -35,13 +38,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Also do text search as fallback/supplement
-    const { data: textResults } = await supabase
-      .from('dreams')
-      .select('id, title, content, dream_date, mood, ai_summary, ai_themes')
-      .eq('user_id', user.id)
-      .or(`title.ilike.%${query}%,content.ilike.%${query}%,ai_summary.ilike.%${query}%`)
-      .order('dream_date', { ascending: false })
-      .limit(limit);
+    let textResults: Array<Record<string, unknown>> = [];
+    if (sanitizedQuery.length > 0) {
+      const { data: matchedText } = await supabase
+        .from('dreams')
+        .select('id, title, content, dream_date, mood, ai_summary, ai_themes')
+        .eq('user_id', user.id)
+        .or(`title.ilike.%${sanitizedQuery}%,content.ilike.%${sanitizedQuery}%,ai_summary.ilike.%${sanitizedQuery}%`)
+        .order('dream_date', { ascending: false })
+        .limit(limit);
+      textResults = matchedText || [];
+    }
 
     // Merge results, preferring semantic matches
     const seenIds = new Set<string>();
@@ -56,8 +63,9 @@ export async function POST(request: NextRequest) {
     }
 
     for (const result of (textResults || [])) {
-      if (!seenIds.has(result.id)) {
-        seenIds.add(result.id);
+      const id = String(result.id);
+      if (!seenIds.has(id)) {
+        seenIds.add(id);
         mergedResults.push({ ...result, matchType: 'text', similarity: 0 });
       }
     }

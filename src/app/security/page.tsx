@@ -54,7 +54,7 @@ export default function SecurityPage() {
               Database Row Level Security (RLS)
             </h2>
             <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
-              We enforce multi-tenant isolation at the database engine level. Every SQL query for dreams, images, or reflections is cryptographically bound to your authenticated Supabase user ID. Cross-account data leaks are prevented at the engine core.
+              We enforce multi-tenant isolation at the database engine level. Every SQL query for dreams, entities, or reflections is cryptographically bound to your authenticated Supabase user ID. Cross-account data leaks are prevented at the engine core.
             </p>
           </div>
 

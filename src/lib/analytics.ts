@@ -105,23 +105,7 @@ export const Analytics = {
   dreamProfileViewed: (dreamCount: number) =>
     trackEvent('dream_profile_viewed', { dream_count: dreamCount }),
 
-  // 5. Visual Memories Telemetry
-  dreamImageGenerationStarted: (dreamCount: number) =>
-    trackEvent('dream_image_generation_started', { dream_count: dreamCount }),
-
-  dreamImageGenerationCompleted: (dreamCount: number, generationCount: number) =>
-    trackEvent('dream_image_generation_completed', { dream_count: dreamCount, image_generation_count: generationCount }),
-
-  dreamImageGenerationFailed: (reason?: string) =>
-    trackEvent('dream_image_generation_failed', { reason: reason || 'unknown' }),
-
-  dreamImageRegenerated: (generationCount: number) =>
-    trackEvent('dream_image_regenerated', { image_generation_count: generationCount }),
-
-  dreamImageUpgradeClicked: () =>
-    trackEvent('dream_image_upgrade_clicked'),
-
-  // 6. Monetization & Checkout Funnel
+  // 5. Monetization & Checkout Funnel
   upgradeViewed: (trigger: string, dreamCount: number) =>
     trackEvent('upgrade_viewed', { trigger, dream_count: dreamCount }),
 

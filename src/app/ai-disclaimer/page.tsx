@@ -89,16 +89,7 @@ export default function AIDisclaimerPage() {
 
           <section className="space-y-3">
             <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
-              3. Visual Interpretations
-            </h2>
-            <p>
-              Visual dream imagery generated within Subconscious Log represents artistic digital interpretations derived from the motifs of your dream entry. They are contemplative visual anchors designed to evoke mood, not literal recordings of neurobiological dream states.
-            </p>
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
-              4. Support Resources for Mental Health
+              3. Support Resources for Mental Health
             </h2>
             <p>
               If your dreams or sleep patterns are causing intense emotional distress, nightmare-related anxiety, trauma re-experiencing, or insomnia, please reach out to qualified healthcare providers:

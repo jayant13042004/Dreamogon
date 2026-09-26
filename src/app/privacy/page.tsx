@@ -69,7 +69,7 @@ export default function PrivacyPolicyPage() {
             <Server size={18} className="text-[var(--accent)]" />
             <h2 className="text-sm font-medium text-[var(--text-primary)]">No Foundation Model Training</h2>
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
-              Your private reflections are never used to train public language or image generation models.
+              Your private reflections are never used to train public language models or third-party AI systems.
             </p>
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function PrivacyPolicyPage() {
               3. How We Process Artificial Intelligence Inquiries
             </h2>
             <p>
-              SUBCONSCIOUS LOG provides AI-assisted reflective inquiries and atmospheric image generation. When you request reflection on a dream:
+              SUBCONSCIOUS LOG provides AI-assisted reflective inquiries, theme tracking, and longitudinal pattern analysis. When you request reflection on a dream:
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li>The text of that entry is transmitted via encrypted API connections to the configured AI inference provider (such as the Google Gemini API).</li>
@@ -154,7 +154,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li><strong>Access & Export:</strong> Export your full dream history at any time in machine-readable JSON or Markdown formats directly from your Settings.</li>
-              <li><strong>Permanently Delete:</strong> Delete your account and all associated entries, reflections, and generated images permanently from your Settings. Deletion is instantaneous and irreversible.</li>
+              <li><strong>Permanently Delete:</strong> Delete your account and all associated entries, audio transcripts, and reflections permanently from your Settings. Deletion is instantaneous and irreversible.</li>
             </ul>
           </section>
 

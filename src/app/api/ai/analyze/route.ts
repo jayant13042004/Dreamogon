@@ -31,6 +31,30 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Dream content is required' }, { status: 400 });
     }
 
+    // Idempotency: If this dream was already analyzed and not explicitly forcing re-analysis, return existing analysis
+    if (dreamId && !body.force) {
+      const { data: existingDream } = await supabase
+        .from('dreams')
+        .select('ai_analysis, ai_summary')
+        .eq('id', dreamId)
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (existingDream?.ai_analysis) {
+        const currentQuota = await getAiQuota(supabase, user.id);
+        return NextResponse.json({
+          analysis: existingDream.ai_analysis,
+          alreadyAnalyzed: true,
+          quota: {
+            used: currentQuota.used,
+            limit: currentQuota.limit,
+            remaining: currentQuota.remaining,
+            planTier: currentQuota.planTier,
+          },
+        });
+      }
+    }
+
     // Fetch recent dreams for context (exclude current dream)
     const { data: recentDreams } = await supabase
       .from('dreams')

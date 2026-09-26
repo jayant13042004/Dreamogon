@@ -96,10 +96,10 @@ export default function TermsPage() {
               5. Plans, Billing, &amp; Lifetime Entitlements
             </h2>
             <ul className="list-disc pl-5 space-y-2">
-              <li><strong>Free Tier:</strong> Provided free of charge forever. Includes unlimited dream journal recording, calendar views, search, 5 AI reflections per month, and 2 preview images.</li>
-              <li><strong>Pro Monthly Tier:</strong> Billed at $9 USD per month on a recurring monthly cycle via Stripe. Includes 100 AI operations per month and 20 monthly images.</li>
+              <li><strong>Free Tier:</strong> Provided free of charge forever. Includes unlimited dream journal recording, calendar views, search, and 5 AI reflections per month.</li>
+              <li><strong>Pro Monthly Tier:</strong> Billed at $9 USD per month on a recurring monthly cycle via Stripe. Includes 100 AI operations per month.</li>
               <li><strong>Pro Annual Tier:</strong> Billed at $72 USD per year (equivalent to $6/month, representing a 33% discount) on a recurring annual cycle via Stripe. Includes all Pro entitlements.</li>
-              <li><strong>Lifetime Tier:</strong> A single, one-time payment of $149 USD granting permanent Pro feature entitlements with no recurring fees. Includes a recurring fair-use allowance of 100 AI operations and 20 dream images per calendar month.</li>
+              <li><strong>Lifetime Tier:</strong> A single, one-time payment of $149 USD granting permanent Pro feature entitlements with no recurring fees. Includes a recurring fair-use allowance of 100 AI operations per calendar month.</li>
               <li><strong>Subscription Cancellation:</strong> Recurring subscriptions may be cancelled at any time via Settings &rarr; Subscription & Plan. Access remains active through the end of the paid billing period.</li>
             </ul>
           </section>

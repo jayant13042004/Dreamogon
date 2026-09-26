@@ -176,7 +176,7 @@ export default function PricingPage() {
                   'Recurring themes across months & years',
                   'Recurring people, places & emotions',
                   'Conversational AI Guide with dream context',
-                  '20 secondary visual memories / month',
+                  'Ask Your Dream History grounded retrieval',
                   'Priority support desk access',
                 ].map((feat, i) => (
                   <div key={i} className="flex items-start gap-2">
@@ -226,7 +226,7 @@ export default function PricingPage() {
                   'Billed annually at $72/year',
                   'Full cross-dream pattern radar',
                   'AI Guide with archive memory',
-                  '20 secondary visual memories / month',
+                  'Ask Your Dream History grounded retrieval',
                   'Priority processing queues',
                 ].map((feat, i) => (
                   <div key={i} className="flex items-start gap-2">
@@ -270,7 +270,7 @@ export default function PricingPage() {
                   'Cross-dream pattern synthesis & memory',
                   'Recurring people, places & themes',
                   'AI Guide with full archive context',
-                  '20 secondary visual memories / month',
+                  'Ask Your Dream History grounded retrieval',
                   'Lifetime entitlement',
                 ].map((feat, i) => (
                   <div key={i} className="flex items-start gap-2">
@@ -322,7 +322,7 @@ export default function PricingPage() {
                     ['Cross-Dream Longitudinal Synthesis', '—', 'Included', 'Included'],
                     ['Recurring People, Places & Themes', '—', 'Included', 'Included'],
                     ['Conversational AI Guide Context', 'Preview', 'Full Archive Memory', 'Full Archive Memory'],
-                    ['Visual Memories (Secondary)', '2 lifetime preview', '20 / month + regeneration', '20 / month + regeneration'],
+                    ['Ask Your Dream History (Grounded Retrieval)', 'Preview', 'Included', 'Included'],
                     ['Full Data Export (JSON & Markdown)', 'Included', 'Included', 'Included'],
                     ['Row-Level Security & Privacy', 'Included', 'Included', 'Included'],
                     ['Subscription Fee', '$0', '$9/mo or $72/yr', 'None ($149 one-time)'],

@@ -90,8 +90,24 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
 
         if (!aiResponse.ok) {
           setAnalysisUi('failed');
+          const errData = await aiResponse.json().catch(() => null);
+
+          if (aiResponse.status === 403 && (errData?.code === 'quota_exceeded' || errData?.isQuotaExceeded)) {
+            setUpgradeReason('quota_exceeded');
+            setShowUpgradeModal(true);
+            toast.error(errData.error || 'Monthly AI reflection allowance reached.');
+            return;
+          }
+
+          if (aiResponse.status === 429) {
+            toast.error('Too many requests. Please pause a moment before retrying.');
+            return;
+          }
+
+          const errorMsg =
+            errData?.error || 'Reflective analysis paused. Your authentic dream text is safely preserved.';
           if (!opts?.silent) {
-            toast.error('Analysis could not finish. Your dream is still saved.');
+            toast.error(errorMsg);
           }
           return;
         }
@@ -107,10 +123,11 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
         if (searchParams.get('analyzing') === '1') {
           router.replace(`/dream/${id}`, { scroll: false });
         }
-      } catch {
+      } catch (networkErr) {
+        console.error('Analysis network error:', networkErr);
         setAnalysisUi('failed');
         if (!opts?.silent) {
-          toast.error('Analysis could not finish. Your dream is still saved.');
+          toast.error('Connection interrupted. Your dream text is safely preserved.');
         }
       } finally {
         analysisLock.current = false;
@@ -124,17 +141,26 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
     if (!dream || loading) return;
 
     const wantsAnalyze = searchParams.get('analyzing') === '1';
+    const alreadyAnalyzed = Boolean(dream.ai_analysis || dream.ai_summary);
+
+    if (alreadyAnalyzed && analysisUi === 'idle') {
+      setAnalysisUi('complete');
+    }
+
     if (!wantsAnalyze) {
-      if ((dream.ai_analysis || dream.ai_summary) && analysisUi === 'idle') {
-        setAnalysisUi('complete');
-      }
+      return;
+    }
+
+    // If dream already has an analysis, clean query param without redundant re-analysis
+    if (alreadyAnalyzed) {
+      router.replace(`/dream/${dream.id}`, { scroll: false });
       return;
     }
 
     if (autoAnalyzeStarted.current || analysisLock.current) return;
     autoAnalyzeStarted.current = true;
     void runAnalysis(dream.id, dream.content, { silent: true });
-  }, [dream, loading, searchParams, runAnalysis, analysisUi]);
+  }, [dream, loading, searchParams, runAnalysis, analysisUi, router]);
 
   useEffect(() => {
     if (searchParams.get('edit') === '1') {
@@ -419,7 +445,7 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
               Deeper exploration
             </h3>
             <p className="text-xs text-[var(--text-muted)] mt-0.5">
-              Extracted entities, visual memories, and Dream World connections
+              Extracted entities, subconscious motifs, and Dream World connections
             </p>
           </div>
           <div className="p-1 rounded-lg text-[var(--text-muted)]">
