@@ -20,10 +20,12 @@ import {
   Clock,
   BookOpen,
 } from 'lucide-react';
-import { CinematicDreamHero } from '@/components/layout/CinematicDreamHero';
+import Image from 'next/image';
 import { DreamJourneyWalkthrough } from '@/components/layout/DreamJourneyWalkthrough';
 import { ProductDemoSection } from '@/components/landing/ProductDemoSection';
 import { ProductShowcaseSection } from '@/components/landing/ProductShowcaseSection';
+import { RecurringPatternsSection } from '@/components/landing/RecurringPatternsSection';
+import { DreamEvolutionLandingSection } from '@/components/landing/DreamEvolutionLandingSection';
 import { BlogShowcaseSection } from '@/components/landing/BlogShowcaseSection';
 import { CompetitiveMatrixSection } from '@/components/landing/CompetitiveMatrixSection';
 import { PerspectivesSection } from '@/components/landing/PerspectivesSection';
@@ -64,14 +66,17 @@ export default function LandingPage() {
             <a href="#demo" className="hover:text-[var(--text-primary)] transition-colors">
               Walkthrough
             </a>
-            <a href="#journey" className="hover:text-[var(--text-primary)] transition-colors">
-              The Journey
-            </a>
-            <a href="#showcase" className="hover:text-[var(--text-primary)] transition-colors">
-              Showcase
+            <a href="#patterns" className="hover:text-[var(--text-primary)] transition-colors">
+              Patterns
             </a>
             <a href="#capture" className="hover:text-[var(--text-primary)] transition-colors">
               Capture
+            </a>
+            <a href="#journey" className="hover:text-[var(--text-primary)] transition-colors">
+              The Journey
+            </a>
+            <a href="#evolution" className="hover:text-[var(--text-primary)] transition-colors">
+              Evolution
             </a>
             <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
               Blog
@@ -133,18 +138,11 @@ export default function LandingPage() {
             Walkthrough
           </a>
           <a
-            href="#journey"
+            href="#patterns"
             onClick={() => setMobileMenuOpen(false)}
             className="text-2xl font-display text-[var(--text-primary)]"
           >
-            The Journey
-          </a>
-          <a
-            href="#showcase"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-2xl font-display text-[var(--text-primary)]"
-          >
-            Showcase
+            Patterns
           </a>
           <a
             href="#capture"
@@ -152,6 +150,20 @@ export default function LandingPage() {
             className="text-2xl font-display text-[var(--text-primary)]"
           >
             Capture
+          </a>
+          <a
+            href="#journey"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-display text-[var(--text-primary)]"
+          >
+            The Journey
+          </a>
+          <a
+            href="#evolution"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-2xl font-display text-[var(--text-primary)]"
+          >
+            Evolution
           </a>
           <Link
             href="/blog"
@@ -187,16 +199,32 @@ export default function LandingPage() {
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-          2. HERO SECTION (Normal Flow, No Scroll-Jacking)
+          2. HERO SECTION (Atmospheric with hero-dreamscape.png)
       ───────────────────────────────────────────────────────────── */}
-      <header className="relative pt-32 md:pt-40 pb-16 md:pb-24 px-6 md:px-10 overflow-hidden">
-        <div className="max-w-5xl mx-auto space-y-12">
+      <header className="relative pt-36 md:pt-44 pb-24 md:pb-36 px-6 md:px-10 overflow-hidden border-b border-[var(--border-default)]">
+        {/* Supporting Atmospheric Visual Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
+          <Image
+            src="/visuals/landing/hero-dreamscape.png"
+            alt="Subconscious dreamscape atmosphere"
+            fill
+            priority
+            quality={90}
+            sizes="100vw"
+            className="object-cover object-[center_35%] opacity-25 dark:opacity-40 transition-opacity duration-700"
+          />
+          {/* Subtle multi-directional gradients ensuring 100% text readability across light and dark themes */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)] via-[var(--bg-primary)]/85 to-[var(--bg-primary)]/35" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/60 via-transparent to-[var(--bg-primary)]" />
+        </div>
+
+        <div className="max-w-5xl mx-auto space-y-10 relative z-10">
           {/* Headline & Narrative Lead */}
           <div className="max-w-3xl space-y-6">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
               <p className="text-[11px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
-                Morning Dream Journal & Subconscious Archive
+                Morning Dream Journal &amp; Subconscious Archive
               </p>
             </div>
 
@@ -223,16 +251,11 @@ export default function LandingPage() {
               <button
                 type="button"
                 onClick={() => setExploreModalOpen(true)}
-                className="inline-flex items-center justify-center gap-2 text-xs font-mono uppercase tracking-wider border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-card)]/60 hover:bg-[var(--bg-card)] px-7 py-4 rounded-full transition-all text-center"
+                className="inline-flex items-center justify-center gap-2 text-xs font-mono uppercase tracking-wider border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-card)]/80 backdrop-blur-sm hover:bg-[var(--bg-card)] px-7 py-4 rounded-full transition-all text-center"
               >
                 <span>Explore a sample dream</span>
               </button>
             </div>
-          </div>
-
-          {/* Cinematic Living Dream Visual */}
-          <div className="pt-2">
-            <CinematicDreamHero />
           </div>
         </div>
       </header>
@@ -243,33 +266,12 @@ export default function LandingPage() {
       <ProductDemoSection videoSrc="/subconsciouslog-demo.mp4" />
 
       {/* ─────────────────────────────────────────────────────────────
-          4. DREAM → MEMORY → PATTERN → WORLD (The 4 Stages)
+          4. RECURRING PATTERNS & CONTINUITY (Supporting Visual 2)
       ───────────────────────────────────────────────────────────── */}
-      <section id="journey" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
-        <div className="max-w-5xl mx-auto space-y-16">
-          <div className="max-w-2xl space-y-4">
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
-              Core Architecture
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
-              Dream → Memory → Pattern → World
-            </h2>
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-              Dreams are fragile at dawn. SUBCONSCIOUS LOG treats them with the respect they deserve — starting with effortless morning capture, gently revealing recurring symbols, and building a living memory map.
-            </p>
-          </div>
-
-          <DreamJourneyWalkthrough />
-        </div>
-      </section>
+      <RecurringPatternsSection />
 
       {/* ─────────────────────────────────────────────────────────────
-          5. INSIDE SUBCONSCIOUS LOG (Interactive Product Showcase)
-      ───────────────────────────────────────────────────────────── */}
-      <ProductShowcaseSection />
-
-      {/* ─────────────────────────────────────────────────────────────
-          6. MORNING CAPTURE EXPERIENCE
+          5. MORNING CAPTURE EXPERIENCE ("What do you remember?")
       ───────────────────────────────────────────────────────────── */}
       <section id="capture" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)]">
         <div className="max-w-5xl mx-auto space-y-16">
@@ -365,6 +367,37 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          6. DREAM → MEMORY → PATTERN → WORLD (The 4 Stages)
+      ───────────────────────────────────────────────────────────── */}
+      <section id="journey" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
+        <div className="max-w-5xl mx-auto space-y-16">
+          <div className="max-w-2xl space-y-4">
+            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+              Core Architecture
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
+              Dream → Memory → Pattern → World
+            </h2>
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+              Dreams are fragile at dawn. SUBCONSCIOUS LOG treats them with the respect they deserve — starting with effortless morning capture, gently revealing recurring symbols, and building a living memory map.
+            </p>
+          </div>
+
+          <DreamJourneyWalkthrough />
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          7. INSIDE SUBCONSCIOUS LOG (Interactive Product Showcase)
+      ───────────────────────────────────────────────────────────── */}
+      <ProductShowcaseSection />
+
+      {/* ─────────────────────────────────────────────────────────────
+          8. DREAM EVOLUTION & TEMPORAL DRIFT (Supporting Visual 3)
+      ───────────────────────────────────────────────────────────── */}
+      <DreamEvolutionLandingSection />
 
       {/* ─────────────────────────────────────────────────────────────
           6b. SCIENCE & PERSPECTIVES (The Dawn Memory Window)
@@ -702,13 +735,30 @@ export default function LandingPage() {
       </section>
 
       {/* ------------------------------------------------------------
-          11. FINAL CALL TO ACTION
+          11. FINAL CALL TO ACTION (Atmospheric with final-cta.png)
       ------------------------------------------------------------ */}
-      <section className="py-28 md:py-36 px-6 md:px-10 border-t border-[var(--border-default)] relative overflow-hidden bg-[var(--bg-secondary)]/30">
+      <section className="relative py-32 md:py-44 px-6 md:px-10 border-t border-[var(--border-default)] overflow-hidden">
+        {/* Supporting Atmospheric Visual Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none select-none">
+          <Image
+            src="/visuals/landing/final-cta.png"
+            alt="The subconscious horizon at dawn"
+            fill
+            quality={90}
+            sizes="100vw"
+            className="object-cover object-center opacity-30 dark:opacity-45"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-[var(--bg-primary)]/70" />
+          <div className="absolute inset-0 bg-[var(--bg-primary)]/40 backdrop-blur-[2px]" />
+        </div>
+
         <div className="max-w-3xl mx-auto text-center space-y-8 relative z-10">
-          <span className="text-[10px] font-mono uppercase tracking-[0.26em] text-[var(--accent)] block">
-            The Morning After
-          </span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--bg-card)]/80 border border-[var(--border-default)] backdrop-blur-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.26em] text-[var(--accent)]">
+              The Morning After
+            </span>
+          </div>
 
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-normal text-[var(--text-primary)] leading-tight tracking-tight">
             Keep what the night forgets.
@@ -721,7 +771,7 @@ export default function LandingPage() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/signup"
-              className="inline-flex items-center justify-center gap-2 text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-9 py-4 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-lg text-center"
+              className="inline-flex items-center justify-center gap-2 text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-9 py-4 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-xl text-center"
             >
               <span>Begin your journal</span>
               <ChevronRight size={15} />
