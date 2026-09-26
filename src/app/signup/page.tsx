@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -20,6 +20,20 @@ export default function SignUpPage() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const urlError = params.get('error');
+      if (urlError) {
+        if (urlError === 'auth_failed') {
+          setError('Authentication could not be completed. Please try again.');
+        } else {
+          setError(decodeURIComponent(urlError));
+        }
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -208,6 +222,7 @@ export default function SignUpPage() {
 
             <div className="mt-6">
               <button
+                type="button"
                 onClick={handleGoogleSignIn}
                 disabled={loading || googleLoading || success}
                 className="w-full flex justify-center items-center py-3 px-4 border border-[var(--border-default)] rounded-xl shadow-sm bg-[var(--bg-primary)] text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--accent)] transition-colors disabled:opacity-70 disabled:cursor-not-allowed"

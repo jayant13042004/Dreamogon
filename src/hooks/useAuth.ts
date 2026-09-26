@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import type { User } from '@supabase/supabase-js';
+import type { User, AuthChangeEvent, Session } from '@supabase/supabase-js';
 import type { Profile } from '@/types/user';
 
 export function useAuth() {
@@ -65,7 +65,8 @@ export function useAuth() {
     };
     getUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event: AuthChangeEvent, session: Session | null) => {
       if (session?.user) {
         setUser(session.user);
         await fetchProfile(session.user.id);
@@ -107,11 +108,25 @@ export function useAuth() {
   };
 
   const signInWithGoogle = async () => {
+    const origin =
+      typeof window !== 'undefined' && window.location.origin
+        ? window.location.origin
+        : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: {
+        redirectTo: `${origin}/auth/callback`,
+        queryParams: {
+          prompt: 'select_account',
+          access_type: 'offline',
+        },
+      },
     });
     if (error) throw error;
+    if (data?.url) {
+      window.location.href = data.url;
+    }
     return data;
   };
 
