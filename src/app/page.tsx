@@ -32,6 +32,7 @@ import { PerspectivesSection } from '@/components/landing/PerspectivesSection';
 import { ExploreDreamModal } from '@/components/layout/ExploreDreamModal';
 import { useTheme } from '@/components/layout/ThemeProvider';
 import { BrandLogo } from '@/components/ui/BrandLogo';
+import { PublicFooter } from '@/components/layout/PublicNav';
 
 export default function LandingPage() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -774,56 +775,7 @@ export default function LandingPage() {
       {/* ------------------------------------------------------------
           12. FOOTER
       ------------------------------------------------------------ */}
-      <footer className="py-14 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-card)]/40 text-xs text-[var(--text-muted)]">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <BrandLogo size="sm" href="/" />
-            <span className="text-[var(--text-muted)] opacity-40">/</span>
-            <span>A private place to record your dreams and discover what keeps returning.</span>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-6 text-[11px] font-mono uppercase tracking-wider">
-            <Link href="/how-it-works" className="hover:text-[var(--text-primary)] transition-colors">
-              How It Works
-            </Link>
-            <Link href="/pricing" className="hover:text-[var(--text-primary)] transition-colors">
-              Pricing
-            </Link>
-            <Link href="/about" className="hover:text-[var(--text-primary)] transition-colors">
-              About
-            </Link>
-            <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
-              Blog
-            </Link>
-            <Link href="/faq" className="hover:text-[var(--text-primary)] transition-colors">
-              FAQ
-            </Link>
-            <Link href="/contact" className="hover:text-[var(--text-primary)] transition-colors">
-              Contact
-            </Link>
-            <Link href="/privacy" className="hover:text-[var(--text-primary)] transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-[var(--text-primary)] transition-colors">
-              Terms
-            </Link>
-            <Link href="/refunds" className="hover:text-[var(--text-primary)] transition-colors">
-              Refunds
-            </Link>
-            <Link href="/security" className="hover:text-[var(--text-primary)] transition-colors">
-              Security
-            </Link>
-            <Link href="/cookies" className="hover:text-[var(--text-primary)] transition-colors">
-              Cookies
-            </Link>
-            <Link href="/ai-disclaimer" className="hover:text-[var(--text-primary)] transition-colors">
-              AI Disclaimer
-            </Link>
-          </div>
-
-          <p className="text-[11px] font-mono">&copy; {new Date().getFullYear()} SUBCONSCIOUS LOG. All rights reserved.</p>
-        </div>
-      </footer>
+      <PublicFooter />
 
       {/* Sample Dream Interactive Modal */}
       <ExploreDreamModal isOpen={exploreModalOpen} onClose={() => setExploreModalOpen(false)} />
