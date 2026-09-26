@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -16,7 +16,8 @@ import {
   Trash2, 
   Clock, 
   MessageSquare,
-  ArrowUpRight
+  ArrowUpRight,
+  Compass,
 } from 'lucide-react';
 import { ChatMessage } from '@/types/ai';
 import { DreamReference } from '@/components/chat/DreamReference';
@@ -156,7 +157,8 @@ function ChatPageContent() {
           content: data.reply || data.response,
           created_at: new Date().toISOString(),
           user_id: user.id,
-          dream_references: data.dreamReferences
+          dream_references: data.dreamReferences,
+          provenance: data.provenance,
         };
         
         setMessages(prev => [...prev, aiMsg]);
@@ -197,8 +199,8 @@ function ChatPageContent() {
       {/* Header with Title & Action Controls */}
       <div className="mb-6 shrink-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--text-primary)]">Talk to your dreams</h1>
-          <p className="text-[var(--text-muted)] mt-1">Ask questions about your dream patterns, themes, and history.</p>
+          <h1 className="text-3xl font-bold text-[var(--text-primary)]">Ask Your Dream History</h1>
+          <p className="text-[var(--text-muted)] mt-1">Search and reflect across your full dream archive. Grounded in your recorded memories.</p>
         </div>
 
         <div className="flex items-center gap-2.5 self-start sm:self-auto">
@@ -236,12 +238,12 @@ function ChatPageContent() {
               </div>
               <div>
                 <h3 className="text-xl font-medium text-[var(--text-primary)] mb-2">
-                  {contextDream ? `Reflecting on "${contextDream.title || 'your dream'}"` : 'I am your AI Dream Guide'}
+                  {contextDream ? `Reflecting on "${contextDream.title || 'your dream'}"` : 'Your Dream History Memory'}
                 </h3>
                 <p className="text-[var(--text-muted)] max-w-md text-sm leading-relaxed">
                   {contextDream
                     ? 'Explore the emotional undertones, themes, and personal meaning behind this specific dream.'
-                    : 'Start a fresh conversation to explore recurring symbols, emotional shifts, or dive deep into any specific dream memory.'}
+                    : 'Ask when motifs first appeared, what keeps recurring, or how your dreams have evolved between earlier and recent entries.'}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-lg">
@@ -253,10 +255,10 @@ function ChatPageContent() {
                       `Give me two gentle questions to ponder about this dream.`
                     ]
                   : [
-                      "What are my most common dreams?",
-                      "Which emotions appear most often?",
-                      "Have my dreams changed recently?",
-                      "Tell me about dreams involving water"
+                      "When did I last dream about water?",
+                      "How have my dreams changed between earlier and recent entries?",
+                      "What recurring places or people keep appearing in my archive?",
+                      "What was the very first dream I recorded?"
                     ]
                 ).map((q, i) => (
                   <button 
@@ -298,6 +300,15 @@ function ChatPageContent() {
                         {msg.dream_references.map((ref, idx) => (
                           <DreamReference key={idx} dreamId={ref.id} title={ref.title} date={ref.date} />
                         ))}
+                      </div>
+                    )}
+                    {msg.role === 'assistant' && msg.provenance && msg.provenance.totalArchiveSearched > 0 && (
+                      <div className="mt-1.5 flex items-center gap-1.5 text-[10px] text-[var(--text-muted)] font-mono">
+                        <Compass size={11} className="text-[var(--accent)] shrink-0" />
+                        <span>
+                          Grounded across {msg.provenance.totalArchiveSearched} archive {msg.provenance.totalArchiveSearched === 1 ? 'entry' : 'entries'}
+                          {msg.provenance.earliestDate && msg.provenance.latestDate ? ` (${msg.provenance.earliestDate} – ${msg.provenance.latestDate})` : ''}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -448,7 +459,7 @@ function ChatPageContent() {
                             msg.role === 'user' ? 'text-[var(--text-secondary)]' : 'text-[var(--accent)]'
                           }`}>
                             {msg.role === 'user' ? <UserIcon size={12} /> : <Sparkles size={12} />}
-                            {msg.role === 'user' ? 'You' : 'DREAMOGON AI'}
+                            {msg.role === 'user' ? 'You' : 'SUBCONSCIOUS LOG AI'}
                           </span>
                           <span className="text-[10px] text-[var(--text-muted)]">
                             {new Date(msg.created_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}

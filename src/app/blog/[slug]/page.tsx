@@ -193,7 +193,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </h3>
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-light">
               Capture fragments at 5 AM by voice in 30 seconds. Discover recurring motifs, emotional
-              shifts, and subconscious patterns over time with DREAMOGON.
+              shifts, and subconscious patterns over time with SUBCONSCIOUS LOG.
             </p>
             <div className="pt-2">
               <Link
@@ -214,7 +214,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <strong className="text-[var(--text-primary)] font-medium">
               Editorial & Reflection Note:{' '}
             </strong>
-            DREAMOGON publishes scientific overviews, psychological literature reviews, and reflective
+            SUBCONSCIOUS LOG publishes scientific overviews, psychological literature reviews, and reflective
             journaling practices for self-awareness. Content is for contemplative and educational
             purposes and is not intended as psychiatric treatment or clinical medical advice.
           </div>

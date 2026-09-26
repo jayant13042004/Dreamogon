@@ -7,7 +7,7 @@ import { ExploreDreamModal } from '@/components/layout/ExploreDreamModal';
 interface ProductDemoSectionProps {
   /**
    * Optional custom video URL. If null or file not found, the graceful poster & interactive preview are displayed.
-   * Drop a 30-60s video into /public/dreamogon-demo.mp4 to immediately activate live playback.
+   * Drop a 30-60s video into /public/subconsciouslog-demo.mp4 to immediately activate live playback.
    */
   videoSrc?: string;
 }
@@ -19,7 +19,7 @@ const DEMO_CHAPTERS = [
   { time: '0:48', label: 'Dream World', icon: Globe, desc: 'Spatial constellation of memories' },
 ];
 
-export function ProductDemoSection({ videoSrc = '/dreamogon-demo.mp4' }: ProductDemoSectionProps) {
+export function ProductDemoSection({ videoSrc = '/subconsciouslog-demo.mp4' }: ProductDemoSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [activeChapter, setActiveChapter] = useState(0);
@@ -62,10 +62,10 @@ export function ProductDemoSection({ videoSrc = '/dreamogon-demo.mp4' }: Product
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
-            See Dreamogon in action.
+            See Subconscious Log in action.
           </h2>
           <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-            From the first raw murmur at 6:00 AM to a living constellation of subconscious motifs. Watch how Dreamogon preserves what waking life erases.
+            From the first raw murmur at 6:00 AM to a living constellation of subconscious motifs. Watch how Subconscious Log preserves what waking life erases.
           </p>
         </div>
 
@@ -79,7 +79,7 @@ export function ProductDemoSection({ videoSrc = '/dreamogon-demo.mp4' }: Product
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)] opacity-60" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)] opacity-60" />
                 <span className="ml-3 text-[11px] font-mono text-[var(--text-muted)] tracking-wider">
-                  dreamogon.com · product demonstration
+                  subconsciouslog.com · product demonstration
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -190,7 +190,7 @@ export function ProductDemoSection({ videoSrc = '/dreamogon-demo.mp4' }: Product
                   >
                     {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
                   </button>
-                  <span className="text-xs font-mono text-white/70">Dreamogon Product Walkthrough</span>
+                  <span className="text-xs font-mono text-white/70">Subconscious Log Product Walkthrough</span>
                   <button
                     onClick={() => videoRef.current?.requestFullscreen()}
                     className="p-2 text-white/80 hover:text-white rounded-lg transition-colors"

@@ -17,7 +17,7 @@ export function AIInsight({ dreams }: AIInsightProps) {
       <div className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)]">
         <h3 className="font-display font-medium text-[var(--text-primary)] mb-1">Patterns take a few dreams</h3>
         <p className="text-[var(--text-secondary)] text-sm leading-relaxed max-w-xl">
-          After you record a couple of entries, Dreamogon can surface recurring themes and motifs here and
+          After you record a couple of entries, Subconscious Log can surface recurring themes and motifs here and
           on Insights.
         </p>
         <button

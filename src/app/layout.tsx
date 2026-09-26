@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
   title: {
     default: SITE_CONFIG.title,
-    template: '%s | Dreamogon',
+    template: '%s | Subconscious Log',
   },
   description: SITE_CONFIG.description,
   keywords: [
@@ -49,9 +49,9 @@ export const metadata: Metadata = {
     'AI dream analysis',
     'subconscious patterns',
   ],
-  authors: [{ name: 'Dreamogon Research Desk' }],
-  creator: 'Dreamogon',
-  publisher: 'Dreamogon',
+  authors: [{ name: 'Subconscious Log Research Desk' }],
+  creator: 'Subconscious Log',
+  publisher: 'Subconscious Log',
   robots: {
     index: true,
     follow: true,
@@ -67,15 +67,15 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: SITE_CONFIG.url,
-    siteName: 'Dreamogon',
+    siteName: 'Subconscious Log',
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,
     images: [
       {
-        url: `${SITE_CONFIG.url}/og-dreamogon.png`,
+        url: `${SITE_CONFIG.url}/og-subconsciouslog.png`,
         width: 1200,
         height: 630,
-        alt: 'Dreamogon',
+        alt: 'Subconscious Log',
       },
     ],
   },
@@ -83,8 +83,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,
-    images: [`${SITE_CONFIG.url}/og-dreamogon.png`],
-    creator: '@dreamogon',
+    images: [`${SITE_CONFIG.url}/og-subconsciouslog.png`],
+    creator: '@subconsciouslog',
   },
   icons: {
     icon: [
@@ -113,7 +113,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Dreamogon" />
+        <meta name="apple-mobile-web-app-title" content="Subconscious Log" />
         <meta name="mobile-web-app-capable" content="yes" />
         <script
           type="application/ld+json"

@@ -41,7 +41,7 @@ export default function AIDreamInterpreterPage() {
           </h1>
 
           <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-light">
-            Most &ldquo;AI dream apps&rdquo; are shallow wrappers that spit out generic horoscope summaries. DREAMOGON is an end-to-end cognitive architecture that extracts persistent spatial artifacts and tracks emotional evolution over time.
+            Most &ldquo;AI dream apps&rdquo; are shallow wrappers that spit out generic horoscope summaries. SUBCONSCIOUS LOG is an end-to-end cognitive architecture that extracts persistent spatial artifacts and tracks emotional evolution over time.
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export default function AIDreamInterpreterPage() {
             </span>
             <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">Private by Design</h3>
             <p className="text-[var(--text-secondary)] text-xs md:text-sm leading-relaxed font-light">
-              Your dreams are private. DREAMOGON guarantees zero public indexing, zero advertising data brokers, and does not train internal public foundation models on your entries.
+              Your dreams are private. SUBCONSCIOUS LOG guarantees zero public indexing, zero advertising data brokers, and does not train internal public foundation models on your entries.
             </p>
           </div>
         </div>

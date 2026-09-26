@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { constructMetadata } from '@/lib/seo/metadata';
 import { PublicNavbar, PublicFooter } from '@/components/layout/PublicNav';
 import { ArrowRight, BookOpen } from 'lucide-react';
-import { DreamogonSymbol } from '@/components/ui/BrandLogo';
+import { SubconsciousLogSymbol } from '@/components/ui/BrandLogo';
 
 export const metadata = constructMetadata({
-  title: 'Lost in a Dream (404) — DREAMOGON',
+  title: 'Lost in a Dream (404) — SUBCONSCIOUS LOG',
   description: 'The oneiric path you are searching for does not exist or has drifted away.',
   path: '/404',
   noIndex: true,
@@ -19,7 +19,7 @@ export default function NotFound() {
 
       <main className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-lg mx-auto">
         <div className="w-16 h-16 rounded-2xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] mb-6 shadow-sm">
-          <DreamogonSymbol size={36} />
+          <SubconsciousLogSymbol size={36} />
         </div>
 
         <span className="text-xs font-mono uppercase tracking-[0.25em] text-[var(--accent)] mb-2 block">

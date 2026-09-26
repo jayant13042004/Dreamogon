@@ -1,30 +1,30 @@
 import type { Metadata } from 'next';
 
 export const SITE_CONFIG = {
-  name: 'Dreamogon',
-  fullName: 'Dreamogon',
-  title: 'Dreamogon — A private place to record your dreams and discover what keeps returning.',
+  name: 'Subconscious Log',
+  fullName: 'Subconscious Log',
+  title: 'Subconscious Log — A private place to record your dreams and discover what keeps returning.',
   description:
     'A private place to record your dreams and discover what keeps returning. Capture dreams before they fade, reflect with care, and uncover recurring patterns over time.',
-  url: process.env.NEXT_PUBLIC_APP_URL || 'https://dreamogon.com',
-  ogImage: '/og-dreamogon.png',
-  twitterHandle: '@dreamogon',
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@dreamogon.com',
-  privacyEmail: process.env.NEXT_PUBLIC_PRIVACY_EMAIL || 'privacy@dreamogon.com',
-  securityEmail: process.env.NEXT_PUBLIC_SECURITY_EMAIL || 'security@dreamogon.com',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'https://subconsciouslog.com',
+  ogImage: '/og-subconsciouslog.png',
+  twitterHandle: '@subconsciouslog',
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@subconsciouslog.com',
+  privacyEmail: process.env.NEXT_PUBLIC_PRIVACY_EMAIL || 'privacy@subconsciouslog.com',
+  securityEmail: process.env.NEXT_PUBLIC_SECURITY_EMAIL || 'security@subconsciouslog.com',
   getSupportEmail(): string {
-    return process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@dreamogon.com';
+    return process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@subconsciouslog.com';
   },
   getPrivacyEmail(): string {
-    return process.env.NEXT_PUBLIC_PRIVACY_EMAIL || 'privacy@dreamogon.com';
+    return process.env.NEXT_PUBLIC_PRIVACY_EMAIL || 'privacy@subconsciouslog.com';
   },
   getSecurityEmail(): string {
-    return process.env.NEXT_PUBLIC_SECURITY_EMAIL || 'security@dreamogon.com';
+    return process.env.NEXT_PUBLIC_SECURITY_EMAIL || 'security@subconsciouslog.com';
   },
   isEmailConfigured(): boolean {
     return true;
   },
-  legalEntityName: process.env.NEXT_PUBLIC_LEGAL_ENTITY || 'Dreamogon Cognitive Systems',
+  legalEntityName: process.env.NEXT_PUBLIC_LEGAL_ENTITY || 'Subconscious Log Cognitive Systems',
   registeredAddress: process.env.NEXT_PUBLIC_BUSINESS_ADDRESS || 'San Francisco, CA, United States',
   jurisdiction: process.env.NEXT_PUBLIC_JURISDICTION || 'State of California, United States',
   effectiveDate: 'September 2026',

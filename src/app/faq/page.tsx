@@ -6,44 +6,44 @@ import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo/structure
 import { HelpCircle, ChevronDown, Compass, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'Frequently Asked Questions (FAQ) — Dreamogon',
+  title: 'Frequently Asked Questions (FAQ) — Subconscious Log',
   description:
-    'Answers to frequently asked questions about Dreamogon: morning voice capture, AI reflection ethics, privacy guarantees, Free vs Pro vs Lifetime plans, and data export.',
+    'Answers to frequently asked questions about Subconscious Log: morning voice capture, AI reflection ethics, privacy guarantees, Free vs Pro vs Lifetime plans, and data export.',
   path: '/faq',
   keywords: [
     'dream journal FAQ',
-    'is Dreamogon private',
+    'is Subconscious Log private',
     'how does AI dream reflection work',
     'dream export',
-    'delete Dreamogon account',
-    'Dreamogon Free vs Pro',
+    'delete Subconscious Log account',
+    'Subconscious Log Free vs Pro',
   ],
 });
 
 const FAQS = [
   {
     category: 'Product & Practice',
-    question: 'What is Dreamogon?',
+    question: 'What is Subconscious Log?',
     answer:
-      'Dreamogon is a private, editorial dream journal designed for the delicate moments immediately upon waking. It allows you to speak or type raw dream fragments before they fade, provides thoughtful contemplative reflection prompts, tracks recurring subconscious motifs across time, and renders an interconnected spatial Dream World.',
+      'Subconscious Log is a private, editorial dream journal designed for the delicate moments immediately upon waking. It allows you to speak or type raw dream fragments before they fade, provides thoughtful contemplative reflection prompts, tracks recurring subconscious motifs across time, and renders an interconnected spatial Dream World.',
   },
   {
     category: 'Product & Practice',
     question: 'How does dream journaling work?',
     answer:
-      'Immediately upon waking, before checking notifications or moving abruptly, open Dreamogon. Tap the microphone to dictate what you remember or type stream-of-consciousness into the typewriter editor. Continuous background autosave ensures nothing is lost. As you log entries across weeks and months, Dreamogon synthesizes recurring symbols, themes, and emotional patterns.',
+      'Immediately upon waking, before checking notifications or moving abruptly, open Subconscious Log. Tap the microphone to dictate what you remember or type stream-of-consciousness into the typewriter editor. Continuous background autosave ensures nothing is lost. As you log entries across weeks and months, Subconscious Log synthesizes recurring symbols, themes, and emotional patterns.',
   },
   {
     category: 'Intelligence & Ethics',
     question: 'How does AI reflection work?',
     answer:
-      'Dreamogon strictly separates your authentic unedited words from reflective inquiry. Our AI analyzes your entry asynchronously to extract themes, moods, and archetypal motifs. It then poses Socratic, contemplative questions designed to stimulate your own personal journaling (e.g., "What did standing beside the open ocean feel like?"). It never rewrites your memories or tells you what your dream "must" mean.',
+      'Subconscious Log strictly separates your authentic unedited words from reflective inquiry. Our AI analyzes your entry asynchronously to extract themes, moods, and archetypal motifs. It then poses Socratic, contemplative questions designed to stimulate your own personal journaling (e.g., "What did standing beside the open ocean feel like?"). It never rewrites your memories or tells you what your dream "must" mean.',
   },
   {
     category: 'Intelligence & Ethics',
-    question: 'Is Dreamogon a medical or psychological service?',
+    question: 'Is Subconscious Log a medical or psychological service?',
     answer:
-      'No. Dreamogon is strictly a reflective personal journaling and creative contemplation tool. We do not provide clinical diagnosis, psychiatric treatment, psychological counseling, or medical advice. If you are experiencing sleep disorders, nightmares causing distress, or psychological trauma, please consult a licensed healthcare professional.',
+      'No. Subconscious Log is strictly a reflective personal journaling and creative contemplation tool. We do not provide clinical diagnosis, psychiatric treatment, psychological counseling, or medical advice. If you are experiencing sleep disorders, nightmares causing distress, or psychological trauma, please consult a licensed healthcare professional.',
   },
   {
     category: 'Privacy & Ownership',
@@ -65,27 +65,27 @@ const FAQS = [
   },
   {
     category: 'Plans & Pricing',
-    question: 'What does Dreamogon Pro include?',
+    question: 'What does Subconscious Log Pro include?',
     answer:
-      'Dreamogon Pro is available as Pro Monthly ($9/mo) or Pro Annual ($72/yr — saving 33%). It includes everything in Free, plus 100 AI reflections & inquiries refreshed monthly, cross-dream longitudinal pattern synthesis across your entire archive, conversational exploration with the AI Guide (with archive memory), and 20 dream images per month with style variations.',
+      'Subconscious Log Pro is available as Pro Monthly ($9/mo) or Pro Annual ($72/yr — saving 33%). It includes everything in Free, plus 100 AI reflections & inquiries refreshed monthly, cross-dream longitudinal pattern synthesis across your entire archive, conversational exploration with the AI Guide (with archive memory), and 20 dream images per month with style variations.',
   },
   {
     category: 'Plans & Pricing',
     question: 'What is the Lifetime tier?',
     answer:
-      'Dreamogon Lifetime is a single one-time purchase ($149). It provides permanent Pro feature entitlement with zero recurring subscriptions. Lifetime members receive a monthly recurring fair-use allowance of 100 AI operations and 20 dream images every month, forever.',
+      'Subconscious Log Lifetime is a single one-time purchase ($149). It provides permanent Pro feature entitlement with zero recurring subscriptions. Lifetime members receive a monthly recurring fair-use allowance of 100 AI operations and 20 dream images every month, forever.',
   },
   {
     category: 'Visual Memories',
     question: 'How does dream-image generation work?',
     answer:
-      'When you choose to generate a visual memory, Dreamogon creates a private, atmospheric digital canvas that distills the visual mood and key sensory elements of your dream. These images serve as artistic anchors to help you instantly recall the dream atmosphere months later. Pro and Lifetime members receive 20 image generations refreshed every month.',
+      'When you choose to generate a visual memory, Subconscious Log creates a private, atmospheric digital canvas that distills the visual mood and key sensory elements of your dream. These images serve as artistic anchors to help you instantly recall the dream atmosphere months later. Pro and Lifetime members receive 20 image generations refreshed every month.',
   },
   {
     category: 'Privacy & Ownership',
     question: 'How can I delete my account and data?',
     answer:
-      'You can permanently delete your Dreamogon account at any time directly from the Account Settings page. When you delete your account, all personal profile records, dream entries, audio transcripts, and generated images are permanently removed from our databases.',
+      'You can permanently delete your Subconscious Log account at any time directly from the Account Settings page. When you delete your account, all personal profile records, dream entries, audio transcripts, and generated images are permanently removed from our databases.',
   },
 ];
 
@@ -125,7 +125,7 @@ export default function FAQPage() {
           </h1>
 
           <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-            Honest, transparent answers regarding Dreamogon’s capabilities, privacy model, AI reflection ethics, and account ownership.
+            Honest, transparent answers regarding Subconscious Log’s capabilities, privacy model, AI reflection ethics, and account ownership.
           </p>
         </div>
 

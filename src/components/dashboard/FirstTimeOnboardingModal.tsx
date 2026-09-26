@@ -22,12 +22,12 @@ export function FirstTimeOnboardingModal({ isOpen, onClose }: FirstTimeOnboardin
   const [selectedIntention, setSelectedIntention] = useState<string>('remember');
 
   const handleFinish = () => {
-    localStorage.setItem('dreamogon_onboarding_dismissed', 'true');
+    localStorage.setItem('subconsciouslog_onboarding_dismissed', 'true');
     onClose();
   };
 
   const handleStartRecording = () => {
-    localStorage.setItem('dreamogon_onboarding_dismissed', 'true');
+    localStorage.setItem('subconsciouslog_onboarding_dismissed', 'true');
     onClose();
     router.push('/dream/new');
   };
@@ -76,7 +76,7 @@ export function FirstTimeOnboardingModal({ isOpen, onClose }: FirstTimeOnboardin
                   Step 1 of 3
                 </span>
                 <h2 className="text-2xl font-display font-medium text-[var(--text-primary)] mt-1">
-                  Welcome to Dreamogon
+                  Welcome to Subconscious Log
                 </h2>
                 <p className="text-sm text-[var(--text-secondary)] mt-1.5 leading-relaxed">
                   What is your primary intention with your dream journal?
@@ -154,7 +154,7 @@ export function FirstTimeOnboardingModal({ isOpen, onClose }: FirstTimeOnboardin
                 <div className="flex items-start gap-3">
                   <Mic size={16} className="text-[var(--accent)] shrink-0 mt-0.5" />
                   <p className="text-[var(--text-secondary)] text-xs sm:text-sm leading-relaxed">
-                    <strong className="text-[var(--text-primary)] font-medium">Capture raw fragments.</strong> A few whispered phrases or keywords are all Dreamogon needs to reconstruct the emotional memory.
+                    <strong className="text-[var(--text-primary)] font-medium">Capture raw fragments.</strong> A few whispered phrases or keywords are all Subconscious Log needs to reconstruct the emotional memory.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">

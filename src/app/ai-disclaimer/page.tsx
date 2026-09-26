@@ -6,9 +6,9 @@ import { generateBreadcrumbSchema } from '@/lib/seo/structuredData';
 import { Brain, ShieldCheck, AlertTriangle, Sparkles, Heart } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'AI & Contemplative Disclaimer — Dreamogon',
+  title: 'AI & Contemplative Disclaimer — Subconscious Log',
   description:
-    'Our ethical boundaries: Dreamogon is a contemplative personal reflection and pattern archive tool, not clinical, medical, or psychiatric diagnosis.',
+    'Our ethical boundaries: Subconscious Log is a contemplative personal reflection and pattern archive tool, not clinical, medical, or psychiatric diagnosis.',
   path: '/ai-disclaimer',
   keywords: ['AI dream reflection disclaimer', 'ethical AI dream journal', 'not medical advice dream interpretation'],
 });
@@ -53,7 +53,7 @@ export default function AIDisclaimerPage() {
             Important Notice
           </div>
           <p className="text-xs sm:text-sm text-[var(--text-primary)] font-medium leading-relaxed">
-            Dreamogon is a software tool for creative journaling, self-inquiry, and long-term pattern discovery. It is NOT a medical, psychological, or psychiatric diagnostic service.
+            Subconscious Log is a software tool for creative journaling, self-inquiry, and long-term pattern discovery. It is NOT a medical, psychological, or psychiatric diagnostic service.
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default function AIDisclaimerPage() {
               1. Non-Medical & Non-Clinical Nature
             </h2>
             <p>
-              The AI reflection inquiries, emotional tags, and symbolic pattern correlations explored within Dreamogon are provided purely for personal exploration and contemplative journaling. They do not constitute:
+              The AI reflection inquiries, emotional tags, and symbolic pattern correlations explored within Subconscious Log are provided purely for personal exploration and contemplative journaling. They do not constitute:
             </p>
             <ul className="list-disc pl-5 space-y-1.5">
               <li>Psychological counseling or psychotherapy</li>
@@ -92,7 +92,7 @@ export default function AIDisclaimerPage() {
               3. Visual Interpretations
             </h2>
             <p>
-              Visual dream imagery generated within Dreamogon represents artistic digital interpretations derived from the motifs of your dream entry. They are contemplative visual anchors designed to evoke mood, not literal recordings of neurobiological dream states.
+              Visual dream imagery generated within Subconscious Log represents artistic digital interpretations derived from the motifs of your dream entry. They are contemplative visual anchors designed to evoke mood, not literal recordings of neurobiological dream states.
             </p>
           </section>
 

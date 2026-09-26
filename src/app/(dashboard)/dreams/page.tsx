@@ -181,9 +181,9 @@ function DreamsListContainer() {
     <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-3xl font-display font-semibold text-[var(--text-primary)]">My Dreams</h1>
+          <h1 className="text-3xl font-display font-semibold text-[var(--text-primary)]">Dream Archive</h1>
           <p className="text-[var(--text-secondary)] mt-1 text-sm">
-            {totalCount} {totalCount === 1 ? 'dream' : 'dreams'} in your journal
+            {totalCount} {totalCount === 1 ? 'dream' : 'dreams'} in your private archive
           </p>
         </div>
         <Button onClick={() => router.push('/dream/new')} className="flex items-center gap-2">
@@ -208,6 +208,38 @@ function DreamsListContainer() {
             <CalendarDays size={12} />
             Browse by calendar
           </Link>
+        </div>
+      )}
+
+      {(filters.entityName || filters.theme) && (
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <span className="text-xs text-[var(--text-muted)] font-mono">Filtering by:</span>
+          {filters.entityName && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--accent-soft)] border border-[var(--border-default)] px-3 py-1 text-xs text-[var(--accent)] font-medium">
+              <span>{filters.entityType ? `${filters.entityType}: ` : ''}<strong>{filters.entityName}</strong></span>
+              <button
+                type="button"
+                onClick={() => setFilters((prev) => ({ ...prev, entityType: null, entityName: null }))}
+                className="hover:text-[var(--text-primary)] transition-colors cursor-pointer text-[10px]"
+                title="Clear entity filter"
+              >
+                ✕
+              </button>
+            </span>
+          )}
+          {filters.theme && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--accent-soft)] border border-[var(--border-default)] px-3 py-1 text-xs text-[var(--accent)] font-medium">
+              <span>Theme: <strong>{filters.theme}</strong></span>
+              <button
+                type="button"
+                onClick={() => setFilters((prev) => ({ ...prev, theme: null }))}
+                className="hover:text-[var(--text-primary)] transition-colors cursor-pointer text-[10px]"
+                title="Clear theme filter"
+              >
+                ✕
+              </button>
+            </span>
+          )}
         </div>
       )}
 

@@ -92,9 +92,9 @@ export default function DreamInterpretationPillarPage() {
         <div className="p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex items-start gap-4 text-xs text-[var(--text-secondary)]">
           <ShieldCheck size={24} className="text-[var(--accent)] shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <span className="font-medium text-[var(--text-primary)] block text-sm">The DREAMOGON Ethical Standard</span>
+            <span className="font-medium text-[var(--text-primary)] block text-sm">The SUBCONSCIOUS LOG Ethical Standard</span>
             <p className="leading-relaxed font-light">
-              DREAMOGON explicitly rejects dogmatic claims and fortune-telling. We provide reflective, cognitive prompts and spatial mapping to help you reflect on your own thoughts and emotional patterns.
+              SUBCONSCIOUS LOG explicitly rejects dogmatic claims and fortune-telling. We provide reflective, cognitive prompts and spatial mapping to help you reflect on your own thoughts and emotional patterns.
             </p>
           </div>
         </div>

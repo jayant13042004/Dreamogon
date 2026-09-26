@@ -297,7 +297,7 @@ export function DreamJourneyWalkthrough() {
                 <div className="p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] flex items-start gap-3">
                   <Sparkles size={16} className="text-[var(--accent)] mt-0.5 shrink-0" />
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                    <strong className="text-[var(--text-primary)] font-medium">Quiet Observation:</strong> Dreamogon notes when motifs reoccur without diagnosing you. You decide what recurring symbols mean for your own waking life.
+                    <strong className="text-[var(--text-primary)] font-medium">Quiet Observation:</strong> Subconscious Log notes when motifs reoccur without diagnosing you. You decide what recurring symbols mean for your own waking life.
                   </p>
                 </div>
               </motion.div>

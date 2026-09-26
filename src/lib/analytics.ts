@@ -1,5 +1,5 @@
 /**
- * Dreamogon Analytics & GA4 Funnel Tracking Utility
+ * Subconscious Log Analytics & GA4 Funnel Tracking Utility
  * 
  * Complies with strict privacy standards:
  * NEVER transmits dream text, private journal notes, or PII.

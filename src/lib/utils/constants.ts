@@ -1,6 +1,6 @@
 import type { Mood, Lucidity } from '@/types/dream';
 
-export const APP_NAME = 'Dreamogon';
+export const APP_NAME = 'Subconscious Log';
 export const APP_DESCRIPTION =
   'A private place to record your dreams and discover what keeps returning.';
 

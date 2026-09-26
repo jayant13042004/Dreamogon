@@ -32,7 +32,7 @@ export const BLOG_POSTS: BlogPost[] = [
     excerpt: 'Discover practical techniques to remember vivid dreams upon waking, establish a frictionless capture habit, and uncover recurring emotional patterns over time.',
     category: 'Dream Journaling',
     author: {
-      name: 'Dreamogon Editorial Desk',
+      name: 'Subconscious Log Editorial Desk',
       role: 'Cognitive & Sleep Research Team'
     },
     publishedAt: '2026-08-10T08:00:00Z',
@@ -104,7 +104,7 @@ When you record dreams consistently, you begin noticing **thematic artifacts**:
 - A recurring friend who appears whenever you feel judged or socially vulnerable.
 - A maze or unfinished staircase that returns whenever you are postponing an important decision.
 
-Tools like **Dreamogon** automatically extract these recurring entities—people, locations, motifs, and moods—and weave them into an ongoing spatial map, transforming disjointed morning notes into clear longitudinal self-knowledge.
+Tools like **Subconscious Log** automatically extract these recurring entities—people, locations, motifs, and moods—and weave them into an ongoing spatial map, transforming disjointed morning notes into clear longitudinal self-knowledge.
 
 ---
 
@@ -115,7 +115,7 @@ Both formats have distinct psychological advantages, and the ideal choice depend
 - **Paper Journals**: Offer tactile calmness and zero blue light before bed or upon waking. However, they lack searchability, cannot track cross-dream frequency over years, and require writing with tired hands in dim morning light.
 - **Voice & Digital Journals**: Allow instant voice capture while lying in bed—dictating raw fragments in ten seconds before they evaporate. Digital records enable instant tag filtering, thematic analytics, and secure cloud backup.
 
-Many practitioners use a hybrid approach: speak a 20-second voice note into Dreamogon upon waking, and expand on the emotional reflection later in the day during coffee or evening reflection.
+Many practitioners use a hybrid approach: speak a 20-second voice note into Subconscious Log upon waking, and expand on the emotional reflection later in the day during coffee or evening reflection.
 
 ---
 
@@ -134,7 +134,7 @@ To build a dream journaling habit that lasts beyond the first week, apply these 
     excerpt: 'Explore the psychological mechanisms behind recurring dreams—from falling and flying to being chased—and learn how to unpack the subconscious conflicts they reflect.',
     category: 'Recurring Dreams',
     author: {
-      name: 'Dreamogon Editorial Desk',
+      name: 'Subconscious Log Editorial Desk',
       role: 'Archetypal & Narrative Research'
     },
     publishedAt: '2026-08-12T09:30:00Z',
@@ -227,7 +227,7 @@ When a familiar dream visits you again tonight, use these three reflective quest
     excerpt: 'A comprehensive, science-backed roadmap to conscious dreaming: learn reality testing protocols, the MILD and WBTB methods, and how to stabilize the dream state.',
     category: 'Lucid Dreaming',
     author: {
-      name: 'Dreamogon Editorial Desk',
+      name: 'Subconscious Log Editorial Desk',
       role: 'Cognitive & Sleep Research Team'
     },
     publishedAt: '2026-08-14T11:00:00Z',
@@ -315,7 +315,7 @@ Lucid dreaming is an inspiring tool for creative exploration, overcoming nightma
     excerpt: 'Examine what contemporary neuroscience, evolutionary biology, and cognitive psychology say about why we dream and how to reflect on them without pseudo-science.',
     category: 'Sleep & Dreams',
     author: {
-      name: 'Dreamogon Editorial Desk',
+      name: 'Subconscious Log Editorial Desk',
       role: 'Cognitive & Sleep Research Team'
     },
     publishedAt: '2026-08-16T14:00:00Z',
@@ -401,7 +401,7 @@ When approached with humility and curiosity—treating AI reflections and journa
     excerpt: 'Water, houses, flight, and vehicles. Learn why certain metaphorical archetypes recur across human minds and how to interpret your own personal symbols.',
     category: 'Dream Symbols',
     author: {
-      name: 'Dreamogon Editorial Desk',
+      name: 'Subconscious Log Editorial Desk',
       role: 'Archetypal & Narrative Research'
     },
     publishedAt: '2026-08-20T09:00:00Z',
@@ -486,7 +486,7 @@ Instead of consulting arbitrary lists, use these three steps to decode your pers
 
 1. **Write Word Associations**: Take the central symbol (e.g., *"old red bicycle"*) and write the first three spontaneous words that come to mind without editing yourself.
 2. **Identify the Core Emotion**: How did you feel toward that symbol in the dream? Was it comforting, menacing, pathetic, or mysterious?
-3. **Track Motif Recurrence Over Months**: When you record dreams in **Dreamogon**, the platform groups recurring people, locations, and objects into an evolving world. Over 20 or 30 dreams, your personal symbol archive speaks with undeniable clarity.
+3. **Track Motif Recurrence Over Months**: When you record dreams in **Subconscious Log**, the platform groups recurring people, locations, and objects into an evolving world. Over 20 or 30 dreams, your personal symbol archive speaks with undeniable clarity.
     `
   }
 ];

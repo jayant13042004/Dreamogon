@@ -47,7 +47,7 @@ export default function ContactPage() {
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
-            Contact DREAMOGON.
+            Contact SUBCONSCIOUS LOG.
           </h1>
 
           <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
@@ -117,7 +117,7 @@ export default function ContactPage() {
                 Looking for answers quickly?
               </h3>
               <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
-                Many common questions about exports, privacy, and DREAMOGON Pro are answered in our knowledge base.
+                Many common questions about exports, privacy, and SUBCONSCIOUS LOG Pro are answered in our knowledge base.
               </p>
               <Link
                 href="/faq"

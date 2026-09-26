@@ -1,20 +1,25 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { DreamArtifact, EntityType } from '@/types/dream';
+import { DreamArtifact, EntityType, TemporalStatus } from '@/types/dream';
+import { DreamArtifactConnection } from '@/lib/dreamWorld';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
+import { Compass, ZoomIn, ZoomOut, Maximize2, Sparkles } from 'lucide-react';
 
 interface DreamWorldCanvasProps {
   artifacts: DreamArtifact[];
+  connections?: DreamArtifactConnection[];
   onSelectArtifact?: (artifact: DreamArtifact | null) => void;
   highlightedArtifactId?: string | null;
+  temporalFilter?: string;
 }
 
 export function DreamWorldCanvas({
   artifacts,
+  connections = [],
   onSelectArtifact,
-  highlightedArtifactId
+  highlightedArtifactId,
+  temporalFilter = 'all'
 }: DreamWorldCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -82,28 +87,39 @@ export function DreamWorldCanvas({
     window.addEventListener('resize', resize);
     resize();
 
-    // Map artifacts into rich spatial visual nodes
+    // Map artifacts into rich spatial visual nodes with refined palettes and temporal states
     const getNodes = () => {
-      return artifacts.map(a => {
-        // Evolution sizing based on appearance count
+      return artifacts.map((a) => {
         const count = a.appearance_count || 1;
-        const baseSize = count === 1 ? 16 : count === 2 ? 24 : Math.min(42, 28 + count * 3);
-        
+        const baseSize = count === 1 ? 16 : count === 2 ? 24 : count < 5 ? 32 : Math.min(46, 34 + count * 2);
+
+        const temporal = a.temporal_status || 'recurring';
+
         return {
           ...a,
-          worldX: a.position_x * width / 100,
-          worldY: a.position_y * height / 100,
+          worldX: (a.position_x * width) / 100,
+          worldY: (a.position_y * height) / 100,
           z: a.position_z || 0,
           size: baseSize,
           baseSize,
-          pulseSpeed: 0.02 + Math.random() * 0.015,
+          temporalStatus: temporal,
+          connectedCount: (a.connected_artifact_ids || []).length,
+          pulseSpeed: temporal === 'emerging' ? 0.035 : 0.02 + Math.random() * 0.012,
           phase: Math.random() * Math.PI * 2,
-          colorHue: a.artifact_type === 'emotion' ? '185, 165, 140' :
-                    a.artifact_type === 'place' ? '120, 150, 165' :
-                    a.artifact_type === 'person' ? '170, 160, 150' :
-                    a.artifact_type === 'animal' ? '190, 165, 130' :
-                    a.artifact_type === 'theme' ? '160, 155, 145' :
-                    a.artifact_type === 'activity' ? '175, 170, 155' : '180, 170, 155'
+          colorHue:
+            a.artifact_type === 'emotion'
+              ? '195, 135, 130'
+              : a.artifact_type === 'place'
+                ? '120, 155, 170'
+                : a.artifact_type === 'person'
+                  ? '185, 155, 135'
+                  : a.artifact_type === 'animal'
+                    ? '190, 165, 125'
+                    : a.artifact_type === 'theme'
+                      ? '165, 145, 180'
+                      : a.artifact_type === 'activity'
+                        ? '175, 170, 160'
+                        : '195, 170, 130',
         };
       });
     };
@@ -416,63 +432,126 @@ export function DreamWorldCanvas({
       });
 
       const nodes = getNodes();
+      const nodeById = new Map<string, typeof nodes[0]>();
+      nodes.forEach((n) => nodeById.set(n.id, n));
 
-      // 3. Quiet connecting paths (no energy photons)
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const n1 = nodes[i];
-          const n2 = nodes[j];
+      // 3. Meaningful Subconscious Filaments (Co-occurrence in Dreams)
+      if (connections && connections.length > 0) {
+        for (const c of connections) {
+          const n1 = nodeById.get(c.sourceId);
+          const n2 = nodeById.get(c.targetId);
+          if (!n1 || !n2) continue;
 
           const p1X = cx + n1.worldX * zoom;
           const p1Y = cy + n1.worldY * zoom;
           const p2X = cx + n2.worldX * zoom;
           const p2Y = cy + n2.worldY * zoom;
 
-          const dist = Math.hypot(p1X - p2X, p1Y - p2Y);
+          const isConnectedToHover = hoveredNode && (hoveredNode.id === n1.id || hoveredNode.id === n2.id);
+          const isConnectedToHighlight = highlightedArtifactId && (highlightedArtifactId === n1.id || highlightedArtifactId === n2.id);
+          const isActiveLink = isConnectedToHover || isConnectedToHighlight;
 
-          if (dist < 260 * zoom) {
-            const alpha = Math.max(0.03, (260 * zoom - dist) / (260 * zoom) * 0.16);
-            ctx.beginPath();
-            ctx.moveTo(p1X, p1Y);
-            ctx.lineTo(p2X, p2Y);
-            ctx.strokeStyle = `rgba(201, 184, 160, ${alpha})`;
-            ctx.lineWidth = 1 * zoom;
-            ctx.stroke();
+          let baseAlpha = 0.08 + c.strength * 0.14;
+          if (hoveredNode || highlightedArtifactId) {
+            baseAlpha = isActiveLink ? Math.min(0.85, 0.45 + c.strength * 0.35) : baseAlpha * 0.2;
+          }
+
+          // Gentle breathing curvature
+          const midX = (p1X + p2X) / 2 + Math.sin(time * 0.35 + c.strength * 4) * 8 * zoom;
+          const midY = (p1Y + p2Y) / 2 + Math.cos(time * 0.35 + c.strength * 4) * 8 * zoom;
+
+          ctx.beginPath();
+          ctx.moveTo(p1X, p1Y);
+          ctx.quadraticCurveTo(midX, midY, p2X, p2Y);
+          ctx.strokeStyle = isActiveLink ? `rgba(224, 195, 155, ${baseAlpha})` : `rgba(201, 184, 160, ${baseAlpha})`;
+          ctx.lineWidth = (isActiveLink ? 1.75 : 0.9) * zoom;
+          ctx.stroke();
+        }
+      } else {
+        // Fallback quiet geometric paths
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const n1 = nodes[i];
+            const n2 = nodes[j];
+            const p1X = cx + n1.worldX * zoom;
+            const p1Y = cy + n1.worldY * zoom;
+            const p2X = cx + n2.worldX * zoom;
+            const p2Y = cy + n2.worldY * zoom;
+            const dist = Math.hypot(p1X - p2X, p1Y - p2Y);
+
+            if (dist < 260 * zoom) {
+              const alpha = Math.max(0.03, ((260 * zoom - dist) / (260 * zoom)) * 0.16);
+              ctx.beginPath();
+              ctx.moveTo(p1X, p1Y);
+              ctx.lineTo(p2X, p2Y);
+              ctx.strokeStyle = `rgba(201, 184, 160, ${alpha})`;
+              ctx.lineWidth = 1 * zoom;
+              ctx.stroke();
+            }
           }
         }
       }
 
-      // 4. Entity silhouettes from dream meaning
+      // 4. Entity silhouettes & temporal atmospheres
       nodes.sort((a, b) => b.z - a.z);
 
-      nodes.forEach(n => {
+      nodes.forEach((n) => {
         const posX = cx + n.worldX * zoom;
         const posY = cy + n.worldY * zoom;
         const isHovered = hoveredNode?.id === n.id;
         const isHighlighted = highlightedArtifactId === n.id;
 
-        const pulse = prefersReducedMotion
-          ? 1
-          : 1 + Math.sin(time * n.pulseSpeed * 60 + n.phase) * 0.05;
+        const matchesFilter = temporalFilter === 'all' || n.temporalStatus === temporalFilter;
+        const globalDim = matchesFilter ? 1 : 0.22;
+
+        const pulse = prefersReducedMotion ? 1 : 1 + Math.sin(time * n.pulseSpeed * 60 + n.phase) * 0.05;
         const curSize = (isHovered || isHighlighted ? n.size * 1.2 : n.size) * pulse * zoom;
 
         ctx.save();
+        ctx.globalAlpha = globalDim;
         ctx.translate(posX, posY);
 
-        const auraGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, curSize * 2);
-        auraGrad.addColorStop(0, `rgba(${n.colorHue}, ${isHovered ? 0.35 : 0.14})`);
+        // Radial aura
+        const auraMultiplier = n.temporalStatus === 'anchor' ? 2.5 : n.temporalStatus === 'emerging' ? 2.2 : 2.0;
+        const auraGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, curSize * auraMultiplier);
+        const auraAlpha = isHovered ? 0.38 : n.temporalStatus === 'dormant' ? 0.06 : 0.14;
+        auraGrad.addColorStop(0, `rgba(${n.colorHue}, ${auraAlpha})`);
         auraGrad.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = auraGrad;
         ctx.beginPath();
-        ctx.arc(0, 0, curSize * 2, 0, Math.PI * 2);
+        ctx.arc(0, 0, curSize * auraMultiplier, 0, Math.PI * 2);
         ctx.fill();
 
+        // Emerging motif ripple effect
+        if (n.temporalStatus === 'emerging' && !prefersReducedMotion) {
+          const ripple = ((time * 0.6 + n.phase) % 1);
+          ctx.beginPath();
+          ctx.arc(0, 0, curSize * (1.1 + ripple * 0.6), 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(52, 211, 153, ${(1 - ripple) * 0.35})`;
+          ctx.lineWidth = 1 * zoom;
+          ctx.stroke();
+        }
+
+        // Draw silhouette
         drawEntitySilhouette(n.artifact_type, n.name, curSize, n.colorHue, isHovered || isHighlighted);
 
-        if (n.appearance_count > 1) {
+        // Anchor status: double concentric ring
+        if (n.temporalStatus === 'anchor') {
           ctx.beginPath();
           ctx.arc(0, 0, curSize * 1.45, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(242, 237, 230, 0.28)';
+          ctx.strokeStyle = 'rgba(242, 237, 230, 0.35)';
+          ctx.lineWidth = 1.2 * zoom;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(0, 0, curSize * 1.65, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(242, 237, 230, 0.2)';
+          ctx.lineWidth = 0.8 * zoom;
+          ctx.stroke();
+        } else if (n.appearance_count > 1) {
+          ctx.beginPath();
+          ctx.arc(0, 0, curSize * 1.45, 0, Math.PI * 2);
+          ctx.strokeStyle = n.temporalStatus === 'dormant' ? 'rgba(242, 237, 230, 0.16)' : 'rgba(242, 237, 230, 0.28)';
           ctx.setLineDash([3 * zoom, 4 * zoom]);
           ctx.lineWidth = 1 * zoom;
           ctx.stroke();
@@ -480,9 +559,12 @@ export function DreamWorldCanvas({
         }
 
         ctx.restore();
+
+        // Node label
         ctx.save();
+        ctx.globalAlpha = globalDim;
         ctx.font = `${Math.round((isHovered ? 13 : 11) * zoom)}px 'Source Sans 3', system-ui, sans-serif`;
-        ctx.fillStyle = isHovered ? '#F2EDE6' : 'rgba(242, 237, 230, 0.7)';
+        ctx.fillStyle = isHovered ? '#F2EDE6' : 'rgba(242, 237, 230, 0.72)';
         ctx.textAlign = 'center';
         ctx.fillText(n.name, posX, posY + curSize + 14 * zoom);
         ctx.restore();
@@ -502,7 +584,7 @@ export function DreamWorldCanvas({
       container.removeEventListener('wheel', onWheel);
       container.removeEventListener('click', onClick);
     };
-  }, [artifacts, hoveredNode, focusOnNode, onSelectArtifact, highlightedArtifactId]);
+  }, [artifacts, connections, hoveredNode, focusOnNode, onSelectArtifact, highlightedArtifactId, temporalFilter]);
 
   return (
     <div
@@ -540,11 +622,11 @@ export function DreamWorldCanvas({
       <div className="absolute top-6 left-6 z-20 pointer-events-none flex items-center gap-2">
         <div className="px-3 py-1.5 rounded-lg bg-[var(--bg-card)]/90 border border-[var(--border-default)] text-[var(--text-secondary)] text-xs font-medium flex items-center gap-2">
           <Compass size={12} className="text-[var(--accent)]" />
-          <span>Drag to explore · Scroll to zoom · Click to inspect</span>
+          <span>Drag to pan · Scroll to zoom · Click node to inspect connections</span>
         </div>
       </div>
 
-      {/* Hover Tooltip Overlay */}
+      {/* Hover Tooltip Overlay with Temporal Badge */}
       <AnimatePresence>
         {hoveredNode && (
           <motion.div
@@ -552,20 +634,49 @@ export function DreamWorldCanvas({
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[var(--bg-card)] border border-[var(--border-default)] px-5 py-3 rounded-xl shadow-lg pointer-events-none flex flex-col items-center z-40"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[var(--bg-card)] border border-[var(--border-default)] px-5 py-3 rounded-2xl shadow-xl pointer-events-none flex flex-col items-center z-40 max-w-sm text-center"
           >
-            <span className="text-[10px] font-medium uppercase tracking-widest text-[var(--text-muted)] mb-1">
-              {hoveredNode.artifact_type}
-            </span>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent)]">
+                {hoveredNode.artifact_type}
+              </span>
+              <span className="text-[10px] text-[var(--text-muted)]">•</span>
+              <span
+                className={`text-[10px] px-2 py-0.2 rounded-full font-medium ${
+                  hoveredNode.temporal_status === 'emerging'
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                    : hoveredNode.temporal_status === 'anchor'
+                      ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
+                      : hoveredNode.temporal_status === 'dormant'
+                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                        : 'bg-[var(--bg-secondary)] text-[var(--text-muted)]'
+                }`}
+              >
+                {hoveredNode.temporal_status === 'emerging'
+                  ? 'Emerging Motif'
+                  : hoveredNode.temporal_status === 'anchor'
+                    ? 'Archive Anchor'
+                    : hoveredNode.temporal_status === 'dormant'
+                      ? 'Dormant Memory'
+                      : 'Recurring'}
+              </span>
+            </div>
+
             <span className="text-base font-display font-semibold text-[var(--text-primary)]">
               {hoveredNode.name}
             </span>
-            <span className="text-xs text-[var(--text-muted)] mt-0.5">
-              In {hoveredNode.appearance_count} dream{hoveredNode.appearance_count > 1 ? 's' : ''} · Click to explore
+
+            <span className="text-xs text-[var(--text-muted)] mt-1 flex items-center gap-1.5">
+              <span>Seen in {hoveredNode.appearance_count} dream{hoveredNode.appearance_count > 1 ? 's' : ''}</span>
+              {(hoveredNode.connected_artifact_ids || []).length > 0 && (
+                <>
+                  <span>·</span>
+                  <span>Links with {hoveredNode.connected_artifact_ids!.length} motifs</span>
+                </>
+              )}
             </span>
           </motion.div>
         )}
-
       </AnimatePresence>
     </div>
   );

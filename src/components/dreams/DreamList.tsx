@@ -160,9 +160,24 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
                     <p className="text-[var(--text-muted)] text-xs font-mono mb-3">
                       {getRelativeDate(dream.dream_date)}
                     </p>
-                    {(dream.ai_themes?.length || 0) > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-3">
-                        {dream.ai_themes!.slice(0, 3).map((theme) => (
+                    {/* Entities & Themes — Living Archive Connections */}
+                    {((dream.dream_entities && dream.dream_entities.length > 0) || (dream.ai_themes && dream.ai_themes.length > 0)) && (
+                      <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                        {dream.dream_entities?.slice(0, 3).map((ent) => (
+                          <span
+                            key={ent.id || `${ent.entity_type}-${ent.entity_name}`}
+                            className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+                              ent.entity_type === 'person'
+                                ? 'bg-amber-500/10 border-amber-500/25 text-amber-300'
+                                : ent.entity_type === 'place'
+                                  ? 'bg-emerald-500/10 border-emerald-500/25 text-emerald-300'
+                                  : 'bg-[var(--bg-secondary)] border-[var(--border-default)] text-[var(--text-muted)]'
+                            }`}
+                          >
+                            {ent.entity_name}
+                          </span>
+                        ))}
+                        {dream.ai_themes?.slice(0, (dream.dream_entities?.length ? 1 : 2)).map((theme) => (
                           <span
                             key={theme}
                             className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-muted)]"
@@ -170,6 +185,11 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
                             {theme}
                           </span>
                         ))}
+                        {(dream.dream_entities?.length || 0) > 3 && (
+                          <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                            +{(dream.dream_entities?.length || 0) - 3}
+                          </span>
+                        )}
                       </div>
                     )}
                     <p className="text-[var(--text-secondary)] text-sm line-clamp-2 leading-relaxed mb-4 flex-grow">
@@ -218,6 +238,18 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
                       <p className="text-[var(--text-secondary)] text-xs truncate max-w-xl mt-0.5">
                         {dream.content}
                       </p>
+                      {dream.dream_entities && dream.dream_entities.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1 mt-1.5">
+                          {dream.dream_entities.slice(0, 3).map((ent) => (
+                            <span
+                              key={ent.id || `${ent.entity_type}-${ent.entity_name}`}
+                              className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-muted)]"
+                            >
+                              {ent.entity_name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 

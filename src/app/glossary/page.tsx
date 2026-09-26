@@ -42,7 +42,7 @@ const GLOSSARY_TERMS = [
     definition: 'A prospective memory technique developed by Dr. Stephen LaBerge where sleepers rehearse waking intentions to recognize that they are dreaming during upcoming REM periods.'
   },
   {
-    term: 'Dream Artifact (DREAMOGON Framework)',
+    term: 'Dream Artifact (SUBCONSCIOUS LOG Framework)',
     definition: 'A persistent conceptual entity (place, character, vehicle, or emotion) extracted from dream text and spatially mapped into an evolving visual Dream World.'
   }
 ];
@@ -75,7 +75,7 @@ export default function GlossaryPage() {
           </h1>
 
           <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-light">
-            Clear definitions of core concepts spanning sleep neurobiology, psychoanalysis, cognitive science, and the DREAMOGON spatial mapping architecture.
+            Clear definitions of core concepts spanning sleep neurobiology, psychoanalysis, cognitive science, and the SUBCONSCIOUS LOG spatial mapping architecture.
           </p>
         </div>
 

@@ -1,8 +1,8 @@
-# Dreamogon
+# Subconscious Log
 
 > A private place to record your dreams and discover what keeps returning.
 
-Dreamogon is a calm space for self-reflection — not a source of medical or psychological diagnoses.
+Subconscious Log is a calm space for self-reflection — not a source of medical or psychological diagnoses.
 
 ## Features
 

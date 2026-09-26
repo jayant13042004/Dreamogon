@@ -231,12 +231,12 @@ export function PublicFooter() {
               </li>
               <li>
                 <Link href="/how-it-works" className="hover:text-[var(--text-primary)] transition-colors">
-                  How Dreamogon Works
+                  How Subconscious Log Works
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="hover:text-[var(--text-primary)] transition-colors">
-                  About Dreamogon
+                  About Subconscious Log
                 </Link>
               </li>
               <li>
@@ -299,7 +299,7 @@ export function PublicFooter() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono">
-          <p>&copy; {new Date().getFullYear()} Dreamogon. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Subconscious Log. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-[var(--text-primary)] transition-colors">
               Privacy

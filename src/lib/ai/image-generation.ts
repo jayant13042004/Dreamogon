@@ -19,10 +19,10 @@ export const FREE_DREAM_IMAGES_LIMIT = 2;
 export const PRO_DREAM_IMAGES_LIMIT = 20;
 
 /**
- * Dreamogon Global Visual Art Directive
+ * Subconscious Log Global Visual Art Directive
  * Enforces a recognizable, cinematic, slightly surreal, memory-like aesthetic across all dreams.
  */
-const DREAMOGON_VISUAL_DIRECTIVE = `
+const SUBCONSCIOUS_LOG_VISUAL_DIRECTIVE = `
 Visual Aesthetics:
 - Style: Atmospheric cinematic film still, fine art realism with subtle surrealism, dreamy analog texture, elegant color grading, soft volumetric lighting.
 - Mood: Evocative, deeply emotional, quiet, mysterious, feels like a sacred personal memory rather than commercial artwork.
@@ -42,7 +42,7 @@ export async function extractDreamSceneStructure(
   const ai = getAIClient();
 
   const prompt = `
-You are Dreamogon's Dream Visual Director.
+You are Subconscious Log's Dream Visual Director.
 Analyze the following dream journal entry and extract its core visual memory elements into structured JSON.
 Focus on the emotional atmosphere, primary scene, environment, lighting, and key objects that made this dream visually distinct.
 
@@ -97,7 +97,7 @@ Return JSON matching this schema:
 }
 
 /**
- * Step 2: Build the finalized generation prompt using the Dreamogon visual language.
+ * Step 2: Build the finalized generation prompt using the Subconscious Log visual language.
  */
 export function buildDreamImagePrompt(scene: StructuredDreamScene): string {
   const parts: string[] = [];
@@ -120,7 +120,7 @@ export function buildDreamImagePrompt(scene: StructuredDreamScene): string {
   parts.push(`Atmosphere and tone: ${scene.dominantEmotions.join(', ')}. ${scene.surrealAtmosphere}.`);
   parts.push(`Color grading: ${scene.colorPalette}.`);
   parts.push(`Framing: ${scene.composition}.`);
-  parts.push(DREAMOGON_VISUAL_DIRECTIVE);
+  parts.push(SUBCONSCIOUS_LOG_VISUAL_DIRECTIVE);
 
   return parts.join(' ');
 }

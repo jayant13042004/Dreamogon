@@ -4,8 +4,9 @@ import {
   shouldFallbackToNextModel,
 } from '@/lib/ai/client';
 import { CHAT_SYSTEM_PROMPT } from '@/lib/ai/prompts';
+import type { DreamReferenceItem } from '@/types/ai';
 
-interface DreamContext {
+export interface DreamContext {
   id: string;
   title: string;
   content: string;
@@ -13,6 +14,15 @@ interface DreamContext {
   mood: string;
   themes: string[];
   summary: string;
+}
+
+export interface ArchiveContextMeta {
+  totalCount: number;
+  earliestDate?: string;
+  latestDate?: string;
+  searchedTopic?: string;
+  zeroMatchesFound?: boolean;
+  topRecurringArtifacts?: Array<{ name: string; type: string; count: number }>;
 }
 
 // Optimized fast model priority for real-time conversational latency
@@ -27,29 +37,57 @@ export async function chatWithDreamHistory(
   conversationHistory: Array<{
     role: 'user' | 'assistant';
     content: string;
-  }>
-): Promise<{ response: string; dreamReferences: Array<{ id: string; title?: string; date?: string }> }> {
+  }>,
+  archiveMeta?: ArchiveContextMeta
+): Promise<{
+  response: string;
+  dreamReferences: DreamReferenceItem[];
+}> {
   try {
     const ai = getAIClient();
 
-    // Streamlined compact context for ultra-low token latency
-    const compactContext = dreamContext.slice(0, 15).map(d => 
-      `• [ID: ${d.id}] "${d.title}" (${d.date}, mood: ${d.mood}) - ${d.summary || d.content.slice(0, 120)}`
-    ).join('\n');
+    // 1. Build Provenance & Archive Header
+    let archiveHeader = '';
+    if (archiveMeta) {
+      archiveHeader += `ARCHIVE STATUS & PROVENANCE:\n`;
+      archiveHeader += `• Total recorded dreams in archive: ${archiveMeta.totalCount}\n`;
+      if (archiveMeta.earliestDate && archiveMeta.latestDate) {
+        archiveHeader += `• Archive date range: ${archiveMeta.earliestDate} to ${archiveMeta.latestDate}\n`;
+      }
+      if (archiveMeta.topRecurringArtifacts && archiveMeta.topRecurringArtifacts.length > 0) {
+        const topList = archiveMeta.topRecurringArtifacts
+          .map((a) => `${a.name} (${a.type}, ${a.count}×)`)
+          .join(', ');
+        archiveHeader += `• Key recurring archive motifs: ${topList}\n`;
+      }
+      if (archiveMeta.zeroMatchesFound && archiveMeta.searchedTopic) {
+        archiveHeader += `• VERIFIED SEARCH: A comprehensive search across all ${archiveMeta.totalCount} dreams for "${archiveMeta.searchedTopic}" yielded ZERO matches. Inform the user accurately that this is absent from their archive.\n`;
+      }
+      archiveHeader += '\n';
+    }
 
-    const contextString = compactContext.length > 0
-      ? `User's Recorded Dreams:\n${compactContext}`
-      : 'No recorded dreams yet.';
+    // 2. Format Retrieved Dreams Context
+    const formattedDreams = dreamContext.slice(0, 18).map((d) => {
+      const themesStr = d.themes && d.themes.length > 0 ? ` [Themes: ${d.themes.join(', ')}]` : '';
+      const summaryOrSnippet = d.summary ? d.summary : d.content.slice(0, 180);
+      return `• [ID: ${d.id}] "${d.title}" (${d.date}, mood: ${d.mood})${themesStr} - ${summaryOrSnippet}`;
+    }).join('\n');
+
+    const contextString = formattedDreams.length > 0
+      ? `${archiveHeader}RETRIEVED DREAMS FROM ARCHIVE:\n${formattedDreams}`
+      : `${archiveHeader}No matching dreams retrieved from archive.`;
 
     const systemMessage = `${CHAT_SYSTEM_PROMPT}
 
 ${contextString}
 
 Instructions:
-Be insightful, warm, concise, and direct. Respond in 2-3 focused paragraphs.
-If you refer to any specific dream from the list, append its ID at the very end in format: <references>["id1", "id2"]</references>`;
+Respond in 2-3 thoughtful paragraphs with grounded, observational language.
+Always cite the title and date of any dream you discuss.
+At the very end of your response, output:
+<references>[{"id": "...", "title": "...", "date": "..."}]</references>`;
 
-    // Take only last 6 turns of conversation history for speed
+    // Take last 6 turns of conversation history
     const recentHistory = conversationHistory.slice(-6);
 
     const contents = recentHistory.map((msg) => ({
@@ -72,7 +110,7 @@ If you refer to any specific dream from the list, append its ID at the very end 
           config: {
             systemInstruction: systemMessage,
             temperature: 0.6,
-            maxOutputTokens: 600,
+            maxOutputTokens: 750,
           },
         });
         break;
@@ -90,23 +128,45 @@ If you refer to any specific dream from the list, append its ID at the very end 
 
     const responseText = response.text || '';
     let cleanResponse = responseText;
-    let refIds: string[] = [];
+    let parsedRefs: any[] = [];
 
-    const refMatch = responseText.match(/<references>(.*?)<\/references>/);
+    const refMatch = responseText.match(/<references>([\s\S]*?)<\/references>/);
     if (refMatch) {
-      cleanResponse = responseText.replace(/<references>.*?<\/references>/, '').trim();
+      cleanResponse = responseText.replace(/<references>[\s\S]*?<\/references>/, '').trim();
       try {
-        refIds = JSON.parse(refMatch[1]);
+        parsedRefs = JSON.parse(refMatch[1].trim());
       } catch (e) {
-        console.warn('Could not parse dream references:', e);
+        console.warn('Could not parse dream references JSON:', e);
       }
     }
 
-    // Map referenced IDs back to dream titles and dates for UI cards
-    const dreamReferences = refIds.map(id => {
-      const match = dreamContext.find(d => d.id === id);
-      return match ? { id: match.id, title: match.title, date: match.date } : { id };
-    });
+    // Normalize dream references into DreamReferenceItem[]
+    const dreamReferences: DreamReferenceItem[] = [];
+    const seenIds = new Set<string>();
+
+    for (const ref of parsedRefs) {
+      let refId = '';
+      let refTitle = '';
+      let refDate = '';
+
+      if (typeof ref === 'string') {
+        refId = ref;
+      } else if (ref && typeof ref === 'object') {
+        refId = ref.id || '';
+        refTitle = ref.title || '';
+        refDate = ref.date || '';
+      }
+
+      if (!refId || seenIds.has(refId)) continue;
+      seenIds.add(refId);
+
+      const matchedContext = dreamContext.find((d) => d.id === refId);
+      dreamReferences.push({
+        id: refId,
+        title: refTitle || matchedContext?.title || 'Recorded Dream',
+        date: refDate || matchedContext?.date || '',
+      });
+    }
 
     return {
       response: cleanResponse,

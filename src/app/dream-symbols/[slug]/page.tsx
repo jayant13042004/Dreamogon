@@ -152,13 +152,13 @@ export default async function DreamSymbolDetailPage({ params }: DreamSymbolPageP
           </ul>
         </section>
 
-        {/* How DREAMOGON Tracks This Symbol */}
+        {/* How SUBCONSCIOUS LOG Tracks This Symbol */}
         <section className="p-8 md:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-xl text-center space-y-6">
           <h3 className="text-2xl md:text-3xl font-display font-medium text-[var(--text-primary)]">
             Discover How {symbol.name} Recurs Across Your Dreams
           </h3>
           <p className="text-[var(--text-secondary)] text-sm md:text-base max-w-lg mx-auto font-light leading-relaxed">
-            Record your dreams in DREAMOGON. Our system identifies {symbol.name.toLowerCase()} as a subconscious motif and traces its emotional connections over time.
+            Record your dreams in SUBCONSCIOUS LOG. Our system identifies {symbol.name.toLowerCase()} as a subconscious motif and traces its emotional connections over time.
           </p>
           <Link
             href="/signup"

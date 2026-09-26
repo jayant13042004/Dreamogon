@@ -1,4 +1,4 @@
-﻿# DREAMOGON Analytics & GA4 Event Taxonomy
+﻿# SUBCONSCIOUS LOG Analytics & GA4 Event Taxonomy
 
 ## Environment Variables
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID`: Google Analytics 4 Measurement ID (e.g. `G-XXXXXXXXXX`).
@@ -24,6 +24,6 @@
 | `artifact_viewed` | User inspects an artifact in world/archive | `artifact_type`, `appearance_count` | Symbol exploration depth |
 | `insight_viewed` | User views a cross-dream pattern | `insight_type`, `is_locked` | Pattern discovery engagement |
 | `dream_profile_viewed` | User unlocks 5-Dream Profile | `dream_count` | Free milestone completion |
-| `upgrade_viewed` | User views DREAMOGON Pro upgrade modal | `trigger`, `dream_count` | Monetization intent |
+| `upgrade_viewed` | User views SUBCONSCIOUS LOG Pro upgrade modal | `trigger`, `dream_count` | Monetization intent |
 | `begin_checkout` | User initiates subscription checkout | `plan`, `value`, `currency` | Pre-purchase conversion step |
 | `purchase` | User completes Pro subscription | `transaction_id`, `value`, `plan` | Primary revenue conversion |

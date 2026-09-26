@@ -7,7 +7,7 @@ import { BookOpen, Sparkles, ArrowRight, ShieldCheck, Compass, CheckCircle } fro
 
 export const metadata = constructMetadata({
   title: 'Dream Journal — The Mindful AI Dream Diary for Pattern Discovery',
-  description: 'Learn why dream journaling transforms self-awareness. Discover how DREAMOGON maps morning dream recall into recurring themes and emotional insights.',
+  description: 'Learn why dream journaling transforms self-awareness. Discover how SUBCONSCIOUS LOG maps morning dream recall into recurring themes and emotional insights.',
   path: '/dream-journal',
   keywords: ['dream journal', 'dream diary', 'how to keep a dream journal', 'best dream journal app', 'dream journaling benefits'],
 });
@@ -78,17 +78,17 @@ export default function DreamJournalPillarPage() {
           </div>
         </div>
 
-        {/* How DREAMOGON Revolutionizes the Journal */}
+        {/* How SUBCONSCIOUS LOG Revolutionizes the Journal */}
         <section className="p-10 md:p-14 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-xl relative overflow-hidden space-y-8">
           <div className="max-w-2xl space-y-4">
             <span className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              The DREAMOGON Evolution
+              The SUBCONSCIOUS LOG Evolution
             </span>
             <h2 className="text-3xl md:text-4xl font-display font-medium text-[var(--text-primary)]">
               Not Just a Blank Page. A Living Subconscious Realm.
             </h2>
             <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed font-light">
-              Traditional paper notebooks gather dust on nightstands. DREAMOGON transforms every dream you record into a spatial visual artifact—creating a personal world that grows, connects, and deepens over time.
+              Traditional paper notebooks gather dust on nightstands. SUBCONSCIOUS LOG transforms every dream you record into a spatial visual artifact—creating a personal world that grows, connects, and deepens over time.
             </p>
           </div>
 

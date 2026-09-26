@@ -20,13 +20,13 @@ import {
 } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'How DREAMOGON Works — From Dawn Capture to Subconscious Constellation',
+  title: 'How SUBCONSCIOUS LOG Works — From Dawn Capture to Subconscious Constellation',
   description:
-    'Discover how DREAMOGON preserves morning dream fragments, reflects through Socratic inquiry, reveals recurring subconscious patterns, and maps your interior world.',
+    'Discover how SUBCONSCIOUS LOG preserves morning dream fragments, reflects through Socratic inquiry, reveals recurring subconscious patterns, and maps your interior world.',
   path: '/how-it-works',
   keywords: [
     'how dream journaling works',
-    'how DREAMOGON works',
+    'how SUBCONSCIOUS LOG works',
     'AI dream reflection process',
     'dream recall morning routine',
     'subconscious pattern tracking',
@@ -60,11 +60,11 @@ export default function HowItWorksPage() {
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-medium tracking-tight text-[var(--text-primary)] leading-[1.1]">
-            How DREAMOGON Works.
+            How SUBCONSCIOUS LOG Works.
           </h1>
 
           <p className="text-lg sm:text-xl text-[var(--text-secondary)] font-light leading-relaxed">
-            Dreams dissolve in the morning light within ten minutes of waking. DREAMOGON provides an effortless contemplative ritual: capture raw fragments before they fade, reflect with respectful AI inquiry, uncover recurring motifs across seasons, and map your interior life.
+            Dreams dissolve in the morning light within ten minutes of waking. SUBCONSCIOUS LOG provides an effortless contemplative ritual: capture raw fragments before they fade, reflect with respectful AI inquiry, uncover recurring motifs across seasons, and map your interior life.
           </p>
 
           <div className="pt-2 flex flex-wrap gap-4">
@@ -98,7 +98,7 @@ export default function HowItWorksPage() {
                 Built for half-closed eyes and fading memories.
               </h2>
               <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
-                When you wake up, neurological shifts trigger rapid memory decay. Motor movements and cognitive friction accelerate this loss. DREAMOGON eliminates every distraction:
+                When you wake up, neurological shifts trigger rapid memory decay. Motor movements and cognitive friction accelerate this loss. SUBCONSCIOUS LOG eliminates every distraction:
               </p>
               <div className="space-y-3 pt-2">
                 {[
@@ -194,7 +194,7 @@ export default function HowItWorksPage() {
                 A quiet mirror, never a pseudo-scientific oracle.
               </h2>
               <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
-                Most AI tools attempt to pretend they know the secret future or offer medical diagnostic labels. DREAMOGON adheres to a strict ethical standard:
+                Most AI tools attempt to pretend they know the secret future or offer medical diagnostic labels. SUBCONSCIOUS LOG adheres to a strict ethical standard:
               </p>
               <ul className="space-y-2.5 text-xs text-[var(--text-primary)] font-light">
                 <li className="flex items-start gap-2.5">
@@ -225,7 +225,7 @@ export default function HowItWorksPage() {
                 Discover what your mind returns to over time.
               </h2>
               <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
-                A single dream is an isolated vignette. A year of dreams is an interior autobiography. DREAMOGON synthesizes your archive into longitudinal insights:
+                A single dream is an isolated vignette. A year of dreams is an interior autobiography. SUBCONSCIOUS LOG synthesizes your archive into longitudinal insights:
               </p>
               <div className="space-y-3 pt-2">
                 <div className="p-4 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)]">
@@ -305,7 +305,7 @@ export default function HowItWorksPage() {
                 An interconnected spatial memory landscape.
               </h2>
               <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
-                Rather than storing memories as cold static database rows, DREAMOGON places dreams into a visual 2D/3D constellation. Dreams that share emotional resonance or symbols drift toward each other, forming thematic territories that reflect your personal mythology.
+                Rather than storing memories as cold static database rows, SUBCONSCIOUS LOG places dreams into a visual 2D/3D constellation. Dreams that share emotional resonance or symbols drift toward each other, forming thematic territories that reflect your personal mythology.
               </p>
               <div className="pt-2">
                 <Link

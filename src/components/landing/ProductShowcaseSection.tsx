@@ -42,7 +42,7 @@ const TABS: ShowcaseTab[] = [
     title: 'Designed for half-closed eyes.',
     subtitle: 'Type or speak stream-of-consciousness before dawn thoughts evaporate.',
     description:
-      'Waking memory decays in minutes. Dreamogon strips away all cognitive friction: one tap voice recording, continuous background auto-save, and gentle prompts that trigger instant recall.',
+      'Waking memory decays in minutes. Subconscious Log strips away all cognitive friction: one tap voice recording, continuous background auto-save, and gentle prompts that trigger instant recall.',
     features: [
       'One-tap voice capture & speech transcription',
       'Zero-lag continuous autosave draft protection',
@@ -57,7 +57,7 @@ const TABS: ShowcaseTab[] = [
     title: 'Socratic inquiries, never clinical diagnoses.',
     subtitle: 'Authentic words preserved forever, paired with thoughtful self-inquiry.',
     description:
-      'Dreamogon strictly separates your authentic morning words from interpretive possibilities. The AI acts as a patient contemplative companion, offering questions that prompt your own journaling rather than pseudo-scientific labels.',
+      'Subconscious Log strictly separates your authentic morning words from interpretive possibilities. The AI acts as a patient contemplative companion, offering questions that prompt your own journaling rather than pseudo-scientific labels.',
     features: [
       'Strict separation of authentic memory and AI notes',
       'Contemplative inquiries tailored to your symbols',
@@ -87,7 +87,7 @@ const TABS: ShowcaseTab[] = [
     title: 'Discover what your mind returns to.',
     subtitle: 'Synthesized insights revealing motifs across weeks, months, and seasons.',
     description:
-      'Dreams rarely exist in isolation. Dreamogon connects recurring symbols across your life—identifying when certain archetypes, emotional climates, or lucidity surges emerge.',
+      'Dreams rarely exist in isolation. Subconscious Log connects recurring symbols across your life—identifying when certain archetypes, emotional climates, or lucidity surges emerge.',
     features: [
       'Automatic recurring symbol detection across entries',
       'Monthly Lucidity Index progression metrics',
@@ -125,7 +125,7 @@ export function ProductShowcaseSection() {
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
             <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
-              Inside Dreamogon
+              Inside Subconscious Log
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
@@ -210,7 +210,7 @@ export function ProductShowcaseSection() {
                   <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)]" />
                   <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)]" />
                   <span className="ml-3 font-mono text-[11px] text-[var(--text-muted)]">
-                    dreamogon.com/{current.id === 'capture' ? 'dream/new' : current.id === 'reflection' ? 'dreams/d_8829' : current.id}
+                    subconsciouslog.com/{current.id === 'capture' ? 'dream/new' : current.id === 'reflection' ? 'dreams/d_8829' : current.id}
                   </span>
                 </div>
                 <span className="text-[10px] font-mono text-[var(--accent)] uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--accent)]/10 border border-[var(--accent)]/20">

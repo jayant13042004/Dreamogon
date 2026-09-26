@@ -1,5 +1,5 @@
 -- ==========================================================================
--- DREAMOGON - Consolidated Database Migrations (002 through 008)
+-- SUBCONSCIOUS LOG - Consolidated Database Migrations (002 through 008)
 -- Paste and run this script in your Supabase project SQL Editor to enable:
 -- 1. Dream World state & artifacts
 -- 2. Visual memory columns & Storage bucket

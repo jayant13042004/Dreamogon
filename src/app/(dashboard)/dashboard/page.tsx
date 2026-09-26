@@ -51,7 +51,8 @@ export default function DashboardPage() {
         if (userDreams.length === 0) {
           const dismissed =
             typeof window !== 'undefined' &&
-            (localStorage.getItem('dreamogon_onboarding_dismissed') ||
+            (localStorage.getItem('subconsciouslog_onboarding_dismissed') ||
+              localStorage.getItem('dreamogon_onboarding_dismissed') ||
               localStorage.getItem('lucida_onboarding_dismissed'));
           if (!dismissed) {
             setShowOnboarding(true);

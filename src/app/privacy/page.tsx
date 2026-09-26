@@ -6,11 +6,11 @@ import { generateBreadcrumbSchema } from '@/lib/seo/structuredData';
 import { ShieldCheck, Lock, EyeOff, Server, FileText } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'Privacy Policy — Dreamogon Dream Archive',
+  title: 'Privacy Policy — Subconscious Log Dream Archive',
   description:
-    'Dreamogon’s strict privacy policy: your dream journal entries are private, encrypted in transit and at rest, and never sold, publicly indexed, or shared with third-party advertisers.',
+    'Subconscious Log’s strict privacy policy: your dream journal entries are private, encrypted in transit and at rest, and never sold, publicly indexed, or shared with third-party advertisers.',
   path: '/privacy',
-  keywords: ['dream journal privacy', 'is Dreamogon private', 'data protection dream journal', 'zero data sharing policy'],
+  keywords: ['dream journal privacy', 'is Subconscious Log private', 'data protection dream journal', 'zero data sharing policy'],
 });
 
 export default function PrivacyPolicyPage() {
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
               1. Introduction & Operator Identity
             </h2>
             <p>
-              This Privacy Policy describes how {SITE_CONFIG.legalEntityName} (&ldquo;DREAMOGON&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) collects, uses, protects, and discloses personal information when you visit our website at {SITE_CONFIG.url} or utilize the DREAMOGON web application (the &ldquo;Service&rdquo;).
+              This Privacy Policy describes how {SITE_CONFIG.legalEntityName} (&ldquo;SUBCONSCIOUS LOG&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) collects, uses, protects, and discloses personal information when you visit our website at {SITE_CONFIG.url} or utilize the SUBCONSCIOUS LOG web application (the &ldquo;Service&rdquo;).
             </p>
             <p>
               Operating Address: {SITE_CONFIG.registeredAddress}. For any questions regarding your personal data, you may contact our Privacy Desk at{' '}
@@ -113,7 +113,7 @@ export default function PrivacyPolicyPage() {
                 <strong className="text-[var(--text-primary)]">Voice Audio:</strong> If you utilize voice dictation, audio is processed ephemerally in browser memory or via secure transcription endpoints strictly to generate your written transcript.
               </li>
               <li>
-                <strong className="text-[var(--text-primary)]">Billing & Subscription Details:</strong> If you upgrade to DREAMOGON Pro, your payment information is collected and processed directly by our payment provider (Stripe). DREAMOGON does not store or process raw credit card numbers.
+                <strong className="text-[var(--text-primary)]">Billing & Subscription Details:</strong> If you upgrade to SUBCONSCIOUS LOG Pro, your payment information is collected and processed directly by our payment provider (Stripe). SUBCONSCIOUS LOG does not store or process raw credit card numbers.
               </li>
             </ul>
           </section>
@@ -123,11 +123,11 @@ export default function PrivacyPolicyPage() {
               3. How We Process Artificial Intelligence Inquiries
             </h2>
             <p>
-              DREAMOGON provides AI-assisted reflective inquiries and atmospheric image generation. When you request reflection on a dream:
+              SUBCONSCIOUS LOG provides AI-assisted reflective inquiries and atmospheric image generation. When you request reflection on a dream:
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li>The text of that entry is transmitted via encrypted API connections to the configured AI inference provider (such as the Google Gemini API).</li>
-              <li>DREAMOGON does not train our own public foundation models on your journal entries or private dream texts.</li>
+              <li>SUBCONSCIOUS LOG does not train our own public foundation models on your journal entries or private dream texts.</li>
               <li>Data handling by upstream AI providers is governed by their respective API terms and customer configurations.</li>
             </ul>
           </section>

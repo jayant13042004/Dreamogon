@@ -6,11 +6,11 @@ import { generateBreadcrumbSchema } from '@/lib/seo/structuredData';
 import { Cookie, ShieldCheck, Check } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'Cookie Policy — DREAMOGON Dream Journal',
+  title: 'Cookie Policy — SUBCONSCIOUS LOG Dream Journal',
   description:
-    "DREAMOGON's cookie policy: we use only strictly necessary authentication and preference cookies. Zero third-party ad tracking.",
+    "SUBCONSCIOUS LOG's cookie policy: we use only strictly necessary authentication and preference cookies. Zero third-party ad tracking.",
   path: '/cookies',
-  keywords: ['DREAMOGON cookie policy', 'privacy first cookies', 'no ad tracking'],
+  keywords: ['SUBCONSCIOUS LOG cookie policy', 'privacy first cookies', 'no ad tracking'],
 });
 
 export default function CookiePolicyPage() {
@@ -61,7 +61,7 @@ export default function CookiePolicyPage() {
               2. Our Privacy-First Cookie Philosophy
             </h2>
             <p>
-              DREAMOGON operates on a minimal, privacy-first infrastructure. <strong>We do not use third-party advertising cookies, social tracking pixels, or behavioral profiling cookies.</strong>
+              SUBCONSCIOUS LOG operates on a minimal, privacy-first infrastructure. <strong>We do not use third-party advertising cookies, social tracking pixels, or behavioral profiling cookies.</strong>
             </p>
           </section>
 
@@ -95,7 +95,7 @@ export default function CookiePolicyPage() {
               4. How to Manage or Disable Cookies
             </h2>
             <p>
-              You can control and configure cookie handling in your browser settings (Chrome, Safari, Firefox, Edge). Note that blocking essential authentication cookies will prevent you from signing in to your DREAMOGON journal account.
+              You can control and configure cookie handling in your browser settings (Chrome, Safari, Firefox, Edge). Note that blocking essential authentication cookies will prevent you from signing in to your SUBCONSCIOUS LOG journal account.
             </p>
           </section>
 

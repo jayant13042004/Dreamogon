@@ -9,7 +9,7 @@ interface BrandLogoProps {
   href?: string;
 }
 
-export function DreamogonSymbol({ size = 28, className = '' }: { size?: number; className?: string }) {
+export function SubconsciousLogSymbol({ size = 28, className = '' }: { size?: number; className?: string }) {
   const height = Math.round((size * 120) / 100);
 
   return (
@@ -20,7 +20,7 @@ export function DreamogonSymbol({ size = 28, className = '' }: { size?: number; 
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`shrink-0 transition-transform duration-300 ${className}`}
-      aria-label="Dreamogon Emblem"
+      aria-label="Subconscious Log Emblem"
     >
       {/* Outer Faceted Sanctuary Polygon / Portal */}
       <path
@@ -36,6 +36,9 @@ export function DreamogonSymbol({ size = 28, className = '' }: { size?: number; 
     </svg>
   );
 }
+
+/** Legacy alias for compatibility */
+export const DreamogonSymbol = SubconsciousLogSymbol;
 
 export function BrandLogo({
   variant = 'full',
@@ -56,13 +59,13 @@ export function BrandLogo({
   const content = (
     <div className={`inline-flex items-center gap-3 group select-none ${className}`}>
       <div className="text-[var(--accent)] group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
-        <DreamogonSymbol size={icon} />
+        <SubconsciousLogSymbol size={icon} />
       </div>
       {!iconOnly && variant === 'full' && (
         <span
           className={`font-display font-medium ${text} ${tracking} text-[var(--text-primary)] uppercase leading-none transition-colors duration-300`}
         >
-          Dreamogon
+          Subconscious Log
         </span>
       )}
     </div>

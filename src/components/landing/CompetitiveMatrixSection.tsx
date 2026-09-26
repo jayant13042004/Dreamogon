@@ -5,7 +5,7 @@ import { Check, X, Shield, Sparkles, Compass, Eye, Smartphone, Infinity as Infin
 
 interface ComparisonRow {
   dimension: string;
-  dreamogon: string;
+  subconsciouslog: string;
   traditionalApps: string;
   genericAi: string;
   highlight?: boolean;
@@ -14,46 +14,46 @@ interface ComparisonRow {
 const COMPARISON_DATA: ComparisonRow[] = [
   {
     dimension: 'Reflection Philosophy',
-    dreamogon: 'Socratic self-inquiry & possibilities ("What did the water evoke?")',
+    subconsciouslog: 'Socratic self-inquiry & possibilities ("What did the water evoke?")',
     traditionalApps: 'Dogmatic horoscope/mystical fortunes ("A snake means fake friends")',
     genericAi: 'Generic text summary with clinical or pseudo-medical tone',
     highlight: true,
   },
   {
     dimension: 'Integrity of Authentic Memory',
-    dreamogon: 'Strictly preserved untouched; AI inquiries kept distinct',
+    subconsciouslog: 'Strictly preserved untouched; AI inquiries kept distinct',
     traditionalApps: 'Crowded with ads, pop-ups, and pre-selected keyword tags',
     genericAi: 'Rewrites user text or replaces it with synthesized summaries',
   },
   {
     dimension: 'Cross-Dream Subconscious Graph',
-    dreamogon: '3D Spatial Constellation (Dream World) & co-occurring entity map',
+    subconsciouslog: '3D Spatial Constellation (Dream World) & co-occurring entity map',
     traditionalApps: 'Flat chronological note list or basic tag counts',
     genericAi: 'Stateless; forgets previous dreams once session closes',
     highlight: true,
   },
   {
     dimension: 'Data Privacy & Ethics',
-    dreamogon: 'Row Level Security; zero ad profiling, never trains public models',
+    subconsciouslog: 'Row Level Security; zero ad profiling, never trains public models',
     traditionalApps: 'Frequently sells anonymous behavioral data to ad networks',
     genericAi: 'User inputs often logged for public foundation model retraining',
     highlight: true,
   },
   {
     dimension: 'Bedside Morning Usability',
-    dreamogon: 'Dark ambient UI, 1-tap multilingual voice capture, PWA installable',
+    subconsciouslog: 'Dark ambient UI, 1-tap multilingual voice capture, PWA installable',
     traditionalApps: 'Cluttered UI with banner ads interrupting dawn recall',
     genericAi: 'Requires typing complex conversational prompts in bright UI',
   },
   {
     dimension: 'Visual Memory Generation',
-    dreamogon: 'Cinematic, memory-like art directive avoiding cartoonish clichés',
+    subconsciouslog: 'Cinematic, memory-like art directive avoiding cartoonish clichés',
     traditionalApps: 'Generic stock art or no visual memory',
     genericAi: 'Uncontrolled commercial art style with cartoon elements',
   },
   {
     dimension: 'Ownership Model',
-    dreamogon: 'Free forever core + Fair-use Lifetime option ($149) or Annual',
+    subconsciouslog: 'Free forever core + Fair-use Lifetime option ($149) or Annual',
     traditionalApps: 'Aggressive recurring paywalls or ad-supported degradation',
     genericAi: '$20/month recurring subscription with zero dream tooling',
     highlight: true,
@@ -72,10 +72,10 @@ export function CompetitiveMatrixSection() {
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)]">
-            Why Dreamogon vs. Traditional Apps or Generic AI
+            Why Subconscious Log vs. Traditional Apps or Generic AI
           </h2>
           <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-            Most dream apps treat the subconscious like casual entertainment or horoscope superstition. Generic AI chatbots lack memory, spatial context, and psychological boundaries. Dreamogon was engineered for depth.
+            Most dream apps treat the subconscious like casual entertainment or horoscope superstition. Generic AI chatbots lack memory, spatial context, and psychological boundaries. Subconscious Log was engineered for depth.
           </p>
         </div>
 
@@ -88,7 +88,7 @@ export function CompetitiveMatrixSection() {
                 <th className="py-5 px-6 font-semibold text-[var(--accent)] bg-[var(--accent)]/5 w-1/3">
                   <div className="flex items-center gap-2">
                     <Sparkles size={14} className="text-[var(--accent)]" />
-                    <span>Dreamogon</span>
+                    <span>Subconscious Log</span>
                   </div>
                 </th>
                 <th className="py-5 px-6 font-medium w-1/4">Traditional Dream Apps</th>
@@ -109,7 +109,7 @@ export function CompetitiveMatrixSection() {
                   <td className="py-4 px-6 text-[var(--text-primary)] bg-[var(--accent)]/5 font-medium leading-relaxed align-top border-x border-[var(--accent)]/15">
                     <div className="flex items-start gap-2">
                       <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
-                      <span>{row.dreamogon}</span>
+                      <span>{row.subconsciouslog}</span>
                     </div>
                   </td>
                   <td className="py-4 px-6 text-[var(--text-muted)] leading-relaxed align-top">
@@ -142,10 +142,10 @@ export function CompetitiveMatrixSection() {
               </h3>
               <div className="p-3 rounded-xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 space-y-1">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] font-semibold flex items-center gap-1">
-                  <Sparkles size={11} /> Dreamogon
+                  <Sparkles size={11} /> Subconscious Log
                 </span>
                 <p className="text-xs font-medium text-[var(--text-primary)] leading-relaxed">
-                  {row.dreamogon}
+                  {row.subconsciouslog}
                 </p>
               </div>
               <div className="space-y-2 text-xs text-[var(--text-muted)] pt-1">

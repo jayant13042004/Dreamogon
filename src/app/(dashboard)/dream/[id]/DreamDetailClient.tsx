@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { DreamAnalysis } from '@/components/dreams/DreamAnalysis';
+import { ConnectedDreamsSection } from '@/components/dreams/ConnectedDreamsSection';
 import { DreamCapture, type CapturePayload } from '@/components/dreams/DreamCapture';
 import { Dream } from '@/types/dream';
 import { Button } from '@/components/ui/Button';
@@ -373,17 +374,20 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
           role="status"
         >
           {showAnalyzingBanner && (
-            <p>Analyzing dream... You can keep browsing — this won&apos;t block you.</p>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[var(--accent)] animate-pulse" />
+              <p>Saved to your archive. Analyzing patterns in the background… You can keep browsing.</p>
+            </div>
           )}
           {showFailedBanner && (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <p>Analysis didn&apos;t finish. Your dream is saved.</p>
+              <p>AI reflection didn&apos;t finish. Your dream is safely preserved in your archive.</p>
               <Button size="sm" variant="secondary" onClick={handleAnalyze} disabled={analyzing}>
-                Retry analysis
+                Retry reflection
               </Button>
             </div>
           )}
-          {showCompleteBanner && !showAnalyzingBanner && <p>Your dream has been explored.</p>}
+          {showCompleteBanner && !showAnalyzingBanner && <p>Your dream is safely archived and explored.</p>}
         </div>
       )}
 
@@ -489,7 +493,7 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--bg-card)] hover:bg-[var(--bg-secondary)] border border-[var(--border-default)] hover:border-[var(--accent)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all"
               >
                 <Sparkles size={14} className="text-[var(--accent)]" />
-                <span>Reflect with DREAMOGON on this dream</span>
+                <span>Reflect with Subconscious Log on this dream</span>
               </Link>
             </div>
           </>
@@ -514,7 +518,10 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
         )}
       </section>
 
-      {/* 3. Deeper Exploration (Collapsed by default: entities, visual memory, world) */}
+      {/* 3. Living Archive Connections & Entity Continuity */}
+      <ConnectedDreamsSection dreamId={dream.id} />
+
+      {/* 4. Deeper Exploration (Collapsed by default: entities, visual memory, world) */}
       <section className="space-y-4">
         <button
           type="button"
@@ -545,7 +552,7 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
                     Extracted from this dream
                   </h2>
                   <p className="text-xs text-[var(--text-muted)] mt-1">
-                    Labels DREAMOGON noticed — useful for search and patterns, not definitive meanings.
+                    Labels SUBCONSCIOUS LOG noticed — useful for search and patterns, not definitive meanings.
                   </p>
                 </div>
 

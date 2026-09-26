@@ -203,7 +203,7 @@ export default function LandingPage() {
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-normal leading-[1.06] tracking-tight text-[var(--text-primary)]">
               Your dreams disappear.
               <br />
-              <span className="italic font-light text-[var(--text-secondary)]">DREAMOGON remembers.</span>
+              <span className="italic font-light text-[var(--text-secondary)]">SUBCONSCIOUS LOG remembers.</span>
             </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
@@ -238,9 +238,9 @@ export default function LandingPage() {
       </header>
 
       {/* ─────────────────────────────────────────────────────────────
-          3. PRODUCT DEMO SECTION ("See DREAMOGON in action")
+          3. PRODUCT DEMO SECTION ("See SUBCONSCIOUS LOG in action")
       ───────────────────────────────────────────────────────────── */}
-      <ProductDemoSection videoSrc="/dreamogon-demo.mp4" />
+      <ProductDemoSection videoSrc="/subconsciouslog-demo.mp4" />
 
       {/* ─────────────────────────────────────────────────────────────
           4. DREAM → MEMORY → PATTERN → WORLD (The 4 Stages)
@@ -255,7 +255,7 @@ export default function LandingPage() {
               Dream → Memory → Pattern → World
             </h2>
             <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-              Dreams are fragile at dawn. DREAMOGON treats them with the respect they deserve — starting with effortless morning capture, gently revealing recurring symbols, and building a living memory map.
+              Dreams are fragile at dawn. SUBCONSCIOUS LOG treats them with the respect they deserve — starting with effortless morning capture, gently revealing recurring symbols, and building a living memory map.
             </p>
           </div>
 
@@ -264,7 +264,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          5. INSIDE DREAMOGON (Interactive Product Showcase)
+          5. INSIDE SUBCONSCIOUS LOG (Interactive Product Showcase)
       ───────────────────────────────────────────────────────────── */}
       <ProductShowcaseSection />
 
@@ -283,7 +283,7 @@ export default function LandingPage() {
                 What do you remember?
               </h2>
               <p className="text-base text-[var(--text-secondary)] font-light leading-relaxed">
-                Most dream tools demand too much cognition when you wake up. DREAMOGON is built for half-closed eyes and fading thoughts.
+                Most dream tools demand too much cognition when you wake up. SUBCONSCIOUS LOG is built for half-closed eyes and fading thoughts.
               </p>
 
               <div className="space-y-4 pt-2">
@@ -384,7 +384,7 @@ export default function LandingPage() {
               Possibilities, never diagnoses.
             </h2>
             <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-              DREAMOGON makes a strict, respectful distinction between your authentic memory and reflective suggestions. We believe dream interpretation is a personal contemplative practice, not a clinical prescription.
+              SUBCONSCIOUS LOG makes a strict, respectful distinction between your authentic memory and reflective suggestions. We believe dream interpretation is a personal contemplative practice, not a clinical prescription.
             </p>
           </div>
 
@@ -438,7 +438,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
-          8. EDITORIAL & GUIDES (From the DREAMOGON Library)
+          8. EDITORIAL & GUIDES (From the SUBCONSCIOUS LOG Library)
       ───────────────────────────────────────────────────────────── */}
       <BlogShowcaseSection />
 
@@ -455,7 +455,7 @@ export default function LandingPage() {
               Your dreams stay yours.
             </h2>
             <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-              Your journal holds thoughts you may never say out loud. Privacy is not a feature in DREAMOGON; it is the philosophical foundation.
+              Your journal holds thoughts you may never say out loud. Privacy is not a feature in SUBCONSCIOUS LOG; it is the philosophical foundation.
             </p>
           </div>
 
@@ -480,7 +480,7 @@ export default function LandingPage() {
               <Sparkles size={20} className="text-[var(--accent)]" />
               <h4 className="font-display text-lg text-[var(--text-primary)] font-medium">Model Privacy Boundaries</h4>
               <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
-                DREAMOGON does not use your private journal entries or reflections to train internal public foundation models.
+                SUBCONSCIOUS LOG does not use your private journal entries or reflections to train internal public foundation models.
               </p>
             </div>
           </div>
@@ -765,7 +765,7 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          <p className="text-[11px] font-mono">&copy; {new Date().getFullYear()} DREAMOGON. All rights reserved.</p>
+          <p className="text-[11px] font-mono">&copy; {new Date().getFullYear()} SUBCONSCIOUS LOG. All rights reserved.</p>
         </div>
       </footer>
 

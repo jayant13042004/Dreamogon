@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { resolveDreamImageUrl } from '@/lib/storage/dream-images';
+import { generateEmbedding } from '@/lib/ai/embeddings';
 
 // GET /api/dreams - List user's dreams
 export async function GET(request: NextRequest) {
@@ -78,10 +79,32 @@ export async function GET(request: NextRequest) {
       query = query.contains('ai_themes', [theme]);
     }
 
-    if (search) {
-      query = query.or(
-        `title.ilike.%${search}%,content.ilike.%${search}%,ai_summary.ilike.%${search}%`
-      );
+    if (search && search.trim().length > 0) {
+      let semanticIds: string[] = [];
+      try {
+        const queryEmbedding = await generateEmbedding(search.trim());
+        const { data: semData } = await supabase.rpc('match_dreams', {
+          query_embedding: queryEmbedding,
+          match_threshold: 0.38,
+          match_count: 40,
+          p_user_id: user.id,
+        });
+        if (semData && semData.length > 0) {
+          semanticIds = semData.map((r: any) => r.id);
+        }
+      } catch (embErr) {
+        console.warn('Semantic vector search fallback in list query:', embErr);
+      }
+
+      if (semanticIds.length > 0) {
+        query = query.or(
+          `title.ilike.%${search}%,content.ilike.%${search}%,ai_summary.ilike.%${search}%,id.in.(${semanticIds.join(',')})`
+        );
+      } else {
+        query = query.or(
+          `title.ilike.%${search}%,content.ilike.%${search}%,ai_summary.ilike.%${search}%`
+        );
+      }
     }
 
     if (startDate) {
@@ -142,13 +165,29 @@ export async function POST(request: NextRequest) {
 
     const finalDate = dream_date || date || new Date().toISOString().split('T')[0];
 
+    const cleanContent = content.trim();
+    const finalTitle = (title && title.trim().length > 0)
+      ? title.trim()
+      : (() => {
+          const firstSentence = cleanContent.split(/[.!?\n]/)[0].trim();
+          if (firstSentence && firstSentence.length >= 4 && firstSentence.length <= 50) {
+            return firstSentence.charAt(0).toUpperCase() + firstSentence.slice(1);
+          }
+          const words = cleanContent.split(/\s+/).slice(0, 6).join(' ');
+          if (words.length >= 3) {
+            const formatted = words.charAt(0).toUpperCase() + words.slice(1);
+            return formatted.length < cleanContent.length ? `${formatted}…` : formatted;
+          }
+          return `Dream · ${finalDate}`;
+        })();
+
     // Create the dream
     const { data: dream, error } = await supabase
       .from('dreams')
       .insert({
         user_id: user.id,
-        title: title || 'Untitled Dream',
-        content: content.trim(),
+        title: finalTitle,
+        content: cleanContent,
         dream_date: finalDate,
         mood: mood || null,
         lucidity: lucidity || null,

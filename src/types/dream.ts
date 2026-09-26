@@ -80,6 +80,8 @@ export interface UpdateDreamInput {
   lucidity?: Lucidity;
 }
 
+export type TemporalStatus = 'emerging' | 'recurring' | 'dormant' | 'anchor' | 'fading';
+
 export interface DreamArtifact {
   id: string;
   user_id: string;
@@ -93,6 +95,8 @@ export interface DreamArtifact {
   position_x: number;
   position_y: number;
   position_z: number;
+  temporal_status?: TemporalStatus;
+  connected_artifact_ids?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -127,4 +131,28 @@ export interface DreamWorldState {
   unlocked_features: any;
   created_at: string;
   updated_at: string;
+}
+
+export interface EntityContinuity {
+  id?: string;
+  name: string;
+  type: EntityType;
+  appearanceCount: number;
+  firstSeenAt: string;
+  lastSeenAt?: string;
+  isFirstAppearance: boolean;
+  continuityBadge: string;
+}
+
+export interface RelatedDreamConnection {
+  id: string;
+  title: string;
+  dream_date: string;
+  ai_summary: string | null;
+  content: string;
+  sharedEntities: string[];
+  sharedThemes: string[];
+  semanticScore: number;
+  reasons: string[];
+  primaryReason: string;
 }

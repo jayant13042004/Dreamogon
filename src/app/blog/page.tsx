@@ -42,14 +42,14 @@ export default function BlogIndexPage() {
         <div className="max-w-3xl mb-12 space-y-4">
           <div className="inline-flex items-center gap-2 text-[10px] font-mono text-[var(--accent)] uppercase tracking-[0.24em]">
             <Compass size={13} />
-            <span>The DREAMOGON Chronicle</span>
+            <span>The SUBCONSCIOUS LOG Chronicle</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-display font-medium text-[var(--text-primary)] tracking-tight leading-[1.12]">
             Reflections on Dreams, Memory & the Subconscious
           </h1>
           <p className="text-[var(--text-secondary)] text-base md:text-xl font-light leading-relaxed">
             Evidence-based guides, REM neuroscience, and mindful journaling practices curated by the
-            DREAMOGON Editorial Desk.
+            SUBCONSCIOUS LOG Editorial Desk.
           </p>
         </div>
 

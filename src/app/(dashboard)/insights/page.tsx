@@ -13,9 +13,14 @@ import {
   Heart,
   Sparkles,
   ArrowRight,
+  Share2,
   type LucideIcon,
 } from 'lucide-react';
 import { Dream, DreamEntity } from '@/types/dream';
+import type { DreamEvolutionAnalysis } from '@/types/ai';
+import { DreamEvolutionSection } from '@/components/insights/DreamEvolutionSection';
+import { ShareableDiscoveriesModal } from '@/components/world/ShareableDiscoveriesModal';
+import { fetchCompleteDreamWorldData, DreamWorldData } from '@/lib/dreamWorld';
 import {
   aggregateEntitiesByType,
   aggregateMoods,
@@ -81,8 +86,12 @@ export default function InsightsPage() {
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [entities, setEntities] = useState<DreamEntity[]>([]);
   const [aiNotes, setAiNotes] = useState<string[]>([]);
+  const [evolution, setEvolution] = useState<DreamEvolutionAnalysis | null>(null);
+  const [worldData, setWorldData] = useState<DreamWorldData | null>(null);
+  const [showDiscoveriesModal, setShowDiscoveriesModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [insightsLoading, setInsightsLoading] = useState(false);
+  const [evolutionLoading, setEvolutionLoading] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -106,6 +115,32 @@ export default function InsightsPage() {
 
     fetchData();
   }, [user, supabase]);
+
+  const fetchEvolution = async (forceRefresh = false) => {
+    if (dreams.length < 3) return;
+    setEvolutionLoading(true);
+    try {
+      const res = await fetch(`/api/ai/evolution${forceRefresh ? '?refresh=true' : ''}`, {
+        method: forceRefresh ? 'POST' : 'GET',
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.available && data.analysis) {
+          setEvolution(data.analysis);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch evolution analysis:', err);
+    } finally {
+      setEvolutionLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (dreams.length >= 3 && !evolution) {
+      fetchEvolution();
+    }
+  }, [dreams.length, evolution]);
 
   useEffect(() => {
     async function fetchAiPatterns() {
@@ -195,14 +230,40 @@ export default function InsightsPage() {
             Recurring threads across {dreams.length} dreams — framed as possibilities, not conclusions.
           </p>
         </div>
-        <Link
-          href="/dreams"
-          className="inline-flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
-        >
-          <BookOpen size={14} />
-          Browse journal
-        </Link>
+        <div className="flex items-center gap-2">
+          {dreams.length >= 1 && (
+            <button
+              onClick={async () => {
+                if (!worldData && user) {
+                  const data = await fetchCompleteDreamWorldData(supabase, user.id);
+                  setWorldData(data);
+                }
+                setShowDiscoveriesModal(true);
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] hover:border-[var(--accent)] hover:text-[var(--accent)] text-xs font-semibold text-[var(--text-primary)] transition-colors"
+              title="View shareable milestone cards"
+            >
+              <Share2 size={13} className="text-[var(--accent)]" />
+              <span>Share Discoveries</span>
+            </button>
+          )}
+          <Link
+            href="/dreams"
+            className="inline-flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+          >
+            <BookOpen size={14} />
+            Browse journal
+          </Link>
+        </div>
       </div>
+
+      {/* Dream Evolution: Longitudinal Shift Analysis */}
+      <DreamEvolutionSection
+        analysis={evolution}
+        loading={evolutionLoading}
+        onRefresh={() => fetchEvolution(true)}
+        dreamCount={dreams.length}
+      />
 
       {(quietNotes.length > 0 || insightsLoading || aiNotes.length > 0) && (
         <section className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 space-y-4">
@@ -215,7 +276,7 @@ export default function InsightsPage() {
               href={`/chat?q=${encodeURIComponent('What recurring patterns or themes appear most frequently across my dreams?')}`}
               className="inline-flex items-center gap-1.5 text-xs text-[var(--accent)] hover:underline"
             >
-              <span>Reflect on patterns with Dreamogon</span>
+              <span>Reflect on patterns with Subconscious Log</span>
               <ArrowRight size={12} />
             </Link>
           </div>
@@ -277,6 +338,14 @@ export default function InsightsPage() {
         These lists are built from your journal and AI extractions labels. They are for self-reflection —
         not medical or psychological diagnosis.
       </p>
+
+      {worldData && (
+        <ShareableDiscoveriesModal
+          isOpen={showDiscoveriesModal}
+          onClose={() => setShowDiscoveriesModal(false)}
+          worldData={worldData}
+        />
+      )}
     </div>
   );
 }

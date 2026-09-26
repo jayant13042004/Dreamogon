@@ -66,7 +66,7 @@ function BillingSuccessToast() {
   useEffect(() => {
     const billing = searchParams.get('billing');
     if (billing === 'success') {
-      toast.success('Welcome to Dreamogon Pro — your plan will update in a moment.');
+      toast.success('Welcome to Subconscious Log Pro — your plan will update in a moment.');
     } else if (billing === 'canceled') {
       toast.error('Checkout canceled. You can upgrade anytime.');
     }
@@ -186,7 +186,7 @@ export default function SettingsPage() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `dreamogon_dreams_export_${new Date().toISOString().slice(0, 10)}.json`;
+        a.download = `subconsciouslog_dreams_export_${new Date().toISOString().slice(0, 10)}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -221,7 +221,7 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `dreamogon_dreams_export_${new Date().toISOString().slice(0, 10)}.md`;
+        a.download = `subconsciouslog_dreams_export_${new Date().toISOString().slice(0, 10)}.md`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -480,7 +480,7 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
             ) : (
               <div className="p-4 rounded-xl bg-[var(--accent-soft)]/40 border border-[var(--accent)]/30 text-xs text-[var(--text-secondary)] leading-relaxed">
                 <span className="font-medium text-[var(--text-primary)]">Lifetime Pro Member: </span>
-                Your account is permanently entitled to the full Dreamogon Pro feature set with 100 monthly recurring AI operations. No subscription fees or renewals apply.
+                Your account is permanently entitled to the full Subconscious Log Pro feature set with 100 monthly recurring AI operations. No subscription fees or renewals apply.
               </div>
             )}
           </div>

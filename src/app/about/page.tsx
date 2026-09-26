@@ -6,14 +6,14 @@ import { generateBreadcrumbSchema, generateOrganizationSchema } from '@/lib/seo/
 import { Compass, ShieldCheck, Sparkles, Feather, ArrowRight, Lock, Eye, BookOpen } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'About DREAMOGON — Philosophy, Architecture & Subconscious Archive',
+  title: 'About SUBCONSCIOUS LOG — Philosophy, Architecture & Subconscious Archive',
   description:
-    'Learn about DREAMOGON: our philosophy of self-awareness through morning dream journaling, cognitive science principles, zero-data-sharing privacy standards, and calm design.',
+    'Learn about SUBCONSCIOUS LOG: our philosophy of self-awareness through morning dream journaling, cognitive science principles, zero-data-sharing privacy standards, and calm design.',
   path: '/about',
   keywords: [
-    'about DREAMOGON',
+    'about SUBCONSCIOUS LOG',
     'dream journal philosophy',
-    'DREAMOGON mission',
+    'SUBCONSCIOUS LOG mission',
     'privacy first AI dream journal',
     'cognitive science dream recall',
   ],
@@ -59,7 +59,7 @@ export default function AboutPage() {
           </p>
 
           <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-            DREAMOGON exists to provide an unhurried, respectful sanctuary for those fleeting dawn moments—capturing raw memory without friction, reflecting through contemplative inquiry, and mapping your recurring motifs across years.
+            SUBCONSCIOUS LOG exists to provide an unhurried, respectful sanctuary for those fleeting dawn moments—capturing raw memory without friction, reflecting through contemplative inquiry, and mapping your recurring motifs across years.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
                 1. Absolute Privacy
               </h3>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
-                Dreams are among the most intimate expressions of human consciousness. We operate on a strict zero-data-selling architecture. Your entries are protected by Row Level Security and are never indexed on public search engines or used by DREAMOGON to train public foundation models.
+                Dreams are among the most intimate expressions of human consciousness. We operate on a strict zero-data-selling architecture. Your entries are protected by Row Level Security and are never indexed on public search engines or used by SUBCONSCIOUS LOG to train public foundation models.
               </p>
             </div>
 
@@ -90,7 +90,7 @@ export default function AboutPage() {
                 2. Contemplative Inquiry
               </h3>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
-                We reject mystical fortune-telling, horoscope gimmicks, and pseudo-clinical diagnosis. DREAMOGON operates as a Socratic mirror: offering thoughtful inquiries that invite your own reflection, while keeping your authentic unedited words pristine.
+                We reject mystical fortune-telling, horoscope gimmicks, and pseudo-clinical diagnosis. SUBCONSCIOUS LOG operates as a Socratic mirror: offering thoughtful inquiries that invite your own reflection, while keeping your authentic unedited words pristine.
               </p>
             </div>
 
@@ -102,7 +102,7 @@ export default function AboutPage() {
                 3. Spatial Memory Topography
               </h3>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
-                Linear lists fail to convey how memories relate to one another. DREAMOGON organizes your subconscious motifs into an interconnected constellation—allowing you to navigate themes of water, thresholds, and recurring figures as a living landscape.
+                Linear lists fail to convey how memories relate to one another. SUBCONSCIOUS LOG organizes your subconscious motifs into an interconnected constellation—allowing you to navigate themes of water, thresholds, and recurring figures as a living landscape.
               </p>
             </div>
 
@@ -114,7 +114,7 @@ export default function AboutPage() {
                 4. Quiet Luxury & Calm
               </h3>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
-                No loud neon gradients, no gamification badges, no streaks designed to trigger anxiety. Every pixel of DREAMOGON is crafted with restrained typography, warm obsidian or parchment palettes, and generous whitespace.
+                No loud neon gradients, no gamification badges, no streaks designed to trigger anxiety. Every pixel of SUBCONSCIOUS LOG is crafted with restrained typography, warm obsidian or parchment palettes, and generous whitespace.
               </p>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function AboutPage() {
             Built for lifelong permanence.
           </h3>
           <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-light leading-relaxed">
-            DREAMOGON is engineered with open, standardized data structures. Every dream entry belongs entirely to you. You can export your complete archive in JSON or Markdown at any time, ensuring that your dream history remains your personal property indefinitely.
+            SUBCONSCIOUS LOG is engineered with open, standardized data structures. Every dream entry belongs entirely to you. You can export your complete archive in JSON or Markdown at any time, ensuring that your dream history remains your personal property indefinitely.
           </p>
           <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono">
             <Link href="/how-it-works" className="text-[var(--accent)] hover:underline inline-flex items-center gap-1">

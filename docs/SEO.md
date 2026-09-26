@@ -1,7 +1,7 @@
-﻿# DREAMOGON SEO & Technical Architecture Reference
+﻿# SUBCONSCIOUS LOG SEO & Technical Architecture Reference
 
 ## 1. Overview & Strategy
-DREAMOGON's SEO architecture is designed around high-intent search exploration across oneiric science, dream journaling, universal dream symbolism, and subconscious pattern discovery.
+SUBCONSCIOUS LOG's SEO architecture is designed around high-intent search exploration across oneiric science, dream journaling, universal dream symbolism, and subconscious pattern discovery.
 
 ### Public vs. Private Boundaries
 - **Public (Indexable)**: 

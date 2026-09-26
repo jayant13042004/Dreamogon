@@ -6,11 +6,11 @@ import { generateBreadcrumbSchema } from '@/lib/seo/structuredData';
 import { Eye, Check, Volume2, Move, Heart } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'Accessibility Statement — DREAMOGON Dream Journal',
+  title: 'Accessibility Statement — SUBCONSCIOUS LOG Dream Journal',
   description:
     'Our commitment to digital accessibility: high-contrast typography, screen reader compatibility, voice dictation, and reduced-motion support.',
   path: '/accessibility',
-  keywords: ['DREAMOGON accessibility statement', 'accessible dream app', 'contrast and reduced motion'],
+  keywords: ['SUBCONSCIOUS LOG accessibility statement', 'accessible dream app', 'contrast and reduced motion'],
 });
 
 export default function AccessibilityPage() {
@@ -52,7 +52,7 @@ export default function AccessibilityPage() {
               1. Our Accessibility Principles
             </h2>
             <p>
-              DREAMOGON is designed with digital accessibility in mind to support an inclusive morning journaling experience. We aim to implement accessible user-interface conventions, including readable typography, high-contrast themes, keyboard navigation, and operating-system motion controls. Note that we have not conducted a formal third-party accessibility certification audit.
+              SUBCONSCIOUS LOG is designed with digital accessibility in mind to support an inclusive morning journaling experience. We aim to implement accessible user-interface conventions, including readable typography, high-contrast themes, keyboard navigation, and operating-system motion controls. Note that we have not conducted a formal third-party accessibility certification audit.
             </p>
           </section>
 
@@ -108,7 +108,7 @@ export default function AccessibilityPage() {
               3. Accessibility Feedback
             </h2>
             <p>
-              We continually audit and improve our user interface. If you encounter any barrier or difficulty accessing any portion of the DREAMOGON service, please reach out to our team at{' '}
+              We continually audit and improve our user interface. If you encounter any barrier or difficulty accessing any portion of the SUBCONSCIOUS LOG service, please reach out to our team at{' '}
               {SITE_CONFIG.supportEmail ? (
                 <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[var(--accent)] hover:underline font-mono">
                   {SITE_CONFIG.supportEmail}

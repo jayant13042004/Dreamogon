@@ -96,7 +96,7 @@ export function Header({ title }: HeaderProps) {
           <button
             onClick={handleSignOut}
             className="p-2 text-[var(--text-muted)] hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors border border-[var(--border-default)]"
-            title="Sign out of Dreamogon"
+            title="Sign out of Subconscious Log"
             aria-label="Sign out"
           >
             <LogOut size={15} />

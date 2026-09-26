@@ -33,8 +33,8 @@ export function generateArticleSchema({
   url,
   publishedAt,
   updatedAt,
-  authorName = 'Dreamogon Editorial Desk',
-  image = `${SITE_CONFIG.url}/og-dreamogon.png`,
+  authorName = 'Subconscious Log Editorial Desk',
+  image = `${SITE_CONFIG.url}/og-subconsciouslog.png`,
 }: {
   title: string;
   description: string;
@@ -103,7 +103,7 @@ export function generateSoftwareApplicationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Dreamogon',
+    name: 'Subconscious Log',
     operatingSystem: 'Any (Web, iOS Safari, Android Chrome, Desktop)',
     applicationCategory: 'LifestyleApplication',
     offers: [

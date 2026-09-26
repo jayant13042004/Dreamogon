@@ -82,7 +82,7 @@ export default function RecurringDreamsPillarPage() {
             Trace Your Recurring Subconscious Patterns
           </h2>
           <p className="text-[var(--text-secondary)] text-sm md:text-base max-w-lg mx-auto font-light">
-            DREAMOGON cross-correlates your entries over time to help you identify what waking triggers precede your recurring dreams.
+            SUBCONSCIOUS LOG cross-correlates your entries over time to help you identify what waking triggers precede your recurring dreams.
           </p>
           <Link
             href="/signup"

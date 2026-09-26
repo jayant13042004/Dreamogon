@@ -124,7 +124,7 @@ export const PLANS: Record<keyof typeof PLAN_IDS, PlanDefinition> = {
     allowImageRegeneration: true,
     features: [
       'Full Pro product access permanently',
-      'No recurring Dreamogon subscription fee',
+      'No recurring Subconscious Log subscription fee',
       '100 AI operations / month recurring fair-use allowance',
       'Deep cross-dream pattern synthesis & archive queries',
       'Longitudinal theme tracking across months & years',

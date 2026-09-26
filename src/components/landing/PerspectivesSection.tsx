@@ -74,10 +74,10 @@ export function PerspectivesSection() {
               Bedside Nightstand Experience
             </span>
             <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">
-              Install Dreamogon as a Native Home Screen App
+              Install Subconscious Log as a Native Home Screen App
             </h3>
             <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-light leading-relaxed">
-              No App Store downloads needed. Open Dreamogon in Safari or Chrome on your phone, tap <span className="font-mono text-[var(--text-primary)]">Share → Add to Home Screen</span>, and open it with one tap each morning with zero browser chrome.
+              No App Store downloads needed. Open Subconscious Log in Safari or Chrome on your phone, tap <span className="font-mono text-[var(--text-primary)]">Share → Add to Home Screen</span>, and open it with one tap each morning with zero browser chrome.
             </p>
           </div>
 

@@ -6,11 +6,11 @@ import { generateBreadcrumbSchema } from '@/lib/seo/structuredData';
 import { ShieldCheck, Lock, KeyRound, Server, EyeOff, AlertCircle } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'Security & Data Protection — Dreamogon',
+  title: 'Security & Data Protection — Subconscious Log',
   description:
-    'Overview of Dreamogon’s technical security controls: Row Level Security (RLS), HTTPS encryption, database protection, and responsible disclosure.',
+    'Overview of Subconscious Log’s technical security controls: Row Level Security (RLS), HTTPS encryption, database protection, and responsible disclosure.',
   path: '/security',
-  keywords: ['dream journal security', 'Dreamogon data encryption', 'Row Level Security dream app', 'vulnerability reporting'],
+  keywords: ['dream journal security', 'Subconscious Log data encryption', 'Row Level Security dream app', 'vulnerability reporting'],
 });
 
 export default function SecurityPage() {
@@ -42,7 +42,7 @@ export default function SecurityPage() {
           </h1>
 
           <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
-            Your subconscious thoughts deserve uncompromising technical defense. Learn how Dreamogon protects your dream entries at every architectural layer.
+            Your subconscious thoughts deserve uncompromising technical defense. Learn how Subconscious Log protects your dream entries at every architectural layer.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function SecurityPage() {
               Isolated Payment Infrastructure
             </h2>
             <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
-              Dreamogon never handles, touches, or stores your payment card credentials. All billing is managed through Stripe, certified under PCI-DSS Level 1 (the highest standard in payment security).
+              Subconscious Log never handles, touches, or stores your payment card credentials. All billing is managed through Stripe, certified under PCI-DSS Level 1 (the highest standard in payment security).
             </p>
           </div>
 

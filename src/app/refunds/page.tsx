@@ -6,11 +6,11 @@ import { generateBreadcrumbSchema } from '@/lib/seo/structuredData';
 import { CreditCard, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'Refund & Cancellation Policy — Dreamogon',
+  title: 'Refund & Cancellation Policy — Subconscious Log',
   description:
-    'Dreamogon’s transparent refund and cancellation policy: self-serve cancellation for subscriptions and clear terms for Lifetime purchases.',
+    'Subconscious Log’s transparent refund and cancellation policy: self-serve cancellation for subscriptions and clear terms for Lifetime purchases.',
   path: '/refunds',
-  keywords: ['Dreamogon refund policy', 'cancel Dreamogon pro subscription', 'lifetime guarantee terms', 'subscription billing terms'],
+  keywords: ['Subconscious Log refund policy', 'cancel Subconscious Log pro subscription', 'lifetime guarantee terms', 'subscription billing terms'],
 });
 
 export default function RefundPolicyPage() {
@@ -52,10 +52,10 @@ export default function RefundPolicyPage() {
               1. Self-Serve Subscription Cancellation
             </h2>
             <p>
-              You may cancel your recurring Dreamogon Pro subscription (Monthly or Annual) at any time without contacting support or navigating retention friction.
+              You may cancel your recurring Subconscious Log Pro subscription (Monthly or Annual) at any time without contacting support or navigating retention friction.
             </p>
             <p>
-              To cancel, navigate to <strong>Settings &rarr; Subscription & Plan</strong> inside your logged-in Dreamogon account and click <strong>Manage Subscription & Invoices</strong>. This opens the self-serve Stripe customer portal where you can cancel immediately.
+              To cancel, navigate to <strong>Settings &rarr; Subscription & Plan</strong> inside your logged-in Subconscious Log account and click <strong>Manage Subscription & Invoices</strong>. This opens the self-serve Stripe customer portal where you can cancel immediately.
             </p>
             <p>
               Upon cancellation, your Pro entitlement remains fully active until the end of your current paid billing period (month or year). You will not be billed again.
@@ -67,7 +67,7 @@ export default function RefundPolicyPage() {
               2. Lifetime Access Purchases
             </h2>
             <p>
-              Dreamogon Lifetime is a single, non-recurring purchase ($149 one-time). There are no recurring charges, renewals, or subscription maintenance fees.
+              Subconscious Log Lifetime is a single, non-recurring purchase ($149 one-time). There are no recurring charges, renewals, or subscription maintenance fees.
             </p>
             <p>
               Because digital entitlements and AI quota allocations are provisioned immediately upon transaction confirmation, Lifetime purchases are intended to be final. However, if you experience insurmountable technical issues or accidental duplicate purchases, you may contact our support desk within 7 days of purchase for review.

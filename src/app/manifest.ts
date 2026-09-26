@@ -3,8 +3,8 @@ import { SITE_CONFIG } from '@/lib/seo/metadata';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Dreamogon — Private Dream Journal & Subconscious Archive',
-    short_name: 'Dreamogon',
+    name: 'Subconscious Log — Private Dream Journal & Subconscious Archive',
+    short_name: 'Subconscious Log',
     description: SITE_CONFIG.description,
     start_url: '/dream/new',
     scope: '/',

@@ -75,7 +75,7 @@ export default function LucidDreamingPillarPage() {
             Journaling is the Foundation of Lucidity
           </h2>
           <p className="text-[var(--text-secondary)] text-sm md:text-base max-w-lg mx-auto font-light">
-            You cannot become lucid if you cannot remember your dreams. Start building your recall practice with DREAMOGON today.
+            You cannot become lucid if you cannot remember your dreams. Start building your recall practice with SUBCONSCIOUS LOG today.
           </p>
           <Link
             href="/signup"

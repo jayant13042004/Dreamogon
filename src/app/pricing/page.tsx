@@ -6,16 +6,16 @@ import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo/structure
 import { Check, Sparkles, ShieldCheck, ArrowRight, Infinity as InfinityIcon } from 'lucide-react';
 
 export const metadata = constructMetadata({
-  title: 'Pricing — Free, Pro & Lifetime | Dreamogon',
+  title: 'Pricing — Free, Pro & Lifetime | Subconscious Log',
   description:
-    'Honest, transparent pricing for Dreamogon. Unlimited dream journaling is free forever. Upgrade to Pro or Lifetime for deep archive understanding, longitudinal pattern synthesis, and expanded AI reflection.',
+    'Honest, transparent pricing for Subconscious Log. Unlimited dream journaling is free forever. Upgrade to Pro or Lifetime for deep archive understanding, longitudinal pattern synthesis, and expanded AI reflection.',
   path: '/pricing',
   keywords: [
     'dream journal pricing',
-    'Dreamogon cost',
+    'Subconscious Log cost',
     'free dream journal app',
-    'Dreamogon Pro subscription',
-    'Dreamogon Lifetime',
+    'Subconscious Log Pro subscription',
+    'Subconscious Log Lifetime',
     'AI dream journal plans',
   ],
 });
@@ -47,14 +47,14 @@ const PRICING_FAQS = [
       'Every dream entry, voice transcript, reflection, and pattern in your archive remains permanently preserved. Your private dream archive is yours forever. You simply revert to the Free tier AI reflection allowances for future months.',
   },
   {
-    question: 'What AI provider powers Dreamogon?',
+    question: 'What AI provider powers Subconscious Log?',
     answer:
-      'Dreamogon uses direct, encrypted API integration with Google Gemini. We do not use your private dream narratives to train public AI foundation models, and we never sell dream data to advertisers.',
+      'Subconscious Log uses direct, encrypted API integration with Google Gemini. We do not use your private dream narratives to train public AI foundation models, and we never sell dream data to advertisers.',
   },
   {
     question: 'Can I export my entire journal archive?',
     answer:
-      'Yes. Dreamogon provides complete data portability. You can export your full dream entries, tags, and AI reflections at any time in standardized JSON or human-readable Markdown.',
+      'Yes. Subconscious Log provides complete data portability. You can export your full dream entries, tags, and AI reflections at any time in standardized JSON or human-readable Markdown.',
   },
   {
     question: 'How do refunds work?',

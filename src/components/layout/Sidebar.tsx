@@ -24,7 +24,7 @@ const navItems = [
   { name: 'Journal', href: '/dreams', icon: BookOpen },
   { name: 'Insights', href: '/insights', icon: TrendingUp },
   { name: 'Dream World', href: '/world', icon: Compass },
-  { name: 'AI Guide', href: '/chat', icon: MessageCircle },
+  { name: 'Dream History', href: '/chat', icon: MessageCircle },
 ];
 
 function planLabel(planTier?: string | null) {
@@ -67,7 +67,7 @@ export function Sidebar() {
       <div className="p-7 pb-5">
         <BrandLogo size="md" href="/dashboard" />
         <span className="text-[9px] uppercase tracking-[0.22em] text-[var(--text-muted)] font-medium block mt-2 ml-9">
-          Dream Journal
+          Private Dream Archive
         </span>
       </div>
 
@@ -126,7 +126,7 @@ export function Sidebar() {
           </Link>
           <button
             onClick={handleSignOut}
-            title="Sign out of Dreamogon"
+            title="Sign out of Subconscious Log"
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[var(--text-muted)] hover:text-rose-500 hover:bg-rose-500/10 transition-colors text-xs"
             aria-label="Sign out"
           >

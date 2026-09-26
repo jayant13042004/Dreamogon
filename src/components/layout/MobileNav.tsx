@@ -9,12 +9,17 @@ import { motion } from 'framer-motion';
 export function MobileNav() {
   const pathname = usePathname();
 
+  // Hide mobile nav during morning dream capture for a distraction-free, full-height experience
+  if (pathname === '/dream/new') {
+    return null;
+  }
+
   const navItems = [
     { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
     { name: 'World', href: '/world', icon: Compass },
     { name: 'Record', href: '/dream/new', icon: Plus, isFab: true },
     { name: 'Insights', href: '/insights', icon: TrendingUp },
-    { name: 'Guide', href: '/chat', icon: MessageCircle },
+    { name: 'History', href: '/chat', icon: MessageCircle },
   ];
 
   return (
