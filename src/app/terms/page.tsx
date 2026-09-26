@@ -87,7 +87,7 @@ export default function TermsPage() {
               4. User Accounts & Security
             </h2>
             <p>
-              You are responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account. You agree to notify us immediately at <a href={`mailto:${SITE_CONFIG.securityEmail}`} className="text-[var(--accent)] hover:underline font-mono">{SITE_CONFIG.securityEmail}</a> if you detect unauthorized access.
+              You are responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account. You agree to notify us immediately at <a href={`mailto:${SITE_CONFIG.privacyEmail}`} className="text-[var(--accent)] hover:underline font-mono">{SITE_CONFIG.privacyEmail}</a> if you detect unauthorized access.
             </p>
           </section>
 
@@ -126,7 +126,8 @@ export default function TermsPage() {
               8. Contact Information
             </h2>
             <p>
-              Legal Inquiries: <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[var(--accent)] hover:underline font-mono">{SITE_CONFIG.supportEmail}</a><br />
+              Customer Support &amp; General Inquiries: <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[var(--accent)] hover:underline font-mono">{SITE_CONFIG.supportEmail}</a><br />
+              Privacy &amp; Security Inquiries: <a href={`mailto:${SITE_CONFIG.privacyEmail}`} className="text-[var(--accent)] hover:underline font-mono">{SITE_CONFIG.privacyEmail}</a><br />
               Operator: {SITE_CONFIG.legalEntityName}<br />
               Address: {SITE_CONFIG.registeredAddress}
             </p>

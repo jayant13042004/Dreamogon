@@ -71,15 +71,9 @@ export default function RefundPolicyPage() {
             </p>
             <p>
               To submit a billing inquiry or refund request, email{' '}
-              {SITE_CONFIG.supportEmail ? (
-                <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[var(--accent)] hover:underline font-mono">
-                  {SITE_CONFIG.supportEmail}
-                </a>
-              ) : (
-                <span className="font-mono text-[var(--text-muted)]">
-                  [support contact pending configuration &middot; set NEXT_PUBLIC_SUPPORT_EMAIL]
-                </span>
-              )}{' '}
+              <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[var(--accent)] hover:underline font-mono">
+                {SITE_CONFIG.supportEmail}
+              </a>{' '}
               with your account email address and invoice details. Approved refunds are credited back to your original payment method via Stripe.
             </p>
           </section>

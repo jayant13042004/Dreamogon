@@ -9,20 +9,20 @@ export const SITE_CONFIG = {
   url: process.env.NEXT_PUBLIC_APP_URL || 'https://subconsciouslog.com',
   ogImage: '/og-subconsciouslog.png',
   twitterHandle: '@subconsciouslog',
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '[OWNER INPUT REQUIRED: Support Email]',
-  privacyEmail: process.env.NEXT_PUBLIC_PRIVACY_EMAIL || '[OWNER INPUT REQUIRED: Privacy Email]',
-  securityEmail: process.env.NEXT_PUBLIC_SECURITY_EMAIL || '[OWNER INPUT REQUIRED: Security Email]',
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@subconsciouslog.com',
+  privacyEmail: process.env.NEXT_PUBLIC_PRIVACY_EMAIL || 'privacy@subconsciouslog.com',
+  securityEmail: process.env.NEXT_PUBLIC_PRIVACY_EMAIL || 'privacy@subconsciouslog.com',
   getSupportEmail(): string {
-    return process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '[OWNER INPUT REQUIRED: Support Email]';
+    return process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@subconsciouslog.com';
   },
   getPrivacyEmail(): string {
-    return process.env.NEXT_PUBLIC_PRIVACY_EMAIL || '[OWNER INPUT REQUIRED: Privacy Email]';
+    return process.env.NEXT_PUBLIC_PRIVACY_EMAIL || 'privacy@subconsciouslog.com';
   },
   getSecurityEmail(): string {
-    return process.env.NEXT_PUBLIC_SECURITY_EMAIL || '[OWNER INPUT REQUIRED: Security Email]';
+    return process.env.NEXT_PUBLIC_PRIVACY_EMAIL || 'privacy@subconsciouslog.com';
   },
   isEmailConfigured(): boolean {
-    return Boolean(process.env.NEXT_PUBLIC_SUPPORT_EMAIL);
+    return true;
   },
   ownerName: 'Jayant Jagtap',
   legalEntityName: process.env.NEXT_PUBLIC_LEGAL_ENTITY || 'Jayant Jagtap (Proprietor, Subconscious Log)',

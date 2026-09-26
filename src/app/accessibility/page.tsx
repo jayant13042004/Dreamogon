@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { constructMetadata, SITE_CONFIG } from '@/lib/seo/metadata';
 import { PublicNavbar, PublicFooter } from '@/components/layout/PublicNav';
@@ -109,15 +109,9 @@ export default function AccessibilityPage() {
             </h2>
             <p>
               We continually audit and improve our user interface. If you encounter any barrier or difficulty accessing any portion of the SUBCONSCIOUS LOG service, please reach out to our team at{' '}
-              {SITE_CONFIG.supportEmail ? (
-                <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[var(--accent)] hover:underline font-mono">
-                  {SITE_CONFIG.supportEmail}
-                </a>
-              ) : (
-                <span className="font-mono text-[var(--text-muted)]">
-                  [support contact pending configuration · set NEXT_PUBLIC_SUPPORT_EMAIL]
-                </span>
-              )}{' '}
+              <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[var(--accent)] hover:underline font-mono">
+                {SITE_CONFIG.supportEmail}
+              </a>{' '}
               with &ldquo;Accessibility&rdquo; in the subject line. We welcome your feedback and will work to accommodate your needs.
             </p>
           </section>

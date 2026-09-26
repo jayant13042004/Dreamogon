@@ -98,16 +98,10 @@ export default function SecurityPage() {
             Responsible Disclosure Channel
           </h3>
           <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-light leading-relaxed">
-            We welcome vulnerability reports from independent security researchers. If you discover a security issue or vulnerability in our application, please report it to our security desk at{' '}
-            {SITE_CONFIG.securityEmail ? (
-              <a href={`mailto:${SITE_CONFIG.securityEmail}`} className="text-[var(--accent)] hover:underline font-mono">
-                {SITE_CONFIG.securityEmail}
-              </a>
-            ) : (
-              <span className="font-mono text-[var(--text-muted)]">
-                [security contact pending configuration &middot; set NEXT_PUBLIC_SECURITY_EMAIL]
-              </span>
-            )}.
+            We welcome vulnerability reports from independent security researchers. If you discover a security issue or vulnerability in our application, please report it to our security and privacy desk at{' '}
+            <a href={`mailto:${SITE_CONFIG.privacyEmail}`} className="text-[var(--accent)] hover:underline font-mono">
+              {SITE_CONFIG.privacyEmail}
+            </a>.
           </p>
           <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
             Please include steps to reproduce and allow reasonable time for remediation before any public disclosure. We do not pursue legal action against researchers acting in good faith.

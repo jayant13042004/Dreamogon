@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -63,42 +63,36 @@ export default function ContactPage() {
                 Direct Channels
               </h2>
 
-              <div className="space-y-3 text-xs">
+              <div className="space-y-4 text-xs">
                 <div className="flex items-start gap-3">
                   <Mail size={16} className="text-[var(--accent)] mt-0.5 shrink-0" />
-                  <div>
-                    <p className="text-[var(--text-muted)] font-mono text-[11px]">General & Support</p>
-                    {SITE_CONFIG.supportEmail ? (
-                      <a
-                        href={`mailto:${SITE_CONFIG.supportEmail}`}
-                        className="font-medium text-[var(--text-primary)] hover:underline font-mono"
-                      >
-                        {SITE_CONFIG.supportEmail}
-                      </a>
-                    ) : (
-                      <p className="text-[var(--text-muted)] font-mono text-[11px]">
-                        Pending configuration (set NEXT_PUBLIC_SUPPORT_EMAIL)
-                      </p>
-                    )}
+                  <div className="space-y-1">
+                    <p className="text-[var(--text-muted)] font-mono text-[11px]">Customer Support &amp; Feedback</p>
+                    <a
+                      href={`mailto:${SITE_CONFIG.supportEmail}`}
+                      className="font-medium text-[var(--text-primary)] hover:underline font-mono"
+                    >
+                      {SITE_CONFIG.supportEmail}
+                    </a>
+                    <p className="text-[11px] text-[var(--text-secondary)] font-light leading-relaxed">
+                      Available for customer support, general inquiries, feedback, suggestions, complaints, and product-related questions.
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <Shield size={16} className="text-[var(--accent)] mt-0.5 shrink-0" />
-                  <div>
-                    <p className="text-[var(--text-muted)] font-mono text-[11px]">Privacy & Security</p>
-                    {SITE_CONFIG.privacyEmail ? (
-                      <a
-                        href={`mailto:${SITE_CONFIG.privacyEmail}`}
-                        className="font-medium text-[var(--text-primary)] hover:underline font-mono"
-                      >
-                        {SITE_CONFIG.privacyEmail}
-                      </a>
-                    ) : (
-                      <p className="text-[var(--text-muted)] font-mono text-[11px]">
-                        Pending configuration (set NEXT_PUBLIC_PRIVACY_EMAIL)
-                      </p>
-                    )}
+                  <div className="space-y-1">
+                    <p className="text-[var(--text-muted)] font-mono text-[11px]">Privacy &amp; Security</p>
+                    <a
+                      href={`mailto:${SITE_CONFIG.privacyEmail}`}
+                      className="font-medium text-[var(--text-primary)] hover:underline font-mono"
+                    >
+                      {SITE_CONFIG.privacyEmail}
+                    </a>
+                    <p className="text-[11px] text-[var(--text-secondary)] font-light leading-relaxed">
+                      Dedicated to privacy, security, personal-data, and account/data deletion requests.
+                    </p>
                   </div>
                 </div>
 
@@ -106,7 +100,7 @@ export default function ContactPage() {
                   <Clock size={16} className="text-[var(--accent)] mt-0.5 shrink-0" />
                   <div>
                     <p className="text-[var(--text-muted)] font-mono text-[11px]">Target Response Standard</p>
-                    <p className="text-[var(--text-secondary)] font-light">Monday – Friday · 24–48h when active</p>
+                    <p className="text-[var(--text-secondary)] font-light">Monday – Friday · 24–48h</p>
                   </div>
                 </div>
               </div>
@@ -252,7 +246,7 @@ export default function ContactPage() {
 
                   <div className="space-y-1 text-center pt-2">
                     <p className="text-[10px] text-[var(--text-muted)] font-mono">
-                      Staging Notice: Live email dispatch activates once NEXT_PUBLIC_SUPPORT_EMAIL and a mail provider are connected.
+                      Inquiries sent to support@subconsciouslog.com and privacy@subconsciouslog.com are routed directly to our inbox.
                     </p>
                     <p className="text-[10px] text-[var(--text-muted)] font-mono">
                       Contact information is used solely to reply to inquiries. Never sold or shared.

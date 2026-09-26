@@ -34,3 +34,4 @@ Thumbs.db
 .wrangler/
 *.tsbuildinfo
 supabase/.temp/
+.kilo/

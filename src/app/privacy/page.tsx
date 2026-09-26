@@ -84,16 +84,10 @@ export default function PrivacyPolicyPage() {
               This Privacy Policy describes how {SITE_CONFIG.legalEntityName} (&ldquo;SUBCONSCIOUS LOG&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) collects, uses, protects, and discloses personal information when you visit our website at {SITE_CONFIG.url} or utilize the SUBCONSCIOUS LOG web application (the &ldquo;Service&rdquo;).
             </p>
             <p>
-              Operating Address: {SITE_CONFIG.registeredAddress}. For any questions regarding your personal data, you may contact our Privacy Desk at{' '}
-              {SITE_CONFIG.privacyEmail ? (
-                <a href={`mailto:${SITE_CONFIG.privacyEmail}`} className="text-[var(--accent)] hover:underline font-mono">
-                  {SITE_CONFIG.privacyEmail}
-                </a>
-              ) : (
-                <span className="font-mono text-[var(--text-muted)]">
-                  [privacy contact pending configuration &middot; set NEXT_PUBLIC_PRIVACY_EMAIL]
-                </span>
-              )}.
+              Operating Address: {SITE_CONFIG.registeredAddress}. For any questions regarding your personal data, privacy, security, or to request account/data deletion, you may contact our Privacy Desk directly at{' '}
+              <a href={`mailto:${SITE_CONFIG.privacyEmail}`} className="text-[var(--accent)] hover:underline font-mono">
+                {SITE_CONFIG.privacyEmail}
+              </a>.
             </p>
           </section>
 
@@ -163,10 +157,10 @@ export default function PrivacyPolicyPage() {
               6. Contacting the Data Privacy Desk
             </h2>
             <p>
-              If you have inquiries regarding this Privacy Policy or wish to exercise statutory data rights, please email:
+              If you have inquiries regarding this Privacy Policy or wish to exercise statutory data rights (including personal data access, correction, or account/data erasure requests), please email:
             </p>
             <p className="font-mono text-xs text-[var(--text-primary)]">
-              Privacy Officer: {SITE_CONFIG.privacyEmail || '[pending configuration &middot; set NEXT_PUBLIC_PRIVACY_EMAIL]'}<br />
+              Privacy &amp; Data Rights: <a href={`mailto:${SITE_CONFIG.privacyEmail}`} className="text-[var(--accent)] hover:underline">{SITE_CONFIG.privacyEmail}</a><br />
               Entity: {SITE_CONFIG.legalEntityName}<br />
               Address: {SITE_CONFIG.registeredAddress}
             </p>
