@@ -23,45 +23,46 @@ export function PublicNavbar() {
         <BrandLogo size="md" href="/" />
 
         {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-7 text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
-          <Link href="/how-it-works" className="hover:text-[var(--text-primary)] transition-colors">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+          <Link href="/how-it-works" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
             How It Works
           </Link>
-          <Link href="/pricing" className="hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/pricing" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
             Pricing
           </Link>
-          <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/blog" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
             Blog
           </Link>
-          <Link href="/about" className="hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/about" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
             About
           </Link>
-          <Link href="/faq" className="hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/faq" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
             FAQ
           </Link>
-          <Link href="/contact" className="hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/contact" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
             Contact
           </Link>
         </div>
 
         {/* Right Actions */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-3 shrink-0">
           <button
             onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-            className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors"
+            className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors shrink-0"
             aria-label="Toggle theme"
           >
-            {mounted && resolvedTheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+            {mounted && resolvedTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
+          <span className="w-px h-4 bg-[var(--border-default)] shrink-0 mx-0.5" aria-hidden="true" />
           <Link
             href="/login"
-            className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-2 transition-colors"
+            className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-2 transition-colors whitespace-nowrap shrink-0"
           >
             Log In
           </Link>
           <Link
             href="/signup"
-            className="px-5 py-2.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-sm"
+            className="px-5 py-2.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-sm whitespace-nowrap shrink-0"
           >
             Begin your journal
           </Link>

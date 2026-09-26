@@ -55,69 +55,97 @@ export default function LandingPage() {
       <nav
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-[var(--bg-primary)]/90 border-b border-[var(--border-default)] py-3.5 backdrop-blur-md'
-            : 'bg-transparent py-5'
+            ? 'bg-[var(--bg-primary)]/95 border-b border-[var(--border-default)] py-3 shadow-sm backdrop-blur-md'
+            : 'bg-[var(--bg-primary)]/85 border-b border-[var(--border-default)]/70 py-3.5 sm:py-4 backdrop-blur-md'
         }`}
       >
-        <div className="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between">
-          <BrandLogo size="md" href="/" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+          {/* Brand Logo with fixed minimum breathing room */}
+          <div className="flex items-center shrink-0 pr-2 xl:pr-4">
+            <BrandLogo size="md" href="/" />
+          </div>
 
-          <div className="hidden md:flex items-center gap-7 text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
-            <a href="#demo" className="hover:text-[var(--text-primary)] transition-colors">
+          {/* Desktop Navigation Links - Centered, properly spaced, never breaking lines */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2 text-[11px] xl:text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+            <a
+              href="#demo"
+              className="whitespace-nowrap px-3 py-1.5 rounded-lg hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-all"
+            >
               Walkthrough
             </a>
-            <a href="#patterns" className="hover:text-[var(--text-primary)] transition-colors">
+            <a
+              href="#patterns"
+              className="whitespace-nowrap px-3 py-1.5 rounded-lg hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-all"
+            >
               Patterns
             </a>
-            <a href="#capture" className="hover:text-[var(--text-primary)] transition-colors">
+            <a
+              href="#capture"
+              className="whitespace-nowrap px-3 py-1.5 rounded-lg hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-all"
+            >
               Capture
             </a>
-            <a href="#journey" className="hover:text-[var(--text-primary)] transition-colors">
+            <a
+              href="#journey"
+              className="whitespace-nowrap px-3 py-1.5 rounded-lg hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-all"
+            >
               The Journey
             </a>
-            <a href="#evolution" className="hover:text-[var(--text-primary)] transition-colors">
+            <a
+              href="#evolution"
+              className="whitespace-nowrap px-3 py-1.5 rounded-lg hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-all"
+            >
               Evolution
             </a>
-            <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link
+              href="/blog"
+              className="whitespace-nowrap px-3 py-1.5 rounded-lg hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-all"
+            >
               Blog
             </Link>
-            <a href="#pricing" className="hover:text-[var(--text-primary)] transition-colors">
+            <a
+              href="#pricing"
+              className="whitespace-nowrap px-3 py-1.5 rounded-lg hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-all"
+            >
               Pricing
             </a>
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          {/* Right Actions: Theme Toggle, Log In, and CTA */}
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <button
               onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-              className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors"
+              className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors shrink-0"
               aria-label="Toggle theme"
             >
-              {mounted && resolvedTheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+              {mounted && resolvedTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
+            <span className="w-px h-4 bg-[var(--border-default)] shrink-0 mx-0.5" aria-hidden="true" />
             <Link
               href="/login"
-              className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-2 transition-colors"
+              className="text-[11px] xl:text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-2 transition-colors whitespace-nowrap shrink-0"
             >
               Log in
             </Link>
             <Link
               href="/signup"
-              className="text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-5 py-2.5 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-sm hover:shadow-md"
+              className="text-[11px] xl:text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-4 xl:px-5 py-2.5 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-sm hover:shadow-md whitespace-nowrap shrink-0 inline-flex items-center justify-center font-sans"
             >
               Begin your journal
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 md:hidden">
+          {/* Mobile & Tablet controls */}
+          <div className="flex items-center gap-2 lg:hidden">
             <button
               onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-              className="p-2 text-[var(--text-muted)] rounded-lg"
+              className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-lg transition-colors"
               aria-label="Toggle theme"
             >
               {mounted && resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button
-              className="p-2 text-[var(--text-primary)]"
+              className="p-2 text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
             >
@@ -129,68 +157,73 @@ export default function LandingPage() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-[var(--bg-primary)] pt-24 px-6 flex flex-col gap-6 md:hidden border-b border-[var(--border-default)]">
-          <a
-            href="#demo"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-2xl font-display text-[var(--text-primary)]"
-          >
-            Walkthrough
-          </a>
-          <a
-            href="#patterns"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-2xl font-display text-[var(--text-primary)]"
-          >
-            Patterns
-          </a>
-          <a
-            href="#capture"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-2xl font-display text-[var(--text-primary)]"
-          >
-            Capture
-          </a>
-          <a
-            href="#journey"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-2xl font-display text-[var(--text-primary)]"
-          >
-            The Journey
-          </a>
-          <a
-            href="#evolution"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-2xl font-display text-[var(--text-primary)]"
-          >
-            Evolution
-          </a>
-          <Link
-            href="/blog"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-2xl font-display text-[var(--text-primary)]"
-          >
-            Blog
-          </Link>
-          <a
-            href="#pricing"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-2xl font-display text-[var(--text-primary)]"
-          >
-            Pricing
-          </a>
-          <div className="pt-6 border-t border-[var(--border-default)] flex flex-col gap-3">
+        <div className="fixed inset-0 z-40 bg-[var(--bg-primary)]/98 backdrop-blur-xl pt-24 px-6 pb-8 flex flex-col justify-between lg:hidden border-b border-[var(--border-default)] animate-in fade-in duration-200">
+          <div className="flex flex-col gap-4 overflow-y-auto">
+            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--text-muted)] mb-1">
+              Navigation
+            </span>
+            <a
+              href="#demo"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-xl font-display text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors py-1"
+            >
+              Walkthrough
+            </a>
+            <a
+              href="#patterns"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-xl font-display text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors py-1"
+            >
+              Patterns
+            </a>
+            <a
+              href="#capture"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-xl font-display text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors py-1"
+            >
+              Capture
+            </a>
+            <a
+              href="#journey"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-xl font-display text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors py-1"
+            >
+              The Journey
+            </a>
+            <a
+              href="#evolution"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-xl font-display text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors py-1"
+            >
+              Evolution
+            </a>
+            <Link
+              href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-xl font-display text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors py-1"
+            >
+              Blog
+            </Link>
+            <a
+              href="#pricing"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-xl font-display text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors py-1"
+            >
+              Pricing
+            </a>
+          </div>
+          <div className="pt-6 border-t border-[var(--border-default)] flex flex-col gap-3 shrink-0">
             <Link
               href="/login"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3 text-center text-sm font-medium border border-[var(--border-default)] rounded-xl"
+              className="w-full py-3 text-center text-xs font-mono uppercase tracking-wider font-medium border border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl transition-colors"
             >
               Log in
             </Link>
             <Link
               href="/signup"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3 text-center text-sm font-semibold bg-[var(--accent)] text-[var(--bg-primary)] rounded-xl"
+              className="w-full py-3.5 text-center text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] hover:bg-[var(--accent-hover)] rounded-xl transition-colors shadow-sm"
             >
               Begin your journal
             </Link>

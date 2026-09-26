@@ -71,7 +71,7 @@ export function BrandLogo({
 
   if (href) {
     return (
-      <Link href={href} className="inline-flex items-center">
+      <Link href={href} className="inline-flex items-center shrink-0">
         {content}
       </Link>
     );
