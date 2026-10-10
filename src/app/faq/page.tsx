@@ -118,7 +118,7 @@ export default function FAQPage() {
             Frequently Asked Questions.
           </h1>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
             Honest, transparent answers regarding Subconscious Log’s capabilities, privacy model, AI reflection ethics, and account ownership.
           </p>
         </div>
@@ -130,16 +130,16 @@ export default function FAQPage() {
               key={idx}
               className="p-6 sm:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] hover:border-[var(--border-hover)] transition-colors space-y-3"
             >
-              <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-[var(--accent)]">
+              <div className="flex items-center justify-between text-xs font-mono uppercase tracking-wider text-[var(--accent)] font-semibold">
                 <span>Question {String(idx + 1).padStart(2, '0')}</span>
-                <span className="text-[var(--text-muted)]">{faq.category}</span>
+                <span className="text-[var(--text-secondary)]">{faq.category}</span>
               </div>
 
               <h2 className="text-xl sm:text-2xl font-display font-medium text-[var(--text-primary)] leading-snug">
                 {faq.question}
               </h2>
 
-              <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-light leading-relaxed pt-1">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed pt-1">
                 {faq.answer}
               </p>
             </div>
@@ -148,18 +148,18 @@ export default function FAQPage() {
 
         {/* Still have questions? */}
         <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div className="space-y-1 max-w-md">
-            <h3 className="text-lg font-display font-medium text-[var(--text-primary)]">
+          <div className="space-y-1.5 max-w-md">
+            <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">
               Have a question not listed here?
             </h3>
-            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-sm text-[var(--text-secondary)] font-normal leading-relaxed">
               Our support desk is always happy to assist with inquiries regarding features, security, or billing.
             </p>
           </div>
 
           <Link
             href="/contact"
-            className="px-6 py-3 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shrink-0"
+            className="px-7 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shrink-0 shadow-sm"
           >
             Contact Support Desk
           </Link>

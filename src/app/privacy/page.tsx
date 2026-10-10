@@ -50,34 +50,34 @@ export default function PrivacyPolicyPage() {
         {/* 3 Core Highlights */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2">
-            <EyeOff size={18} className="text-[var(--accent)]" />
-            <h2 className="text-sm font-medium text-[var(--text-primary)]">Never Publicly Indexed</h2>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+            <EyeOff size={20} className="text-[var(--accent)]" />
+            <h2 className="text-base font-medium text-[var(--text-primary)]">Never Publicly Indexed</h2>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
               Your journal entries are protected by strict authentication and explicit noindex headers. Search engines cannot crawl your entries.
             </p>
           </div>
 
           <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2">
-            <Lock size={18} className="text-[var(--accent)]" />
-            <h2 className="text-sm font-medium text-[var(--text-primary)]">Zero Data Selling</h2>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+            <Lock size={20} className="text-[var(--accent)]" />
+            <h2 className="text-base font-medium text-[var(--text-primary)]">Zero Data Selling</h2>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
               We never sell, rent, or trade your journal entries, voice recordings, or behavioral profiles to advertising or data brokers.
             </p>
           </div>
 
           <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2">
-            <Server size={18} className="text-[var(--accent)]" />
-            <h2 className="text-sm font-medium text-[var(--text-primary)]">No Foundation Model Training</h2>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+            <Server size={20} className="text-[var(--accent)]" />
+            <h2 className="text-base font-medium text-[var(--text-primary)]">No Foundation Model Training</h2>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
               Your private reflections are never used to train public language models or third-party AI systems.
             </p>
           </div>
         </div>
 
         {/* Content Body */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-8 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-light">
+        <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-8 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
           <section className="space-y-3">
-            <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
+            <h2 className="text-xl font-display font-medium text-[var(--text-primary)]">
               1. Introduction & Operator Identity
             </h2>
             <p>

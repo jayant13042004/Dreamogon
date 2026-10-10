@@ -6,6 +6,7 @@ import {
   getPlanDefinition,
   getPlanTier,
   getSubscription,
+  isOwnerEmail,
   PLANS,
 } from '@/lib/billing';
 
@@ -21,13 +22,15 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const planTier = await getPlanTier(supabase, user.id);
+    const isOwner = isOwnerEmail(user.email);
+    const planTier = await getPlanTier(supabase, user.id, user.email);
     const plan = getPlanDefinition(planTier);
     const subscription = await getSubscription(supabase, user.id);
-    const aiUsage = await getAiUsageSummary(supabase, user.id);
+    const aiUsage = await getAiUsageSummary(supabase, user.id, user.email);
 
     return NextResponse.json({
       planTier,
+      isOwner,
       plan: {
         id: plan.id,
         name: plan.name,
@@ -68,7 +71,15 @@ export async function GET() {
           aiLimit: PLANS.pro_annual.aiAllowance.monthlyLimit,
         },
       },
-      subscription: subscription
+      subscription: isOwner
+        ? {
+            status: 'active',
+            provider: 'owner',
+            currentPeriodEnd: null,
+            cancelAtPeriodEnd: false,
+            interval: 'lifetime',
+          }
+        : subscription
         ? {
             status: subscription.status,
             provider: subscription.provider,

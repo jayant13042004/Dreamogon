@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { constructMetadata, SITE_CONFIG } from '@/lib/seo/metadata';
@@ -102,17 +102,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Article Header */}
         <header className="space-y-5 mb-10 pb-8 border-b border-[var(--border-default)]">
           <div className="flex flex-wrap items-center gap-2.5 text-xs">
-            <span className="px-3 py-1 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-[10px] uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-xs uppercase tracking-wider font-medium">
               {post.category}
             </span>
             <span className="text-[var(--text-muted)] opacity-50">•</span>
-            <span className="text-[var(--text-muted)] flex items-center gap-1 font-mono text-[11px]">
-              <Clock size={12} />
+            <span className="text-[var(--text-secondary)] flex items-center gap-1 font-mono text-xs font-medium">
+              <Clock size={13} />
               {post.readingTime}
             </span>
             <span className="text-[var(--text-muted)] opacity-50">•</span>
-            <span className="text-[var(--text-muted)] flex items-center gap-1 font-mono text-[11px]">
-              <Calendar size={12} />
+            <span className="text-[var(--text-secondary)] flex items-center gap-1 font-mono text-xs font-medium">
+              <Calendar size={13} />
               {new Date(post.publishedAt).toLocaleDateString(undefined, {
                 month: 'short',
                 day: 'numeric',
@@ -126,7 +126,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </h1>
 
           {/* Excerpt Lead */}
-          <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-[var(--text-secondary)] font-normal leading-relaxed">
             {post.excerpt}
           </p>
 
@@ -139,7 +139,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <span className="text-sm text-[var(--text-primary)] font-medium block">
                 {post.author.name}
               </span>
-              <span className="text-xs text-[var(--text-muted)]">{post.author.role}</span>
+              <span className="text-xs text-[var(--text-secondary)] font-medium">{post.author.role}</span>
             </div>
           </div>
         </header>
@@ -185,20 +185,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <Compass size={120} />
           </div>
           <div className="max-w-xl space-y-3 relative z-10">
-            <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[var(--accent)]">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--accent)] font-semibold">
               Begin Your Sanctuary
             </span>
             <h3 className="text-2xl md:text-3xl font-display font-medium text-[var(--text-primary)] leading-snug">
               Turn your night dreams into lifelong personal insight.
             </h3>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-light">
+            <p className="text-base text-[var(--text-secondary)] leading-relaxed font-normal">
               Capture fragments at 5 AM by voice in 30 seconds. Discover recurring motifs, emotional
               shifts, and subconscious patterns over time with SUBCONSCIOUS LOG.
             </p>
             <div className="pt-2">
               <Link
                 href="/signup"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs font-semibold tracking-wide transition-all shadow-sm"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-sm font-semibold tracking-wide transition-all shadow-sm"
               >
                 <span>Start your dream journal</span>
                 <ArrowRight size={14} />
@@ -208,7 +208,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </section>
 
         {/* Editorial Disclaimer */}
-        <div className="mt-10 p-5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-default)] flex items-start gap-3.5 text-xs text-[var(--text-muted)] leading-relaxed">
+        <div className="mt-10 p-5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-default)] flex items-start gap-3.5 text-sm text-[var(--text-secondary)] leading-relaxed">
           <ShieldCheck size={18} className="text-[var(--accent)] shrink-0 mt-0.5" />
           <div>
             <strong className="text-[var(--text-primary)] font-medium">
@@ -232,21 +232,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <article className="h-full p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] group-hover:border-[var(--accent)]/50 transition-all duration-300 shadow-xs flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between text-xs mb-2.5">
-                        <span className="text-[10px] uppercase font-mono text-[var(--accent)] tracking-wider">
+                        <span className="text-xs uppercase font-mono text-[var(--accent)] font-semibold tracking-wider">
                           {rel.category}
                         </span>
-                        <span className="text-[11px] font-mono text-[var(--text-muted)]">
+                        <span className="text-xs font-mono text-[var(--text-secondary)] font-medium">
                           {rel.readingTime}
                         </span>
                       </div>
-                      <h4 className="font-display text-lg font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-snug mb-2">
+                      <h4 className="font-display text-xl font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors leading-snug mb-2">
                         {rel.title}
                       </h4>
-                      <p className="text-xs text-[var(--text-secondary)] line-clamp-2 leading-relaxed font-light">
+                      <p className="text-sm text-[var(--text-secondary)] line-clamp-2 leading-relaxed font-normal">
                         {rel.excerpt}
                       </p>
                     </div>
-                    <div className="pt-4 mt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-muted)] font-mono">
+                    <div className="pt-4 mt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-secondary)] font-mono font-medium">
                       <span>Read article</span>
                       <ArrowRight
                         size={13}

@@ -22,10 +22,17 @@ export async function updateSession(request: NextRequest) {
   const authPaths = ['/login', '/signup', '/forgot-password'];
   const isAuthPage = authPaths.some(path => request.nextUrl.pathname.startsWith(path));
 
-  // Check if any Supabase auth cookies exist
+  // Never run updateSession on auth callback routes
+  if (request.nextUrl.pathname.startsWith('/auth/callback')) {
+    return supabaseResponse;
+  }
+
+  // Check if any Supabase auth session cookies exist (excluding PKCE verifiers)
   const allCookies = request.cookies.getAll();
   const hasAuthCookie = allCookies.some(
-    c => c.name.startsWith('sb-') && (c.name.includes('-auth-token') || c.name.endsWith('-token'))
+    c => c.name.startsWith('sb-') &&
+         (c.name.includes('-auth-token') || c.name.endsWith('-token')) &&
+         !c.name.includes('-code-verifier')
   );
 
   // 1. Fast path: Public page with no auth cookie -> return immediately with zero network delay
@@ -73,10 +80,10 @@ export async function updateSession(request: NextRequest) {
 
   let user = null;
   try {
-    // Guard against dead DNS / unreachable Supabase hosts hanging the server for 25+ seconds
+    // 6-second timeout: provides enough window for token refresh without hanging indefinitely
     const userPromise = supabase.auth.getUser();
     const timeoutPromise = new Promise<{ data: { user: null } }>((resolve) =>
-      setTimeout(() => resolve({ data: { user: null } }), 2000)
+      setTimeout(() => resolve({ data: { user: null } }), 6000)
     );
     const result = await Promise.race([userPromise, timeoutPromise]);
     user = result?.data?.user ?? null;

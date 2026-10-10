@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { DEFAULT_LANGUAGE } from '@/lib/constants/languages';
+import { mergeTranscripts } from '@/lib/utils/voice';
 
 interface UseVoiceInputOptions {
   continuous?: boolean;
@@ -12,19 +14,21 @@ interface UseVoiceInputReturn {
   isSupported: boolean;
   transcript: string;
   interimTranscript: string;
-  startListening: () => void;
+  startListening: () => Promise<void>;
   stopListening: () => void;
-  toggleListening: () => void;
+  toggleListening: () => Promise<void>;
   resetTranscript: () => void;
 }
 
 export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInputReturn {
-  const { continuous = true, lang = 'en-US' } = options;
+  const { continuous = true, lang = DEFAULT_LANGUAGE } = options;
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [interimTranscript, setInterimTranscript] = useState('');
   const [isSupported, setIsSupported] = useState(false);
   const recognitionRef = useRef<any>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const lastCommittedIndexRef = useRef<number>(-1);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -32,8 +36,9 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
         ? (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
         : undefined;
 
+    setIsSupported(Boolean(SpeechRecognition || navigator?.mediaDevices?.getUserMedia));
+
     if (SpeechRecognition) {
-      setIsSupported(true);
       const recognition = new SpeechRecognition();
       recognition.continuous = continuous;
       recognition.interimResults = true;
@@ -43,23 +48,26 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
         let finalTranscript = '';
         let interim = '';
 
-        for (let i = event.resultIndex; i < event.results.length; i++) {
+        for (let i = 0; i < event.results.length; i++) {
           const result = event.results[i];
           if (result.isFinal) {
-            finalTranscript += result[0].transcript + ' ';
+            if (i > lastCommittedIndexRef.current) {
+              finalTranscript += result[0].transcript + ' ';
+              lastCommittedIndexRef.current = i;
+            }
           } else {
             interim += result[0].transcript;
           }
         }
 
-        if (finalTranscript) {
-          setTranscript(prev => prev + finalTranscript);
+        if (finalTranscript.trim()) {
+          setTranscript((prev) => mergeTranscripts(prev, finalTranscript));
         }
         setInterimTranscript(interim);
       };
 
       recognition.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
+        console.warn('Speech recognition warning in useVoiceInput:', event.error);
         if (event.error !== 'no-speech') {
           setIsListening(false);
         }
@@ -68,6 +76,7 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
       recognition.onend = () => {
         setIsListening(false);
         setInterimTranscript('');
+        lastCommittedIndexRef.current = -1;
       };
 
       recognitionRef.current = recognition;
@@ -75,36 +84,67 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
 
     return () => {
       if (recognitionRef.current) {
-        recognitionRef.current.abort();
+        try {
+          recognitionRef.current.abort();
+        } catch {
+          // ignore
+        }
+      }
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
       }
     };
   }, [continuous, lang]);
 
-  const startListening = useCallback(() => {
-    if (recognitionRef.current && !isListening) {
+  const startListening = useCallback(async () => {
+    if (isListening) return;
+
+    // Explicitly request microphone permission to summon native prompt if needed
+    if (navigator?.mediaDevices?.getUserMedia) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        streamRef.current = stream;
+        stream.getTracks().forEach((t) => t.stop());
+      } catch (err) {
+        console.warn('Microphone permission request error in useVoiceInput:', err);
+        return;
+      }
+    }
+
+    if (recognitionRef.current) {
       setTranscript('');
       setInterimTranscript('');
+      lastCommittedIndexRef.current = -1;
       try {
+        recognitionRef.current.lang = lang;
         recognitionRef.current.start();
         setIsListening(true);
       } catch (error) {
         console.error('Failed to start speech recognition:', error);
       }
     }
-  }, [isListening]);
+  }, [isListening, lang]);
 
   const stopListening = useCallback(() => {
     if (recognitionRef.current && isListening) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch {
+        // ignore
+      }
       setIsListening(false);
+    }
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
     }
   }, [isListening]);
 
-  const toggleListening = useCallback(() => {
+  const toggleListening = useCallback(async () => {
     if (isListening) {
       stopListening();
     } else {
-      startListening();
+      await startListening();
     }
   }, [isListening, startListening, stopListening]);
 

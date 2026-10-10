@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LayoutGrid, List as ListIcon, Calendar as CalendarIcon, CalendarDays, ArrowRight, Moon, ChevronRight, Plus } from 'lucide-react';
+import { LayoutGrid, List as ListIcon, Calendar as CalendarIcon, CalendarDays, ArrowRight, Moon, ChevronRight, Plus, Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Dream } from '@/types/dream';
@@ -192,9 +192,21 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
                         )}
                       </div>
                     )}
-                    <p className="text-[var(--text-secondary)] text-sm line-clamp-2 leading-relaxed mb-4 flex-grow">
-                      {dream.content}
-                    </p>
+                    {dream.transcription_status === 'transcribing' ? (
+                      <div className="flex items-center gap-2 text-xs font-mono text-[var(--accent)] mb-4 flex-grow">
+                        <Loader2 size={13} className="animate-spin shrink-0" />
+                        <span>Transcribing audio in background…</span>
+                      </div>
+                    ) : dream.transcription_status === 'failed' && (!dream.content || dream.content.startsWith('Voice recording captured')) ? (
+                      <div className="flex items-center gap-2 text-xs font-mono text-amber-500 mb-4 flex-grow">
+                        <AlertCircle size={13} className="shrink-0" />
+                        <span>Audio saved · Ready to transcribe</span>
+                      </div>
+                    ) : (
+                      <p className="text-[var(--text-secondary)] text-sm line-clamp-2 leading-relaxed mb-4 flex-grow">
+                        {dream.content}
+                      </p>
+                    )}
 
                     <div className="pt-3 border-t border-[var(--border-default)] flex items-center justify-between text-xs text-[var(--text-muted)] font-medium">
                       <span>Open entry</span>
@@ -235,9 +247,16 @@ export function DreamList({ dreams, isLoading, initialView = 'grid' }: DreamList
                       <h3 className="font-display font-medium text-[var(--text-primary)] text-base group-hover:text-[var(--accent)] transition-colors truncate">
                         {dream.title || 'Untitled Dream'}
                       </h3>
-                      <p className="text-[var(--text-secondary)] text-xs truncate max-w-xl mt-0.5">
-                        {dream.content}
-                      </p>
+                      {dream.transcription_status === 'transcribing' ? (
+                        <span className="text-[var(--accent)] text-xs font-mono inline-flex items-center gap-1.5 mt-0.5">
+                          <Loader2 size={11} className="animate-spin" />
+                          Transcribing audio in background…
+                        </span>
+                      ) : (
+                        <p className="text-[var(--text-secondary)] text-xs truncate max-w-xl mt-0.5">
+                          {dream.content}
+                        </p>
+                      )}
                       {dream.dream_entities && dream.dream_entities.length > 0 && (
                         <div className="flex flex-wrap items-center gap-1 mt-1.5">
                           {dream.dream_entities.slice(0, 3).map((ent) => (

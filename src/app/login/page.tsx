@@ -15,6 +15,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [verifiedSuccess, setVerifiedSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
@@ -22,6 +23,12 @@ export default function LoginPage() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const urlError = params.get('error');
+      const verified = params.get('verified');
+
+      if (verified) {
+        setVerifiedSuccess('Your email has been verified successfully! Please sign in with your password to continue.');
+      }
+
       if (urlError) {
         if (urlError === 'auth_failed') {
           setError('Authentication could not be completed. Please try again.');
@@ -40,6 +47,7 @@ export default function LoginPage() {
     try {
       await signInWithEmail(email, password);
       router.push('/dashboard');
+      router.refresh();
     } catch (err: any) {
       setError(err.message || 'Failed to sign in');
     } finally {
@@ -79,6 +87,16 @@ export default function LoginPage() {
             <h1 className="text-3xl font-display text-[var(--text-primary)] mb-2">Welcome back</h1>
             <p className="text-[var(--text-secondary)]">Sign in to continue to your journal</p>
           </div>
+
+          {verifiedSuccess && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 p-3 rounded-xl mb-6 text-sm text-center"
+            >
+              {verifiedSuccess}
+            </motion.div>
+          )}
 
           {error && (
             <motion.div

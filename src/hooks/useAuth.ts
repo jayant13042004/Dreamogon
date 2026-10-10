@@ -97,21 +97,29 @@ export function useAuth() {
     return data;
   };
 
+  const getAuthRedirectOrigin = () => {
+    if (typeof window !== 'undefined' && window.location.origin) {
+      return window.location.origin;
+    }
+    return process.env.NEXT_PUBLIC_APP_URL || 'https://subconsciouslog.com';
+  };
+
   const signUpWithEmail = async (email: string, password: string, name: string) => {
+    const origin = getAuthRedirectOrigin();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { name } },
+      options: {
+        data: { name },
+        emailRedirectTo: `${origin}/auth/callback`,
+      },
     });
     if (error) throw error;
     return data;
   };
 
   const signInWithGoogle = async () => {
-    const origin =
-      typeof window !== 'undefined' && window.location.origin
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const origin = getAuthRedirectOrigin();
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -131,8 +139,9 @@ export function useAuth() {
   };
 
   const resetPassword = async (email: string) => {
+    const origin = getAuthRedirectOrigin();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
+      redirectTo: `${origin}/auth/callback?type=recovery`,
     });
     if (error) throw error;
   };

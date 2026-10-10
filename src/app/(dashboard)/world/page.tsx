@@ -293,7 +293,7 @@ function DreamWorldContent() {
                   {recurring.length > 0 ? `${recurring.length} recurring · ${items.length} total` : `${items.length} total`}
                 </span>
               </div>
-              <p className="text-xs text-[var(--text-muted)] font-light mt-0.5">
+              <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal mt-0.5">
                 {subtitle}
               </p>
             </div>

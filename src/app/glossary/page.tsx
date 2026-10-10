@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { constructMetadata } from '@/lib/seo/metadata';
 import { PublicNavbar, PublicFooter } from '@/components/layout/PublicNav';
@@ -71,10 +71,10 @@ export default function GlossaryPage() {
           </div>
 
           <h1 className="text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)] tracking-tight leading-tight">
-            Dream & Sleep Science Glossary
+            Dream &amp; Sleep Science Glossary
           </h1>
 
-          <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-light">
+          <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-normal">
             Clear definitions of core concepts spanning sleep neurobiology, psychoanalysis, cognitive science, and the SUBCONSCIOUS LOG spatial mapping architecture.
           </p>
         </div>
@@ -89,7 +89,7 @@ export default function GlossaryPage() {
                   {item.term}
                 </h3>
               </div>
-              <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light">
+              <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
                 {item.definition}
               </p>
             </div>

@@ -2,10 +2,15 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
-  // Gracefully handle Supabase auth codes if redirected to root or any non-callback URL
+  // Bypass session middleware for /auth/callback: it handles its own PKCE exchange
+  if (request.nextUrl.pathname.startsWith('/auth/callback')) {
+    return NextResponse.next();
+  }
+
+  // Gracefully handle Supabase auth codes and OTP tokens if redirected to root or any non-callback URL
   if (
     request.nextUrl.pathname !== '/auth/callback' &&
-    request.nextUrl.searchParams.has('code')
+    (request.nextUrl.searchParams.has('code') || request.nextUrl.searchParams.has('token_hash'))
   ) {
     const url = request.nextUrl.clone();
     url.pathname = '/auth/callback';

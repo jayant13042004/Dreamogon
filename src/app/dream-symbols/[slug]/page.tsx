@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { constructMetadata, SITE_CONFIG } from '@/lib/seo/metadata';
@@ -86,7 +86,7 @@ export default async function DreamSymbolDetailPage({ params }: DreamSymbolPageP
               <Sparkles size={14} />
               <span>Reflexive Summary</span>
             </div>
-            <p className="text-[var(--text-primary)] text-base md:text-lg leading-relaxed font-light">
+            <p className="text-[var(--text-primary)] text-base md:text-lg leading-relaxed font-normal">
               {symbol.quickAnswer}
             </p>
           </div>
@@ -101,11 +101,11 @@ export default async function DreamSymbolDetailPage({ params }: DreamSymbolPageP
           <div className="grid grid-cols-1 gap-4">
             {symbol.commonInterpretations.map((item, idx) => (
               <div key={idx} className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2">
-                <h3 className="text-base font-medium text-[var(--text-primary)] flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-medium text-[var(--text-primary)] flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
                   {item.scenario}
                 </h3>
-                <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light pl-3.5">
+                <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal pl-3.5">
                   {item.meaning}
                 </p>
               </div>
@@ -120,7 +120,7 @@ export default async function DreamSymbolDetailPage({ params }: DreamSymbolPageP
               <Compass size={18} className="text-[var(--accent)]" />
               <span>Emotional Resonance</span>
             </h3>
-            <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               {symbol.emotionalContext}
             </p>
           </div>
@@ -130,7 +130,7 @@ export default async function DreamSymbolDetailPage({ params }: DreamSymbolPageP
               <Brain size={18} className="text-[var(--accent)]" />
               <span>Neuroscience & Memory</span>
             </h3>
-            <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               {symbol.scientificContext}
             </p>
           </div>
@@ -144,7 +144,7 @@ export default async function DreamSymbolDetailPage({ params }: DreamSymbolPageP
           </h3>
           <ul className="space-y-3">
             {symbol.questionsToAsk.map((q, i) => (
-              <li key={i} className="text-[var(--text-secondary)] text-sm leading-relaxed font-light flex items-start gap-2.5">
+              <li key={i} className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal flex items-start gap-2.5">
                 <span className="text-[var(--accent)] font-mono font-bold mt-0.5">{i + 1}.</span>
                 <span>{q}</span>
               </li>
@@ -157,12 +157,12 @@ export default async function DreamSymbolDetailPage({ params }: DreamSymbolPageP
           <h3 className="text-2xl md:text-3xl font-display font-medium text-[var(--text-primary)]">
             Discover How {symbol.name} Recurs Across Your Dreams
           </h3>
-          <p className="text-[var(--text-secondary)] text-sm md:text-base max-w-lg mx-auto font-light leading-relaxed">
+          <p className="text-[var(--text-secondary)] text-base sm:text-lg max-w-lg mx-auto font-normal leading-relaxed">
             Record your dreams in SUBCONSCIOUS LOG. Our system identifies {symbol.name.toLowerCase()} as a subconscious motif and traces its emotional connections over time.
           </p>
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider shadow-sm hover:opacity-95 transition-all"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider shadow-sm hover:opacity-95 transition-all"
           >
             Start Tracking {symbol.name} Dreams <ArrowRight size={14} />
           </Link>

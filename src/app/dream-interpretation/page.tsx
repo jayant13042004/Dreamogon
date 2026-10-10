@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { constructMetadata } from '@/lib/seo/metadata';
 import { PublicNavbar, PublicFooter } from '@/components/layout/PublicNav';
@@ -37,10 +37,10 @@ export default function DreamInterpretationPillarPage() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-display font-medium text-[var(--text-primary)] tracking-tight leading-tight">
-            How to Interpret Dreams: Beyond ClichÃ©s & Rigid Dictionaries
+            How to Interpret Dreams: Beyond Clichés &amp; Rigid Dictionaries
           </h1>
 
-          <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-light">
+          <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-normal">
             Dreams do not have static, one-size-fits-all definitions. Responsible interpretation weaves neuroscience, emotional resonance, and your unique waking context into meaningful self-awareness.
           </p>
         </div>
@@ -52,7 +52,7 @@ export default function DreamInterpretationPillarPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
               <span>Personal Association Over Fixed Rules</span>
             </h3>
-            <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               Dreaming about a dog means something completely different to a veterinarian than to someone who was bitten as a child. Your personal history is the primary decoder.
             </p>
           </div>
@@ -62,7 +62,7 @@ export default function DreamInterpretationPillarPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
               <span>Feelings are More Honest Than Plots</span>
             </h3>
-            <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               The bizarre sequence of events in REM sleep is often a narrative scaffold built around a genuine emotion: anxiety, triumph, grief, or longing.
             </p>
           </div>
@@ -72,7 +72,7 @@ export default function DreamInterpretationPillarPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
               <span>Recurring Patterns Hold the Key</span>
             </h3>
-            <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               A single dream is an isolated data point. Patterns that repeat across weeks or months highlight areas where your subconscious is seeking resolution.
             </p>
           </div>
@@ -82,18 +82,18 @@ export default function DreamInterpretationPillarPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
               <span>Neuroscience of Overnight Therapy</span>
             </h3>
-            <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               REM sleep recalibrates the emotional circuits of the brain, softening the visceral sting of distressing memories while extracting key lessons.
             </p>
           </div>
         </div>
 
         {/* Educational Disclaimer */}
-        <div className="p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex items-start gap-4 text-xs text-[var(--text-secondary)]">
+        <div className="p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex items-start gap-4 text-sm text-[var(--text-secondary)]">
           <ShieldCheck size={24} className="text-[var(--accent)] shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <span className="font-medium text-[var(--text-primary)] block text-sm">The SUBCONSCIOUS LOG Ethical Standard</span>
-            <p className="leading-relaxed font-light">
+            <span className="font-medium text-[var(--text-primary)] block text-base">The SUBCONSCIOUS LOG Ethical Standard</span>
+            <p className="leading-relaxed font-normal">
               SUBCONSCIOUS LOG explicitly rejects dogmatic claims and fortune-telling. We provide reflective, cognitive prompts and spatial mapping to help you reflect on your own thoughts and emotional patterns.
             </p>
           </div>

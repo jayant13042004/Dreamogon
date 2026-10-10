@@ -18,7 +18,7 @@ export async function GET(
 
     const { data: dream, error } = await supabase
       .from('dreams')
-      .select('*, dream_tags(tag), dream_entities(*)')
+      .select('*, dream_tags(tag), dream_entities(*), dream_segments(*)')
       .eq('id', id)
       .eq('user_id', user.id)
       .single();
@@ -118,7 +118,7 @@ export async function DELETE(
 
     const { data: dream } = await supabase
       .from('dreams')
-      .select('image_path')
+      .select('image_path, audio_path, dream_segments(audio_path)')
       .eq('id', id)
       .eq('user_id', user.id)
       .maybeSingle();
@@ -126,6 +126,19 @@ export async function DELETE(
     if (dream?.image_path) {
       const { DREAM_IMAGES_BUCKET } = await import('@/lib/storage/dream-images');
       await supabase.storage.from(DREAM_IMAGES_BUCKET).remove([dream.image_path]).catch(() => {});
+    }
+
+    const audioPaths: string[] = [];
+    if (dream?.audio_path) audioPaths.push(dream.audio_path);
+    if (Array.isArray(dream?.dream_segments)) {
+      dream.dream_segments.forEach((s: any) => {
+        if (s.audio_path) audioPaths.push(s.audio_path);
+      });
+    }
+
+    if (audioPaths.length > 0) {
+      const { DREAM_AUDIO_BUCKET } = await import('@/lib/storage/dream-audio');
+      await supabase.storage.from(DREAM_AUDIO_BUCKET).remove(audioPaths).catch(() => {});
     }
 
     const { error } = await supabase

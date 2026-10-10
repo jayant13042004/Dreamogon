@@ -64,7 +64,7 @@ export function DreamJourneyWalkthrough() {
             >
               <div className="flex items-center justify-between mb-2">
                 <span
-                  className={`text-[10px] font-mono uppercase tracking-[0.2em] ${
+                  className={`text-xs font-mono uppercase tracking-[0.16em] ${
                     isActive ? 'text-[var(--accent)] font-semibold' : 'text-[var(--text-muted)]'
                   }`}
                 >
@@ -82,7 +82,7 @@ export function DreamJourneyWalkthrough() {
               >
                 {s.label}
               </p>
-              <p className="text-xs text-[var(--text-muted)] mt-1 truncate">{s.tagline}</p>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1 truncate">{s.tagline}</p>
             </button>
           );
         })}
@@ -103,14 +103,14 @@ export function DreamJourneyWalkthrough() {
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-5">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                    <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block mb-1">
                       Step 1 &middot; The Morning Journal Entry
                     </span>
                     <h3 className="font-display text-2xl md:text-3xl text-[var(--text-primary)] font-medium">
                       The Wet Road at Dusk
                     </h3>
                   </div>
-                  <div className="flex items-center gap-2 text-[11px] font-mono text-[var(--text-muted)]">
+                  <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-muted)]">
                     <span>Recorded 06:14 AM</span>
                     <span>&bull;</span>
                     <span>48 words</span>
@@ -119,18 +119,18 @@ export function DreamJourneyWalkthrough() {
 
                 {/* Raw entry representation */}
                 <div className="p-6 md:p-8 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] space-y-4">
-                  <p className="text-base md:text-lg text-[var(--text-primary)] font-light leading-relaxed whitespace-pre-line italic">
+                  <p className="text-base md:text-lg text-[var(--text-primary)] font-normal leading-relaxed whitespace-pre-line italic">
                     &ldquo;I was driving alone on a wet two-lane road at dusk. The headlights reflected across the asphalt like dark liquid. Every few miles, the road dipped down toward an inlet of cold, silent water. I wasn&apos;t lost, but I knew I wouldn&apos;t arrive anywhere I recognized.&rdquo;
                   </p>
 
                   <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[var(--border-subtle)]">
-                    <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
+                    <span className="text-xs font-mono text-[var(--text-secondary)] uppercase tracking-wider font-medium">
                       Initial tags:
                     </span>
                     {['driving', 'rain', 'water', 'highway'].map((tag) => (
                       <span
                         key={tag}
-                        className="text-[11px] font-mono px-2.5 py-0.5 rounded-full border border-[var(--border-default)] text-[var(--text-secondary)]"
+                        className="text-xs font-mono px-3 py-1 rounded-full border border-[var(--border-default)] text-[var(--text-secondary)]"
                       >
                         #{tag}
                       </span>
@@ -138,7 +138,7 @@ export function DreamJourneyWalkthrough() {
                   </div>
                 </div>
 
-                <p className="text-xs text-[var(--text-muted)] flex items-center gap-2">
+                <p className="text-sm text-[var(--text-muted)] flex items-center gap-2">
                   <Check size={14} className="text-[var(--accent)]" />
                   Your words are preserved intact. No AI alteration or speculative summaries overwrite your memory.
                 </p>
@@ -156,7 +156,7 @@ export function DreamJourneyWalkthrough() {
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-5">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                    <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block mb-1">
                       Step 2 &middot; Atmospheric Memory
                     </span>
                     <h3 className="font-display text-2xl md:text-3xl text-[var(--text-primary)] font-medium">
@@ -164,10 +164,10 @@ export function DreamJourneyWalkthrough() {
                     </h3>
                   </div>
                   <div className="flex items-center gap-2 text-xs">
-                    <span className="px-2.5 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-[10px]">
+                    <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-xs font-medium">
                       MOOD: MYSTICAL
                     </span>
-                    <span className="px-2.5 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-[10px]">
+                    <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-xs font-medium">
                       VIVID
                     </span>
                   </div>
@@ -187,13 +187,13 @@ export function DreamJourneyWalkthrough() {
                     </svg>
 
                     <div className="relative z-10 space-y-1.5">
-                      <p className="text-[10px] font-mono text-[var(--accent)] tracking-[0.2em] uppercase">
+                      <p className="text-xs font-mono text-[var(--accent)] tracking-[0.16em] uppercase font-medium">
                         Subconscious Resonance · Connected to 3 Earlier Dreams
                       </p>
                       <p className="font-display text-lg text-white font-medium">
                         The Foggy Coastal Highway
                       </p>
-                      <p className="text-xs text-white/70 font-light">
+                      <p className="text-sm text-white/90 font-normal">
                         First appeared in October · Connected to earlier dreams sharing the silent passenger and ocean mist.
                       </p>
                     </div>
@@ -233,7 +233,7 @@ export function DreamJourneyWalkthrough() {
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-5">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                    <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block mb-1">
                       Step 3 &middot; Cross-Dream Intelligence
                     </span>
                     <h3 className="font-display text-2xl md:text-3xl text-[var(--text-primary)] font-medium">
@@ -249,7 +249,7 @@ export function DreamJourneyWalkthrough() {
                   {/* Pattern Highlight 1 */}
                   <div className="p-5 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)]">
+                      <span className="text-xs font-mono uppercase tracking-widest font-medium text-[var(--accent)]">
                         Dominant Motif
                       </span>
                       <span className="text-xs font-mono text-[var(--accent)] font-semibold">7&times;</span>
@@ -257,7 +257,7 @@ export function DreamJourneyWalkthrough() {
                     <h4 className="text-lg font-display text-[var(--text-primary)] font-medium">
                       Water & Tidal Edges
                     </h4>
-                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                       Water has appeared in 7 of your last 18 dreams — rain, tidal shallows, deep reservoirs, and misty shorelines.
                     </p>
                   </div>
@@ -265,7 +265,7 @@ export function DreamJourneyWalkthrough() {
                   {/* Pattern Highlight 2 */}
                   <div className="p-5 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)]">
+                      <span className="text-xs font-mono uppercase tracking-widest font-medium text-[var(--accent)]">
                         Recurring Motion
                       </span>
                       <span className="text-xs font-mono text-[var(--accent)] font-semibold">5&times;</span>
@@ -273,7 +273,7 @@ export function DreamJourneyWalkthrough() {
                     <h4 className="text-lg font-display text-[var(--text-primary)] font-medium">
                       Solitary Vehicles
                     </h4>
-                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                       Trains at dusk, solitary night drives, and quiet river ferries without passengers.
                     </p>
                   </div>
@@ -281,7 +281,7 @@ export function DreamJourneyWalkthrough() {
                   {/* Pattern Highlight 3 */}
                   <div className="p-5 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)]">
+                      <span className="text-xs font-mono uppercase tracking-widest font-medium text-[var(--accent)]">
                         Atmospheric State
                       </span>
                       <span className="text-xs font-mono text-[var(--accent)] font-semibold">8&times;</span>
@@ -289,7 +289,7 @@ export function DreamJourneyWalkthrough() {
                     <h4 className="text-lg font-display text-[var(--text-primary)] font-medium">
                       Twilight & Dusk
                     </h4>
-                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                       Your dreams consistently take place during transitions of light rather than midday or complete darkness.
                     </p>
                   </div>
@@ -297,7 +297,7 @@ export function DreamJourneyWalkthrough() {
 
                 <div className="p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] flex items-start gap-3">
                   <Sparkles size={16} className="text-[var(--accent)] mt-0.5 shrink-0" />
-                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                     <strong className="text-[var(--text-primary)] font-medium">Quiet Observation:</strong> Subconscious Log notes when motifs reoccur without diagnosing you. You decide what recurring symbols mean for your own waking life.
                   </p>
                 </div>
@@ -315,14 +315,14 @@ export function DreamJourneyWalkthrough() {
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-5">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                    <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block mb-1">
                       Step 4 &middot; Your Subconscious Topography
                     </span>
                     <h3 className="font-display text-2xl md:text-3xl text-[var(--text-primary)] font-medium">
                       The Living Dream World
                     </h3>
                   </div>
-                  <span className="text-xs font-mono text-[var(--accent)] uppercase tracking-wider">
+                  <span className="text-xs font-mono text-[var(--accent)] uppercase tracking-wider font-medium">
                     Optional Exploration
                   </span>
                 </div>
@@ -347,17 +347,17 @@ export function DreamJourneyWalkthrough() {
                     </svg>
 
                     {/* Node labels */}
-                    <div className="relative z-10 w-full h-full text-[10px] font-mono pointer-events-none">
-                      <div className="absolute left-6 top-[42%] text-white/90">
+                    <div className="relative z-10 w-full h-full text-xs font-mono pointer-events-none">
+                      <div className="absolute left-6 top-[42%] text-white/90 font-medium">
                         <span className="text-[var(--accent)] font-bold">&bull; </span> Tidal Road
                       </div>
-                      <div className="absolute left-[44%] top-[16%] text-white/90">
+                      <div className="absolute left-[44%] top-[16%] text-white/90 font-medium">
                         <span className="text-[var(--accent)] font-bold">&bull; </span> The Water Inlet
                       </div>
-                      <div className="absolute right-8 top-[46%] text-white/90">
+                      <div className="absolute right-8 top-[46%] text-white/90 font-medium">
                         <span className="text-[var(--accent)] font-bold">&bull; </span> Solitary Vehicle
                       </div>
-                      <div className="absolute left-[38%] bottom-[12%] text-white/90">
+                      <div className="absolute left-[38%] bottom-[12%] text-white/90 font-medium">
                         <span className="text-[var(--accent)] font-bold">&bull; </span> Twilight Horizon
                       </div>
                     </div>
@@ -368,10 +368,10 @@ export function DreamJourneyWalkthrough() {
                     <h4 className="text-base font-display text-[var(--text-primary)] font-medium">
                       Not a game. A spatial memory palace.
                     </h4>
-                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-light">
+                    <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                       As dreams accumulate, entities connect across time. You can wander through recurring places, meet recurring figures, and watch the landscape of your mind evolve month by month.
                     </p>
-                    <p className="text-xs text-[var(--text-muted)] italic">
+                    <p className="text-sm text-[var(--text-secondary)] italic">
                       Always optional — your journal remains completely functional as a pure text archive if you prefer simplicity.
                     </p>
                   </div>
@@ -400,7 +400,7 @@ export function DreamJourneyWalkthrough() {
           <button
             type="button"
             onClick={() => setActiveStage((prev) => (prev + 1) % STAGES.length)}
-            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:text-[var(--text-primary)] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider font-medium text-[var(--accent)] hover:text-[var(--text-primary)] transition-colors"
           >
             <span>{activeStage === STAGES.length - 1 ? 'Start over' : 'Next stage'}</span>
             <ArrowRight size={13} />

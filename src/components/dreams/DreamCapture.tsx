@@ -17,6 +17,11 @@ import {
   Eye,
   FileText,
   ArrowLeft,
+  Mic,
+  PenLine,
+  Edit3,
+  Plus,
+  Trash2,
 } from 'lucide-react';
 import Link from 'next/link';
 import { MorningRecorder } from './MorningRecorder';
@@ -32,7 +37,19 @@ import {
   MemoryType,
 } from '@/lib/drafts';
 import { toDateKey } from '@/lib/utils/date';
+import { mergeTranscripts } from '@/lib/utils/voice';
 import { motion, AnimatePresence } from 'framer-motion';
+
+export interface CapturedSegment {
+  id: string;
+  type: 'voice' | 'text';
+  content: string;
+  rawTranscript?: string;
+  audioBlob?: Blob;
+  audioMimeType?: string;
+  audioLang?: string;
+  durationSeconds?: number;
+}
 
 export type CapturePayload = {
   title?: string;
@@ -43,11 +60,19 @@ export type CapturePayload = {
   tags?: string[];
   usedVoice: boolean;
   memoryType?: MemoryType;
+  /** Optional audio Blob from voice recording — for IndexedDB storage (Phase 2) */
+  audioBlob?: Blob;
+  audioMimeType?: string;
+  audioLang?: string;
+  /** Phase 4: Initial raw transcript before user edits */
+  rawTranscript?: string;
+  /** Phase 7: Multi-segment dream memories */
+  segments?: CapturedSegment[];
 };
 
 interface DreamCaptureProps {
   userId: string | null | undefined;
-  onSave: (payload: CapturePayload) => Promise<void> | void;
+  onSave: (payload: CapturePayload, audioBlob?: Blob, audioMimeType?: string, audioLang?: string) => Promise<void> | void;
   saving?: boolean;
   saveSuccess?: boolean;
   saveError?: string | null;
@@ -56,6 +81,7 @@ interface DreamCaptureProps {
   initialDream?: Partial<Dream> | null;
   isEditing?: boolean;
   onCancel?: () => void;
+  autoRecord?: boolean;
 }
 
 const MEMORY_TYPES: Array<{ id: MemoryType; label: string; hint: string }> = [
@@ -76,6 +102,7 @@ export function DreamCapture({
   initialDream,
   isEditing = false,
   onCancel,
+  autoRecord = false,
 }: DreamCaptureProps) {
   const [content, setContent] = useState(initialDream?.content || '');
   const [date, setDate] = useState(() => {
@@ -104,11 +131,18 @@ export function DreamCapture({
       )
   );
 
+  const [captureMode, setCaptureMode] = useState<'voice' | 'type'>('voice');
   const [hasDraft, setHasDraft] = useState(false);
   const [usedVoice, setUsedVoice] = useState(false);
   const [liveInterim, setLiveInterim] = useState('');
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
   const [emptyError, setEmptyError] = useState(false);
+
+  // Phase 2: Store audio blob in-memory until save is triggered
+  const audioBlobRef = useRef<Blob | undefined>(undefined);
+  const audioMimeTypeRef = useRef<string | undefined>(undefined);
+  const audioLangRef = useRef<string | undefined>(undefined);
+  const rawTranscriptRef = useRef<string | undefined>(undefined);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const savedRef = useRef(false);
@@ -147,18 +181,16 @@ export function DreamCapture({
     el.style.height = `${Math.max(el.scrollHeight, isEditing ? 220 : 180)}px`;
   }, [content, liveInterim, isEditing]);
 
-  // Focus content on mount for fast morning entry
+  // Focus content when switching into type mode
   useEffect(() => {
     if (isEditing) return;
-    const timer = setTimeout(() => {
-      // Don't steal focus on mobile if they want to tap voice first
-      const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
-      if (!isMobile) {
+    if (captureMode === 'type') {
+      const timer = setTimeout(() => {
         textareaRef.current?.focus();
-      }
-    }, 120);
-    return () => clearTimeout(timer);
-  }, [isEditing]);
+      }, 80);
+      return () => clearTimeout(timer);
+    }
+  }, [isEditing, captureMode]);
 
   const loadDraft = () => {
     if (!userId) return;
@@ -181,19 +213,135 @@ export function DreamCapture({
     setHasDraft(false);
   };
 
+  const [segments, setSegments] = useState<CapturedSegment[]>([]);
+  const [showAddTextNote, setShowAddTextNote] = useState(false);
+  const [newNoteText, setNewNoteText] = useState('');
+  const [isRecordingAnother, setIsRecordingAnother] = useState(false);
+
+  // Discrete recording session tracking
+  const currentSessionIdRef = useRef<string>(
+    typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'seg_0'
+  );
+  const currentSessionTextRef = useRef<string>('');
+  const currentSessionRawRef = useRef<string>('');
+  const currentSessionBlobRef = useRef<Blob | null>(null);
+
   const handleVoiceTranscript = useCallback((text: string) => {
     setUsedVoice(true);
     setEmptyError(false);
-    setContent((prev) => {
-      const needsSpace = prev.length > 0 && !prev.endsWith(' ') && !prev.endsWith('\n');
-      return prev + (needsSpace ? ' ' : '') + text.trim();
+
+    currentSessionTextRef.current = mergeTranscripts(currentSessionTextRef.current, text);
+    if (!currentSessionRawRef.current) {
+      currentSessionRawRef.current = text;
+    } else {
+      currentSessionRawRef.current = mergeTranscripts(currentSessionRawRef.current, text);
+    }
+
+    setSegments((prev) => {
+      const existingIdx = prev.findIndex((s) => s.id === currentSessionIdRef.current);
+      const seg: CapturedSegment = {
+        id: currentSessionIdRef.current,
+        type: 'voice',
+        content: currentSessionTextRef.current,
+        rawTranscript: currentSessionRawRef.current,
+        audioBlob: currentSessionBlobRef.current || undefined,
+        audioMimeType: audioMimeTypeRef.current,
+        audioLang: audioLangRef.current,
+      };
+
+      let updated: CapturedSegment[];
+      if (existingIdx !== -1) {
+        updated = [...prev];
+        updated[existingIdx] = seg;
+      } else {
+        updated = [...prev, seg];
+      }
+
+      // Recompute consolidated content
+      const consolidated = updated.map((s) => s.content.trim()).filter(Boolean).join('\n\n');
+      setContent(consolidated);
+      return updated;
     });
   }, []);
+
+  const handleAudioCaptured = useCallback((blob: Blob, mimeType: string, lang: string) => {
+    currentSessionBlobRef.current = blob;
+    audioBlobRef.current = blob;
+    audioMimeTypeRef.current = mimeType;
+    audioLangRef.current = lang;
+
+    setSegments((prev) => {
+      const existingIdx = prev.findIndex((s) => s.id === currentSessionIdRef.current);
+      if (existingIdx !== -1) {
+        const updated = [...prev];
+        updated[existingIdx] = {
+          ...updated[existingIdx],
+          audioBlob: blob,
+          audioMimeType: mimeType,
+          audioLang: lang,
+        };
+        return updated;
+      } else {
+        const seg: CapturedSegment = {
+          id: currentSessionIdRef.current,
+          type: 'voice',
+          content: currentSessionTextRef.current || 'Voice recording captured',
+          rawTranscript: currentSessionRawRef.current || currentSessionTextRef.current || 'Voice recording captured',
+          audioBlob: blob,
+          audioMimeType: mimeType,
+          audioLang: lang,
+        };
+        const updated = [...prev, seg];
+        setContent(updated.map((s) => s.content.trim()).filter(Boolean).join('\n\n'));
+        return updated;
+      }
+    });
+  }, []);
+
+  const handleStartRecordingAnother = () => {
+    currentSessionIdRef.current =
+      typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `seg_${Date.now()}`;
+    currentSessionTextRef.current = '';
+    currentSessionRawRef.current = '';
+    currentSessionBlobRef.current = null;
+    setIsRecordingAnother(true);
+  };
+
+  const handleAddTextSegment = () => {
+    const text = newNoteText.trim();
+    if (!text) return;
+    const newSeg: CapturedSegment = {
+      id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `seg_${Date.now()}`,
+      type: 'text',
+      content: text,
+      rawTranscript: text,
+    };
+    setSegments((prev) => {
+      const updated = [...prev, newSeg];
+      setContent(updated.map((s) => s.content.trim()).filter(Boolean).join('\n\n'));
+      return updated;
+    });
+    setNewNoteText('');
+    setShowAddTextNote(false);
+    setEmptyError(false);
+  };
+
+  const handleRemoveSegment = (segId: string) => {
+    setSegments((prev) => {
+      const filtered = prev.filter((s) => s.id !== segId);
+      const combined = filtered.map((s) => s.content.trim()).filter(Boolean).join('\n\n');
+      setContent(combined);
+      return filtered;
+    });
+  };
 
   const handleSave = async () => {
     if (saving || saveSuccess) return;
     const trimmed = content.trim();
-    if (!trimmed) {
+    const hasAudio = Boolean(audioBlobRef.current) || segments.some((s) => s.audioBlob);
+
+    // If neither text nor audio is present, ask the user to provide their dream
+    if (!trimmed && !hasAudio) {
       setEmptyError(true);
       textareaRef.current?.focus();
       return;
@@ -202,22 +350,33 @@ export function DreamCapture({
     setEmptyError(false);
     savedRef.current = true;
 
+    // Phase 4: Non-blocking voice capture. If user taps Save immediately after stopping
+    // recording, save with reassuring placeholder; server transcribes and updates automatically.
+    const finalContent = trimmed || 'Voice recording captured';
+
     // Softly add memory type tag if selected and not full
     const finalTags = [...tags];
     if (memoryType && memoryType !== 'full' && !finalTags.includes(memoryType)) {
       finalTags.push(memoryType);
     }
 
-    await onSave({
-      title: title.trim() || undefined,
-      date,
-      content: trimmed,
-      mood,
-      lucidity,
-      tags: finalTags,
-      usedVoice,
-      memoryType,
-    });
+    await onSave(
+      {
+        title: title.trim() || undefined,
+        date,
+        content: finalContent,
+        mood,
+        lucidity,
+        tags: finalTags,
+        usedVoice: usedVoice || hasAudio,
+        memoryType,
+        rawTranscript: rawTranscriptRef.current,
+        segments: segments.length > 0 ? segments : undefined,
+      },
+      audioBlobRef.current || segments.find((s) => s.audioBlob)?.audioBlob,
+      audioMimeTypeRef.current,
+      audioLangRef.current
+    );
   };
 
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
@@ -346,13 +505,13 @@ export function DreamCapture({
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs sm:text-sm text-rose-300">
           <div className="flex items-center gap-2">
             <AlertTriangle size={16} className="text-rose-400 shrink-0" />
-            <span>Connection issue — your words are safely preserved here.</span>
+            <span>Save could not complete due to connection. Your text remains on screen — tap retry.</span>
           </div>
           {onRetrySave && (
             <button
               type="button"
               onClick={onRetrySave}
-              className="rounded-xl bg-rose-500 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-rose-600 transition-colors shrink-0"
+              className="rounded-xl bg-rose-500 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-rose-600 transition-colors shrink-0 cursor-pointer"
             >
               Retry saving
             </button>
@@ -361,7 +520,7 @@ export function DreamCapture({
       )}
 
       {/* Hero Header for Sleepy Morning Minds */}
-      <header className="mb-5 sm:mb-6 space-y-2">
+      <header className="mb-3.5 sm:mb-6 space-y-1 sm:space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link
@@ -387,102 +546,314 @@ export function DreamCapture({
           </div>
         </div>
 
-        <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-normal tracking-tight text-[var(--text-primary)]">
+        <h1 className="font-display text-2xl sm:text-4xl md:text-5xl font-normal tracking-tight text-[var(--text-primary)]">
           What do you remember?
         </h1>
-        <p className="text-xs sm:text-sm leading-relaxed text-[var(--text-secondary)] max-w-lg">
+        <p className="text-xs sm:text-sm leading-relaxed text-[var(--text-secondary)] max-w-lg hidden sm:block">
           Speak or type before it fades. A single fragment, emotion, or scene is enough.
         </p>
       </header>
 
-      {/* Quick Fragment Framing Chips — Welcoming Incomplete Memories */}
-      <div className="mb-5 flex flex-wrap items-center gap-2">
-        <span className="text-[11px] text-[var(--text-muted)] font-mono mr-1">Capture type:</span>
-        {MEMORY_TYPES.map((type) => {
-          const isSelected = memoryType === type.id;
-          return (
-            <button
-              key={type.id}
-              type="button"
-              onClick={() => setMemoryType(type.id)}
-              title={type.hint}
-              className={`rounded-full px-3 py-1 text-xs transition-all font-medium ${
-                isSelected
-                  ? 'bg-[var(--accent)] text-[var(--bg-primary)] shadow-sm'
-                  : 'bg-[var(--bg-card)] border border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-soft)]'
-              }`}
-            >
-              {type.label}
-            </button>
-          );
-        })}
+      {/* Mode Selector: Voice vs Type */}
+      <div className="flex items-center justify-center p-1 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] mb-5 max-w-xs mx-auto shadow-xs">
+        <button
+          type="button"
+          onClick={() => setCaptureMode('voice')}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+            captureMode === 'voice'
+              ? 'bg-[var(--accent)] text-[var(--bg-primary)] font-semibold shadow-xs'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+          }`}
+        >
+          <Mic size={15} />
+          <span>Voice Record</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setCaptureMode('type');
+            setTimeout(() => textareaRef.current?.focus(), 60);
+          }}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+            captureMode === 'type'
+              ? 'bg-[var(--accent)] text-[var(--bg-primary)] font-semibold shadow-xs'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+          }`}
+        >
+          <PenLine size={15} />
+          <span>Type Notes</span>
+        </button>
       </div>
 
-      {/* Primary Hero Voice Recorder */}
-      <div className="mb-5">
-        <MorningRecorder
-          onTranscript={handleVoiceTranscript}
-          onInterimText={setLiveInterim}
-          onRecordingChange={setIsVoiceRecording}
-          disabled={saving || saveSuccess}
-        />
-      </div>
+      {/* Dynamic Capture Workspace */}
+      {captureMode === 'voice' ? (
+        <div className="space-y-4">
+          {segments.length === 0 && !isRecordingAnother && (
+            <MorningRecorder
+              onTranscript={handleVoiceTranscript}
+              onRawTranscript={(text) => {
+                rawTranscriptRef.current = text;
+              }}
+              onInterimText={setLiveInterim}
+              onRecordingChange={setIsVoiceRecording}
+              onAudioCaptured={handleAudioCaptured}
+              disabled={saving || saveSuccess}
+              autoStart={autoRecord}
+            />
+          )}
 
-      {/* Spacious Sleepy-Eye Text Canvas */}
-      <div className="relative space-y-2">
-        <div className="relative">
-          <textarea
-            ref={textareaRef}
-            value={content}
-            onChange={(e) => {
-              setContent(e.target.value);
-              if (e.target.value.trim()) setEmptyError(false);
-            }}
-            placeholder={
-              memoryType === 'fragment'
-                ? 'Type or speak a fragment… "I was in an unfamiliar room… there was water on the floor…"'
-                : memoryType === 'feeling'
-                  ? 'Describe the feeling or atmosphere upon waking…'
-                  : 'Record what you remember…'
-            }
-            disabled={saving || saveSuccess}
-            rows={7}
-            aria-label="Dream memory words"
-            className={`w-full resize-none rounded-2xl border bg-[var(--bg-card)] px-5 py-5 text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/45 focus:outline-none transition-colors ${
-              emptyError
-                ? 'border-rose-400/60 focus:ring-2 focus:ring-rose-400/20'
-                : isVoiceRecording
-                  ? 'border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-soft)]'
-                  : 'border-[var(--border-default)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent-soft)]'
-            }`}
-          />
+          {/* Multi-Segment Memory Cards & Live Preview */}
+          {content.trim() ? (
+            <div className="space-y-3">
+              {segments.length > 1 ? (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between px-1">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                      Captured Memories ({segments.length} parts · {wordCount} words)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCaptureMode('type');
+                        setTimeout(() => textareaRef.current?.focus(), 60);
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs text-[var(--accent)] hover:underline font-medium cursor-pointer"
+                    >
+                      <Edit3 size={13} />
+                      <span>Edit full text</span>
+                    </button>
+                  </div>
 
-          {/* Active Voice Live Indicator in bottom right of textarea */}
-          {liveInterim && (
-            <div className="absolute bottom-3 left-4 right-4 pointer-events-none">
-              <p className="text-xs sm:text-sm italic text-[var(--accent)]/90 truncate font-serif">
-                transcribing: “{liveInterim}”
-              </p>
+                  {segments.map((seg, idx) => (
+                    <div
+                      key={seg.id || idx}
+                      className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-4 text-left space-y-2"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-[var(--accent)]">
+                          {seg.type === 'voice' ? <Mic size={12} /> : <PenLine size={12} />}
+                          <span>Memory {idx + 1} ({seg.type === 'voice' ? 'Voice' : 'Note'})</span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveSegment(seg.id)}
+                          className="text-[var(--text-muted)] hover:text-rose-400 p-1 transition-colors cursor-pointer"
+                          title="Remove this memory"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                      <p className="text-base sm:text-lg leading-relaxed text-[var(--text-primary)] font-serif whitespace-pre-wrap">
+                        {seg.content}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-4 sm:p-5 text-left space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                      Captured Words ({wordCount} {wordCount === 1 ? 'word' : 'words'})
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCaptureMode('type');
+                        setTimeout(() => textareaRef.current?.focus(), 60);
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs text-[var(--accent)] hover:underline font-medium cursor-pointer"
+                    >
+                      <Edit3 size={13} />
+                      <span>Edit in text editor</span>
+                    </button>
+                  </div>
+                  <p className="text-base sm:text-lg leading-relaxed text-[var(--text-primary)] whitespace-pre-wrap font-serif">
+                    {content}
+                  </p>
+                </div>
+              )}
+
+              {/* Phase 7: Natural Follow-up Prompt Card */}
+              <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)]/60 p-4 sm:p-5 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles size={15} className="text-[var(--accent)] shrink-0" />
+                  <h3 className="text-sm font-medium text-[var(--text-primary)]">
+                    Anything else you remember?
+                  </h3>
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                  A fleeting scene, person, or sensation that came back to you. You can add another memory fragment before saving.
+                </p>
+
+                {isRecordingAnother ? (
+                  <div className="pt-2 border-t border-[var(--border-subtle)] space-y-3">
+                    <div className="flex items-center justify-between text-xs text-[var(--accent)] font-mono">
+                      <span>Recording follow-up memory (Part {segments.length + 1})…</span>
+                      <button
+                        type="button"
+                        onClick={() => setIsRecordingAnother(false)}
+                        className="text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    <MorningRecorder
+                      onTranscript={handleVoiceTranscript}
+                      onRawTranscript={(text) => {
+                        rawTranscriptRef.current = text;
+                      }}
+                      onInterimText={setLiveInterim}
+                      onRecordingChange={(recording) => {
+                        setIsVoiceRecording(recording);
+                        if (!recording) {
+                          setTimeout(() => setIsRecordingAnother(false), 250);
+                        }
+                      }}
+                      onAudioCaptured={handleAudioCaptured}
+                      disabled={saving || saveSuccess}
+                      autoStart={true}
+                    />
+                  </div>
+                ) : showAddTextNote ? (
+                  <div className="pt-2 border-t border-[var(--border-subtle)] space-y-2.5">
+                    <textarea
+                      value={newNoteText}
+                      onChange={(e) => setNewNoteText(e.target.value)}
+                      placeholder='Type what else you recall… "Wait, I also remember there was a dog…"'
+                      rows={3}
+                      className="w-full resize-none rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/50 focus:border-[var(--accent)] focus:outline-none"
+                    />
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowAddTextNote(false);
+                          setNewNoteText('');
+                        }}
+                        className="px-3 py-1.5 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleAddTextSegment}
+                        disabled={!newNoteText.trim()}
+                        className="px-3.5 py-1.5 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-xs font-semibold text-[var(--bg-primary)] transition disabled:opacity-40 cursor-pointer"
+                      >
+                        Add memory
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={handleStartRecordingAnother}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-xs font-semibold text-[var(--bg-primary)] transition cursor-pointer shadow-xs"
+                    >
+                      <Mic size={13} />
+                      <span>Record another memory</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowAddTextNote(true)}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] hover:bg-[var(--bg-secondary)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition cursor-pointer"
+                    >
+                      <Plus size={13} />
+                      <span>Add a text note</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-2 text-xs text-[var(--text-muted)] font-mono">
+              Tap the microphone to speak what you recall. Or switch to Type above.
             </div>
           )}
-        </div>
 
-        {/* Word count and reassurance */}
-        <div className="flex items-center justify-between px-1 text-[11px] text-[var(--text-muted)] font-mono">
-          <span>
-            {wordCount > 0
-              ? `${wordCount} ${wordCount === 1 ? 'word' : 'words'} captured`
-              : 'Speak or type as much or as little as you recall'}
-          </span>
-          {usedVoice && <span className="text-[var(--accent)]">Voice dictation active</span>}
+          {emptyError && (
+            <p className="text-xs text-rose-400 text-center pt-1" role="alert">
+              Please speak or type a little of what you remember before saving.
+            </p>
+          )}
         </div>
+      ) : (
+        <div className="relative space-y-3">
+          {/* Quick Fragment Framing Chips — Welcoming Incomplete Memories */}
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span className="text-[11px] text-[var(--text-muted)] font-mono mr-1">Capture type:</span>
+            {MEMORY_TYPES.map((type) => {
+              const isSelected = memoryType === type.id;
+              return (
+                <button
+                  key={type.id}
+                  type="button"
+                  onClick={() => setMemoryType(type.id)}
+                  title={type.hint}
+                  className={`rounded-full px-3 py-1 text-xs transition-all font-medium cursor-pointer ${
+                    isSelected
+                      ? 'bg-[var(--accent)] text-[var(--bg-primary)] shadow-xs'
+                      : 'bg-[var(--bg-card)] border border-[var(--border-default)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-soft)]'
+                  }`}
+                >
+                  {type.label}
+                </button>
+              );
+            })}
+          </div>
 
-        {emptyError && (
-          <p className="text-xs text-rose-400 pt-1" role="alert">
-            Please speak or type a little of what you remember before saving.
-          </p>
-        )}
-      </div>
+          {/* Spacious Sleepy-Eye Text Canvas */}
+          <div className="relative">
+            <textarea
+              ref={textareaRef}
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
+                if (e.target.value.trim()) setEmptyError(false);
+              }}
+              placeholder={
+                memoryType === 'fragment'
+                  ? 'Type a fragment… "I was in an unfamiliar room… there was water on the floor…"'
+                  : memoryType === 'feeling'
+                    ? 'Describe the feeling or atmosphere upon waking…'
+                    : 'Record what you remember…'
+              }
+              disabled={saving || saveSuccess}
+              rows={8}
+              aria-label="Dream memory words"
+              className={`w-full resize-none rounded-2xl border bg-[var(--bg-card)] px-5 py-5 text-lg sm:text-xl md:text-2xl leading-relaxed text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/45 focus:outline-none transition-colors ${
+                emptyError
+                  ? 'border-rose-400/60 focus:ring-2 focus:ring-rose-400/20'
+                  : 'border-[var(--border-default)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent-soft)]'
+              }`}
+            />
+          </div>
+
+          {/* Word count & switch helper */}
+          <div className="flex items-center justify-between px-1 text-[11px] text-[var(--text-muted)] font-mono">
+            <span>
+              {wordCount > 0
+                ? `${wordCount} ${wordCount === 1 ? 'word' : 'words'} captured`
+                : 'Type as much or as little as you recall'}
+            </span>
+            <button
+              type="button"
+              onClick={() => setCaptureMode('voice')}
+              className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline cursor-pointer"
+            >
+              <Mic size={12} />
+              <span>Switch to Voice</span>
+            </button>
+          </div>
+
+          {emptyError && (
+            <p className="text-xs text-rose-400 pt-1" role="alert">
+              Please write a little of what you remember before saving.
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Optional Details Accordion — Never Required Before Saving */}
       <div className="mt-6 pt-2">
@@ -562,8 +933,8 @@ export function DreamCapture({
 
         <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">
           {saveSuccess
-            ? 'Raw memory preserved safely. Observing connections in background…'
-            : 'Saves immediately to your archive. AI reflection runs quietly afterward.'}
+            ? 'Memory recorded to your archive. AI reflection runs quietly in background.'
+            : 'Saves directly to your journal. AI reflection processes quietly after saving.'}
         </p>
       </div>
     </div>

@@ -2,7 +2,9 @@ import type { NextConfig } from 'next';
 import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
 
 // Cloudflare OpenNext — enables bindings during `next dev` when present
-initOpenNextCloudflareForDev();
+if (process.env.NODE_ENV === 'development') {
+  initOpenNextCloudflareForDev();
+}
 
 const nextConfig: NextConfig = {
   images: {
@@ -45,7 +47,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
+            value: 'camera=(), microphone=(self), geolocation=(), browsing-topics=()',
           },
         ],
       },

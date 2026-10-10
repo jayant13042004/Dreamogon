@@ -50,7 +50,7 @@ export default function ContactPage() {
             Contact SUBCONSCIOUS LOG.
           </h1>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-2xl">
             Have a question regarding your journal, billing, or privacy? Our desk responds to all inquiries within one to two business days.
           </p>
         </div>
@@ -58,64 +58,64 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Contact Details & Context */}
           <div className="md:col-span-5 space-y-6">
-            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
-              <h2 className="text-xs font-mono uppercase tracking-wider text-[var(--accent)]">
+            <div className="p-6 sm:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
+              <h2 className="text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--accent)] font-semibold">
                 Direct Channels
               </h2>
 
-              <div className="space-y-4 text-xs">
+              <div className="space-y-5 text-sm">
                 <div className="flex items-start gap-3">
-                  <Mail size={16} className="text-[var(--accent)] mt-0.5 shrink-0" />
+                  <Mail size={18} className="text-[var(--accent)] mt-0.5 shrink-0" />
                   <div className="space-y-1">
-                    <p className="text-[var(--text-muted)] font-mono text-[11px]">Customer Support &amp; Feedback</p>
+                    <p className="text-[var(--text-secondary)] font-mono text-xs uppercase tracking-wider font-semibold">Customer Support &amp; Feedback</p>
                     <a
                       href={`mailto:${SITE_CONFIG.supportEmail}`}
-                      className="font-medium text-[var(--text-primary)] hover:underline font-mono"
+                      className="font-medium text-sm sm:text-base text-[var(--text-primary)] hover:underline font-mono block"
                     >
                       {SITE_CONFIG.supportEmail}
                     </a>
-                    <p className="text-[11px] text-[var(--text-secondary)] font-light leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal leading-relaxed">
                       Available for customer support, general inquiries, feedback, suggestions, complaints, and product-related questions.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Shield size={16} className="text-[var(--accent)] mt-0.5 shrink-0" />
+                  <Shield size={18} className="text-[var(--accent)] mt-0.5 shrink-0" />
                   <div className="space-y-1">
-                    <p className="text-[var(--text-muted)] font-mono text-[11px]">Privacy &amp; Security</p>
+                    <p className="text-[var(--text-secondary)] font-mono text-xs uppercase tracking-wider font-semibold">Privacy &amp; Security</p>
                     <a
                       href={`mailto:${SITE_CONFIG.privacyEmail}`}
-                      className="font-medium text-[var(--text-primary)] hover:underline font-mono"
+                      className="font-medium text-sm sm:text-base text-[var(--text-primary)] hover:underline font-mono block"
                     >
                       {SITE_CONFIG.privacyEmail}
                     </a>
-                    <p className="text-[11px] text-[var(--text-secondary)] font-light leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal leading-relaxed">
                       Dedicated to privacy, security, personal-data, and account/data deletion requests.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Clock size={16} className="text-[var(--accent)] mt-0.5 shrink-0" />
+                  <Clock size={18} className="text-[var(--accent)] mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-[var(--text-muted)] font-mono text-[11px]">Target Response Standard</p>
-                    <p className="text-[var(--text-secondary)] font-light">Monday – Friday · 24–48h</p>
+                    <p className="text-[var(--text-secondary)] font-mono text-xs uppercase tracking-wider font-semibold">Target Response Standard</p>
+                    <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal">Monday – Friday · 24–48h</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
-              <h3 className="text-sm font-display font-medium text-[var(--text-primary)]">
+            <div className="p-6 sm:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+              <h3 className="text-base font-display font-medium text-[var(--text-primary)]">
                 Looking for answers quickly?
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+              <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal leading-relaxed">
                 Many common questions about exports, privacy, and SUBCONSCIOUS LOG Pro are answered in our knowledge base.
               </p>
               <Link
                 href="/faq"
-                className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
+                className="inline-flex items-center gap-1.5 text-sm font-mono uppercase tracking-wider font-medium text-[var(--accent)] hover:underline"
               >
                 <span>Read the FAQ</span>
                 <span>&rarr;</span>
@@ -134,11 +134,11 @@ export default function ContactPage() {
                   <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">
                     Form Validation Successful
                   </h3>
-                  <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed max-w-sm mx-auto">
+                  <p className="text-sm text-[var(--text-secondary)] font-normal leading-relaxed max-w-sm mx-auto">
                     Form validation passed for <span className="font-mono text-[var(--text-primary)]">{formData.name}</span> (<span className="font-mono text-[var(--text-primary)]">{formData.email}</span>).
                   </p>
-                  <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[11px] font-mono text-[var(--text-muted)] text-left space-y-1">
-                    <p className="text-[var(--accent)] font-semibold uppercase tracking-wider text-[10px]">Staging / Integration Note</p>
+                  <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono text-[var(--text-secondary)] text-left space-y-1">
+                    <p className="text-[var(--accent)] font-semibold uppercase tracking-wider text-xs">Staging / Integration Note</p>
                     <p>Live email delivery activates once an email API (e.g., Resend / Postmark / SES) is connected to <code className="text-[var(--text-primary)]">/api/contact</code>.</p>
                   </div>
                   <div className="pt-4">
@@ -148,7 +148,7 @@ export default function ContactPage() {
                         setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
                         setStatus('idle');
                       }}
-                      className="text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
+                      className="text-sm font-mono uppercase tracking-wider font-medium text-[var(--accent)] hover:underline"
                     >
                       Send another message
                     </button>
@@ -157,14 +157,14 @@ export default function ContactPage() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {status === 'error' && (
-                    <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-2 text-xs text-red-500 font-mono">
+                    <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-2 text-xs sm:text-sm text-red-500 font-mono">
                       <AlertCircle size={14} className="shrink-0" />
                       <span>{errorMessage}</span>
                     </div>
                   )}
 
                   <div className="space-y-1.5">
-                    <label htmlFor="name" className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] block">
+                    <label htmlFor="name" className="text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-secondary)] font-medium block">
                       Your Name <span className="text-[var(--accent)]">*</span>
                     </label>
                     <input
@@ -174,12 +174,12 @@ export default function ContactPage() {
                       placeholder="e.g. Clara Oswald"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:outline-none text-xs text-[var(--text-primary)] transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:outline-none text-sm text-[var(--text-primary)] transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="email" className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] block">
+                    <label htmlFor="email" className="text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-secondary)] font-medium block">
                       Email Address <span className="text-[var(--accent)]">*</span>
                     </label>
                     <input
@@ -189,19 +189,19 @@ export default function ContactPage() {
                       placeholder="you@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:outline-none text-xs text-[var(--text-primary)] transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:outline-none text-sm text-[var(--text-primary)] transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="subject" className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] block">
+                    <label htmlFor="subject" className="text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-secondary)] font-medium block">
                       Subject
                     </label>
                     <select
                       id="subject"
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:outline-none text-xs text-[var(--text-primary)] transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:outline-none text-sm text-[var(--text-primary)] transition-colors"
                     >
                       <option value="General Inquiry">General Inquiry</option>
                       <option value="Product Support">Product Support</option>
@@ -213,7 +213,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="message" className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] block">
+                    <label htmlFor="message" className="text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-secondary)] font-medium block">
                       Message <span className="text-[var(--accent)]">*</span>
                     </label>
                     <textarea
@@ -223,7 +223,7 @@ export default function ContactPage() {
                       placeholder="How can we assist you?"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:outline-none text-xs text-[var(--text-primary)] transition-colors resize-none leading-relaxed"
+                      className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-default)] focus:border-[var(--accent)] focus:outline-none text-sm text-[var(--text-primary)] transition-colors resize-none leading-relaxed"
                     />
                   </div>
 
@@ -231,24 +231,24 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={status === 'submitting'}
-                      className="w-full py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="w-full py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       {status === 'submitting' ? (
                         <span>Sending message...</span>
                       ) : (
                         <>
                           <span>Send Message</span>
-                          <Send size={13} />
+                          <Send size={15} />
                         </>
                       )}
                     </button>
                   </div>
 
                   <div className="space-y-1 text-center pt-2">
-                    <p className="text-[10px] text-[var(--text-muted)] font-mono">
+                    <p className="text-xs text-[var(--text-secondary)] font-mono">
                       Inquiries sent to support@subconsciouslog.com and privacy@subconsciouslog.com are routed directly to our inbox.
                     </p>
-                    <p className="text-[10px] text-[var(--text-muted)] font-mono">
+                    <p className="text-xs text-[var(--text-secondary)] font-mono">
                       Contact information is used solely to reply to inquiries. Never sold or shared.
                     </p>
                   </div>

@@ -67,7 +67,7 @@ export default function LandingPage() {
           </div>
 
           {/* Desktop Navigation Links - Centered, properly spaced, never breaking lines */}
-          <div className="hidden lg:flex items-center gap-1 xl:gap-2 text-[11px] xl:text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+          <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 text-sm font-medium tracking-wide text-[var(--text-secondary)]">
             <a
               href="#demo"
               className="whitespace-nowrap px-3 py-1.5 rounded-lg hover:text-[var(--text-primary)] hover:bg-[var(--text-primary)]/5 transition-all"
@@ -116,21 +116,21 @@ export default function LandingPage() {
           <div className="hidden lg:flex items-center gap-3 shrink-0">
             <button
               onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-              className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors shrink-0"
+              className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors shrink-0"
               aria-label="Toggle theme"
             >
-              {mounted && resolvedTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+              {mounted && resolvedTheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
             </button>
             <span className="w-px h-4 bg-[var(--border-default)] shrink-0 mx-0.5" aria-hidden="true" />
             <Link
               href="/login"
-              className="text-[11px] xl:text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-2 transition-colors whitespace-nowrap shrink-0"
+              className="text-sm font-medium text-[var(--text-primary)] hover:text-[var(--accent)] px-3 py-2 transition-colors whitespace-nowrap shrink-0"
             >
               Log in
             </Link>
             <Link
               href="/signup"
-              className="text-[11px] xl:text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-4 xl:px-5 py-2.5 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-sm hover:shadow-md whitespace-nowrap shrink-0 inline-flex items-center justify-center font-sans"
+              className="text-sm font-semibold bg-[var(--accent)] text-[var(--bg-primary)] px-5 py-2.5 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-sm hover:shadow-md whitespace-nowrap shrink-0 inline-flex items-center justify-center font-sans"
             >
               Begin your journal
             </Link>
@@ -160,7 +160,7 @@ export default function LandingPage() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-[var(--bg-primary)]/98 backdrop-blur-xl pt-24 px-6 pb-8 flex flex-col justify-between lg:hidden border-b border-[var(--border-default)] animate-in fade-in duration-200">
           <div className="flex flex-col gap-4 overflow-y-auto">
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--text-muted)] mb-1">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--text-muted)] mb-1">
               Navigation
             </span>
             <a
@@ -217,14 +217,14 @@ export default function LandingPage() {
             <Link
               href="/login"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3 text-center text-xs font-mono uppercase tracking-wider font-medium border border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl transition-colors"
+              className="w-full py-3.5 text-center text-sm font-mono uppercase tracking-wider font-medium border border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl transition-colors"
             >
               Log in
             </Link>
             <Link
               href="/signup"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3.5 text-center text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] hover:bg-[var(--accent-hover)] rounded-xl transition-colors shadow-sm"
+              className="w-full py-3.5 text-center text-sm font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] hover:bg-[var(--accent-hover)] rounded-xl transition-colors shadow-sm"
             >
               Begin your journal
             </Link>
@@ -257,18 +257,18 @@ export default function LandingPage() {
           <div className="max-w-3xl space-y-6">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-              <p className="text-[11px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
+              <p className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)]">
                 Morning Dream Journal &amp; Subconscious Archive
               </p>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-normal leading-[1.06] tracking-tight text-[var(--text-primary)]">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-medium leading-[1.06] tracking-tight text-[var(--text-primary)]">
               Your dreams disappear.
               <br />
-              <span className="italic font-light text-[var(--text-secondary)]">SUBCONSCIOUS LOG remembers.</span>
+              <span className="italic font-normal text-[var(--text-secondary)]">SUBCONSCIOUS LOG remembers.</span>
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
+            <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] font-normal leading-relaxed max-w-2xl">
               A private journal designed for the moments immediately upon waking. Write or speak raw fragments before they fade, reflect with quiet care, and watch patterns emerge across time.
             </p>
 
@@ -276,16 +276,16 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
               <Link
                 href="/signup"
-                className="inline-flex items-center justify-center gap-2 text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-8 py-4 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-lg text-center"
+                className="inline-flex items-center justify-center gap-2 text-sm font-semibold uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-8 py-4 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-lg text-center"
               >
                 <span>Begin your journal</span>
-                <ChevronRight size={15} />
+                <ChevronRight size={16} />
               </Link>
 
               <button
                 type="button"
                 onClick={() => setExploreModalOpen(true)}
-                className="inline-flex items-center justify-center gap-2 text-xs font-mono uppercase tracking-wider border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-card)]/80 backdrop-blur-sm hover:bg-[var(--bg-card)] px-7 py-4 rounded-full transition-all text-center"
+                className="inline-flex items-center justify-center gap-2 text-sm font-mono uppercase tracking-wider font-medium border border-[var(--border-default)] hover:border-[var(--text-secondary)] bg-[var(--bg-card)]/80 backdrop-blur-sm hover:bg-[var(--bg-card)] px-7 py-4 rounded-full transition-all text-center text-[var(--text-primary)]"
               >
                 <span>Explore a sample dream</span>
               </button>
@@ -312,13 +312,13 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left explanation */}
             <div className="lg:col-span-6 space-y-6">
-              <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block">
                 The Dawn Routine
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)] leading-tight">
                 What do you remember?
               </h2>
-              <p className="text-base text-[var(--text-secondary)] font-light leading-relaxed">
+              <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
                 Most dream tools demand too much cognition when you wake up. SUBCONSCIOUS LOG is built for half-closed eyes and fading thoughts.
               </p>
 
@@ -345,8 +345,8 @@ export default function LandingPage() {
                       <item.icon size={16} className="text-[var(--accent)]" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-[var(--text-primary)]">{item.title}</h4>
-                      <p className="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">{item.desc}</p>
+                      <h4 className="text-base font-semibold text-[var(--text-primary)]">{item.title}</h4>
+                      <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-1 leading-relaxed font-normal">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -357,20 +357,20 @@ export default function LandingPage() {
             <div className="lg:col-span-6">
               <div className="p-6 md:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-xl space-y-5 relative overflow-hidden">
                 <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                  <span className="text-xs font-mono uppercase tracking-[0.16em] text-[var(--text-secondary)] font-medium">
                     Morning Capture
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[10px] font-mono text-[var(--text-muted)]">Draft Saved</span>
+                    <span className="text-xs font-mono text-[var(--text-secondary)] font-medium">Draft Saved</span>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-xs font-mono uppercase tracking-wider text-[var(--accent)]">
+                  <p className="text-xs font-mono uppercase tracking-wider text-[var(--accent)] font-semibold">
                     What stayed with you?
                   </p>
-                  <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed italic">
+                  <p className="text-base text-[var(--text-secondary)] font-normal leading-relaxed italic">
                     &ldquo;I woke up with the sound of a foghorn. We were standing in a hallway where all the doors opened directly into open water...&rdquo;
                   </p>
                 </div>
@@ -381,17 +381,17 @@ export default function LandingPage() {
                       <Mic size={14} />
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-[var(--text-primary)]">Voice capture active</p>
-                      <p className="text-[10px] text-[var(--text-muted)]">Listening with care...</p>
+                      <p className="text-sm font-medium text-[var(--text-primary)]">Voice capture active</p>
+                      <p className="text-xs text-[var(--text-muted)]">Listening with care...</p>
                     </div>
                   </div>
-                  <span className="text-xs font-mono text-[var(--accent)]">00:42</span>
+                  <span className="text-sm font-mono text-[var(--accent)] font-medium">00:42</span>
                 </div>
 
                 <div className="pt-2">
                   <Link
                     href="/signup"
-                    className="w-full py-3 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider text-center block hover:bg-[var(--accent-hover)] transition-colors"
+                    className="w-full py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider text-center block hover:bg-[var(--accent-hover)] transition-colors shadow-sm"
                   >
                     Save dream immediately
                   </Link>
@@ -408,13 +408,13 @@ export default function LandingPage() {
       <section id="journey" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
         <div className="max-w-5xl mx-auto space-y-16">
           <div className="max-w-4xl space-y-4">
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block">
               Core Architecture
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)] md:whitespace-nowrap">
               Dream → Memory → Pattern → World
             </h2>
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-2xl">
               Dreams are fragile at dawn. SUBCONSCIOUS LOG treats them with the respect they deserve — starting with effortless morning capture, gently revealing recurring symbols, and building a living memory map.
             </p>
           </div>
@@ -444,59 +444,59 @@ export default function LandingPage() {
       <section id="reflection" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
         <div className="max-w-5xl mx-auto space-y-16">
           <div className="max-w-2xl space-y-4">
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
-              Ethical AI & Boundaries
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block">
+              Ethical AI &amp; Boundaries
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)]">
               Possibilities, never diagnoses.
             </h2>
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
               SUBCONSCIOUS LOG makes a strict, respectful distinction between your authentic memory and reflective suggestions. We believe dream interpretation is a personal contemplative practice, not a clinical prescription.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
+            <div className="p-6 sm:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4 shadow-sm">
               <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
                 <BookOpen size={18} />
               </div>
-              <h3 className="font-display text-xl text-[var(--text-primary)] font-medium">
+              <h3 className="font-display text-xl sm:text-2xl text-[var(--text-primary)] font-medium">
                 1. Your Words
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 Your original journal entry remains pristine and unedited. No AI summary replaces your own authentic words.
               </p>
-              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[11px] font-mono text-[var(--text-muted)]">
+              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-xs font-mono text-[var(--text-secondary)] font-semibold">
                 Status: Authentic Ground Truth
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
+            <div className="p-6 sm:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4 shadow-sm">
               <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
                 <Sparkles size={18} />
               </div>
-              <h3 className="font-display text-xl text-[var(--text-primary)] font-medium">
+              <h3 className="font-display text-xl sm:text-2xl text-[var(--text-primary)] font-medium">
                 2. AI Reflection
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 Thoughtful inquiries that prompt personal journaling: &ldquo;What did the open water feel like when you stepped toward it?&rdquo;
               </p>
-              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[11px] font-mono text-[var(--text-muted)]">
+              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-xs font-mono text-[var(--text-secondary)] font-semibold">
                 Framing: Self-Inquiry Prompts
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
+            <div className="p-6 sm:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4 shadow-sm">
               <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
                 <ShieldCheck size={18} />
               </div>
-              <h3 className="font-display text-xl text-[var(--text-primary)] font-medium">
+              <h3 className="font-display text-xl sm:text-2xl text-[var(--text-primary)] font-medium">
                 3. Symbolic Patterns
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 Cultural and literary associations offered strictly as subjective possibilities. You are always the final authority on your dream.
               </p>
-              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[11px] font-mono text-[var(--text-muted)]">
+              <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-xs font-mono text-[var(--text-secondary)] font-semibold">
                 Disclaimer: Never Medical Advice
               </div>
             </div>
@@ -515,38 +515,38 @@ export default function LandingPage() {
       <section id="privacy" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]/50">
         <div className="max-w-5xl mx-auto space-y-16">
           <div className="max-w-2xl space-y-4">
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block">
               Subconscious Privacy
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)]">
               Your dreams stay yours.
             </h2>
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
               Your journal holds thoughts you may never say out loud. Privacy is not a feature in SUBCONSCIOUS LOG; it is the philosophical foundation.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <div className="p-6 sm:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3 shadow-sm">
               <Lock size={20} className="text-[var(--accent)]" />
-              <h4 className="font-display text-lg text-[var(--text-primary)] font-medium">Account-level security</h4>
-              <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+              <h4 className="font-display text-xl text-[var(--text-primary)] font-medium">Account-level security</h4>
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                 Row Level Security ensures only your authenticated account can ever read or decrypt your dream entries.
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <div className="p-6 sm:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3 shadow-sm">
               <ShieldCheck size={20} className="text-[var(--accent)]" />
-              <h4 className="font-display text-lg text-[var(--text-primary)] font-medium">Never sold or advertised</h4>
-              <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+              <h4 className="font-display text-xl text-[var(--text-primary)] font-medium">Never sold or advertised</h4>
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                 We will never sell your dream entries or behavioral profile to advertising brokers or data brokers.
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <div className="p-6 sm:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3 shadow-sm">
               <Sparkles size={20} className="text-[var(--accent)]" />
-              <h4 className="font-display text-lg text-[var(--text-primary)] font-medium">Model Privacy Boundaries</h4>
-              <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+              <h4 className="font-display text-xl text-[var(--text-primary)] font-medium">Model Privacy Boundaries</h4>
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                 SUBCONSCIOUS LOG does not use your private journal entries or reflections to train internal public foundation models.
               </p>
             </div>
@@ -565,13 +565,13 @@ export default function LandingPage() {
       <section id="pricing" className="py-24 md:py-32 px-6 md:px-10 border-t border-[var(--border-default)]">
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center max-w-2xl mx-auto space-y-4">
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block">
               Honest Value &amp; Fair Pricing
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)]">
               Start free. Deepen when you are ready.
             </h2>
-            <p className="text-base text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
               Every core journal tool is free forever without entry caps. Upgrade when you want cross-dream archive synthesis, conversational memory, and temporal pattern evolution.
             </p>
           </div>
@@ -581,20 +581,20 @@ export default function LandingPage() {
             <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-6 shadow-sm">
               <div className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] block mb-1">
+                  <span className="text-xs font-mono uppercase tracking-[0.16em] font-medium text-[var(--text-muted)] block mb-1">
                     Free Forever
                   </span>
                   <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">Free</h3>
                   <div className="mt-2 flex items-baseline gap-1">
-                    <span className="text-3xl font-display font-semibold text-[var(--text-primary)]">$0</span>
-                    <span className="text-xs text-[var(--text-muted)]">/ forever</span>
+                    <span className="text-3xl sm:text-4xl font-display font-semibold text-[var(--text-primary)]">$0</span>
+                    <span className="text-sm text-[var(--text-muted)]">/ forever</span>
                   </div>
-                  <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
+                  <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-2 font-normal leading-relaxed">
                     Lifelong private dream journaling with basic subconscious reflection.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-sm sm:text-base text-[var(--text-secondary)]">
                   {[
                     'Unlimited dream entries & voice capture',
                     'Full history, instant search & calendar',
@@ -605,8 +605,8 @@ export default function LandingPage() {
                     'Full export (JSON/Markdown) & zero lock-in',
                   ].map((feat, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
-                      <span className="leading-tight">{feat}</span>
+                      <Check size={15} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                      <span className="leading-snug">{feat}</span>
                     </div>
                   ))}
                 </div>
@@ -614,7 +614,7 @@ export default function LandingPage() {
 
               <Link
                 href="/signup"
-                className="w-full py-3 rounded-full border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)] text-xs font-mono uppercase tracking-wider text-[var(--text-primary)] text-center transition-colors block"
+                className="w-full py-3.5 rounded-full border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)] text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-primary)] text-center transition-colors block"
               >
                 Start free
               </Link>
@@ -624,20 +624,20 @@ export default function LandingPage() {
             <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-6 shadow-sm">
               <div className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                  <span className="text-xs font-mono uppercase tracking-[0.16em] font-medium text-[var(--accent)] block mb-1">
                     Monthly
                   </span>
                   <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">Pro Monthly</h3>
                   <div className="mt-2 flex items-baseline gap-1">
-                    <span className="text-3xl font-display font-semibold text-[var(--text-primary)]">$9</span>
-                    <span className="text-xs text-[var(--text-muted)]">/ month</span>
+                    <span className="text-3xl sm:text-4xl font-display font-semibold text-[var(--text-primary)]">$9</span>
+                    <span className="text-sm text-[var(--text-muted)]">/ month</span>
                   </div>
-                  <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
+                  <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-2 font-normal leading-relaxed">
                     Flexible month-to-month access to longitudinal synthesis &amp; temporal pattern tracking.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-sm sm:text-base text-[var(--text-secondary)]">
                   {[
                     'Everything in Free included',
                     '100 AI reflections & inquiries / month',
@@ -647,8 +647,8 @@ export default function LandingPage() {
                     'Priority analysis queues & direct support',
                   ].map((feat, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
-                      <span className="leading-tight">{feat}</span>
+                      <Check size={15} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                      <span className="leading-snug">{feat}</span>
                     </div>
                   ))}
                 </div>
@@ -656,7 +656,7 @@ export default function LandingPage() {
 
               <Link
                 href="/signup?tier=pro_monthly"
-                className="w-full py-3 rounded-full border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--bg-primary)] text-xs font-mono uppercase tracking-wider text-center transition-colors block"
+                className="w-full py-3.5 rounded-full border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--bg-primary)] text-xs sm:text-sm font-mono uppercase tracking-wider text-center transition-colors block"
               >
                 Subscribe monthly
               </Link>
@@ -664,31 +664,31 @@ export default function LandingPage() {
 
             {/* Pro Annual */}
             <div className="p-7 rounded-3xl bg-[var(--bg-card)] border-2 border-[var(--accent)] flex flex-col justify-between space-y-6 relative shadow-xl">
-              <div className="absolute -top-3 right-6">
-                <span className="px-2.5 py-0.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-[9px] font-mono uppercase tracking-widest font-semibold">
+              <div className="absolute -top-3.5 right-6">
+                <span className="px-3 py-1 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-mono uppercase tracking-wider font-semibold shadow-sm">
                   Save 33%
                 </span>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                  <span className="text-xs font-mono uppercase tracking-[0.16em] font-medium text-[var(--accent)] block mb-1">
                     Most Popular
                   </span>
                   <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">Pro Annual</h3>
                   <div className="mt-2 flex items-baseline gap-1">
-                    <span className="text-3xl font-display font-semibold text-[var(--text-primary)]">$72</span>
-                    <span className="text-xs text-[var(--text-muted)]">/ year</span>
+                    <span className="text-3xl sm:text-4xl font-display font-semibold text-[var(--text-primary)]">$72</span>
+                    <span className="text-sm text-[var(--text-muted)]">/ year</span>
                   </div>
-                  <p className="text-xs text-[var(--accent)] mt-1 font-mono">
+                  <p className="text-sm text-[var(--accent)] mt-1 font-mono font-medium">
                     $6/month equivalent &bull; Billed annually
                   </p>
-                  <p className="text-xs text-[var(--text-secondary)] mt-1 font-light">
+                  <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-1.5 font-normal leading-relaxed">
                     For committed dreamers exploring long-term psychological and symbolic arcs.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-xs text-[var(--text-primary)]">
+                <div className="space-y-2.5 pt-3 border-t border-[var(--border-subtle)] text-sm sm:text-base text-[var(--text-primary)]">
                   {[
                     'Everything in Pro Monthly included',
                     '33% annual savings ($72 vs $108)',
@@ -698,8 +698,8 @@ export default function LandingPage() {
                     'Early access to new cognitive tools',
                   ].map((feat, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
-                      <span className="leading-tight">{feat}</span>
+                      <Check size={15} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                      <span className="leading-snug">{feat}</span>
                     </div>
                   ))}
                 </div>
@@ -707,7 +707,7 @@ export default function LandingPage() {
 
               <Link
                 href="/signup?tier=pro_annual"
-                className="w-full py-3 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider text-center transition-colors block shadow-md"
+                className="w-full py-3.5 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider text-center transition-colors block shadow-md"
               >
                 Start annual
               </Link>
@@ -717,7 +717,7 @@ export default function LandingPage() {
           <div className="text-center">
             <Link
               href="/pricing"
-              className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
+              className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
             >
               <span>View full feature comparison &amp; tier FAQ</span>
               <ChevronRight size={14} />
@@ -745,25 +745,25 @@ export default function LandingPage() {
         </div>
 
         <div className="max-w-3xl mx-auto text-center space-y-8 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--bg-card)]/80 border border-[var(--border-default)] backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--bg-card)]/80 border border-[var(--border-default)] backdrop-blur-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.26em] text-[var(--accent)]">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)]">
               The Morning After
             </span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-normal text-[var(--text-primary)] leading-tight tracking-tight">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-medium text-[var(--text-primary)] leading-tight tracking-tight">
             Keep what the night forgets.
           </h2>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-xl mx-auto">
             Tomorrow morning&apos;s dream will be gone before noon unless you write it down. Start your private journal today.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/signup"
-              className="inline-flex items-center justify-center gap-2 text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-9 py-4 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-xl text-center"
+              className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-9 py-4 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-xl text-center"
             >
               <span>Begin your journal</span>
               <ChevronRight size={15} />

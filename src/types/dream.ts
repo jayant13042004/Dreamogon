@@ -6,15 +6,29 @@ export interface Emotion {
   percentage: number;
 }
 
+export interface DreamSymbol {
+  name: string;
+  reflection?: string;
+}
+
 export interface DreamAnalysis {
   summary: string;
   emotions: Emotion[];
-  key_elements: string[];
   themes: string[];
+  symbols?: DreamSymbol[];
+  people?: string[];
+  locations?: string[];
+  notable_details?: string[];
   possible_interpretations: string[];
   recurring_patterns: string[];
   reflection_questions: string[];
   insight: string;
+  key_elements: string[];
+  entities?: Array<{
+    entity_type: EntityType;
+    entity_name: string;
+    confidence: number;
+  }>;
 }
 
 export interface Dream {
@@ -41,8 +55,44 @@ export interface Dream {
   image_prompt?: string | null;
   image_generated_at?: string | null;
   image_generation_count?: number | null;
+  /** Phase 3: Supabase Storage audio object path */
+  audio_path?: string | null;
+  /** Duration in seconds */
+  audio_duration_seconds?: number | null;
+  /** MIME type (audio/webm, audio/mp4, etc.) */
+  audio_mime_type?: string | null;
+  /** Audio file size in bytes */
+  audio_file_size_bytes?: number | null;
+  /** Transcription lifecycle status */
+  transcription_status?: 'none' | 'transcribing' | 'completed' | 'failed' | null;
+  /** Initial verbatim transcript before any user edits */
+  raw_transcript?: string | null;
+  /** Client local unique ID for idempotency and duplicate prevention */
+  client_local_id?: string | null;
   dream_tags?: DreamTag[];
   dream_entities?: DreamEntity[];
+  /** Phase 7: Multi-segment dream memories */
+  dream_segments?: DreamSegment[];
+}
+
+export type SegmentType = 'voice' | 'text';
+
+export interface DreamSegment {
+  id: string;
+  dream_id: string;
+  user_id: string;
+  segment_index: number;
+  segment_type: SegmentType;
+  content: string;
+  raw_transcript?: string | null;
+  audio_path?: string | null;
+  audio_duration_seconds?: number | null;
+  audio_mime_type?: string | null;
+  audio_file_size_bytes?: number | null;
+  transcription_status?: 'none' | 'transcribing' | 'completed' | 'failed' | null;
+  client_local_id?: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export type EntityType = 'person' | 'place' | 'object' | 'emotion' | 'animal' | 'activity' | 'symbol' | 'theme';

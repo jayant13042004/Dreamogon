@@ -17,21 +17,21 @@ export function BlogShowcaseSection() {
           <div className="max-w-2xl space-y-4">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-              <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)]">
                 From the Editorial Desk
               </span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
               Subconscious Inquiries & Guides.
             </h2>
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
               Essays, cognitive research, and mindful contemplative practices on dream recall, archetypes, and waking memory.
             </p>
           </div>
 
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline whitespace-nowrap"
+            className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider font-medium text-[var(--accent)] hover:underline whitespace-nowrap"
           >
             <span>Explore all articles</span>
             <ArrowRight size={14} />
@@ -47,11 +47,11 @@ export function BlogShowcaseSection() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="px-2.5 py-1 rounded-full bg-[var(--bg-elevated)] text-[var(--accent)] border border-[var(--border-subtle)] text-[10px] uppercase tracking-wider font-medium">
+                  <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] text-[var(--accent)] border border-[var(--border-subtle)] text-xs uppercase tracking-wider font-medium">
                     {post.category}
                   </span>
-                  <span className="text-[var(--text-muted)] text-[11px] flex items-center gap-1">
-                    <Clock size={12} />
+                  <span className="text-[var(--text-secondary)] text-xs flex items-center gap-1.5">
+                    <Clock size={13} />
                     {post.readingTime}
                   </span>
                 </div>
@@ -62,13 +62,13 @@ export function BlogShowcaseSection() {
                   </Link>
                 </h3>
 
-                <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed line-clamp-3">
+                <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed line-clamp-3">
                   {post.excerpt}
                 </p>
               </div>
 
               <div className="pt-6 mt-6 border-t border-[var(--border-subtle)] flex items-center justify-between">
-                <span className="text-[11px] font-mono text-[var(--text-muted)]">
+                <span className="text-xs sm:text-sm font-mono text-[var(--text-secondary)]">
                   {new Date(post.publishedAt).toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',
@@ -78,7 +78,7 @@ export function BlogShowcaseSection() {
 
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-mono uppercase tracking-wider font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors"
                 >
                   <span>Read</span>
                   <ChevronRight size={13} className="transition-transform group-hover:translate-x-1" />

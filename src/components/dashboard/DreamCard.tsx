@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { getRelativeDate } from '@/lib/utils/date';
 import { MOODS } from '@/lib/utils/constants';
 import type { Dream } from '@/types/dream';
-import { ArrowRight, Moon } from 'lucide-react';
+import { ArrowRight, Moon, Loader2, AlertCircle } from 'lucide-react';
 import { resolveDreamImageUrl } from '@/lib/storage/dream-images';
 
 interface DreamCardProps {
@@ -15,7 +15,10 @@ interface DreamCardProps {
 
 export function DreamCard({ dream, index }: DreamCardProps) {
   const mood = MOODS.find(m => m.value === dream.mood) || MOODS.find(m => m.value === 'neutral') || { label: 'Neutral', value: 'neutral' };
-  
+  const isTranscribing = dream.transcription_status === 'transcribing';
+  const isFailed = dream.transcription_status === 'failed';
+  const isVoicePlaceholder = !dream.content || dream.content === 'Audio dream recording' || dream.content.startsWith('Voice recording captured');
+
   const contentPreview = dream.content?.length > 110 
     ? dream.content.substring(0, 110) + '...' 
     : dream.content || '';
@@ -42,7 +45,7 @@ export function DreamCard({ dream, index }: DreamCardProps) {
                 className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500 opacity-95 group-hover:opacity-100"
               />
               <div className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-[var(--bg-card)]/90 backdrop-blur-sm border border-[var(--border-default)] text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
-                {mood.label}
+                {isTranscribing ? 'Processing…' : mood.label}
               </div>
             </div>
           ) : (
@@ -51,9 +54,16 @@ export function DreamCard({ dream, index }: DreamCardProps) {
                 <Moon size={14} className="opacity-70" />
                 <span className="text-[10px] uppercase font-mono tracking-wider">Dream Record</span>
               </div>
-              <div className="px-2 py-0.5 rounded-md bg-[var(--bg-card)] border border-[var(--border-default)] text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
-                {mood.label}
-              </div>
+              {isTranscribing ? (
+                <div className="px-2 py-0.5 rounded-md bg-[var(--accent-soft)] border border-[var(--accent)]/30 text-[10px] font-mono uppercase tracking-wider text-[var(--accent)] flex items-center gap-1.5">
+                  <Loader2 size={11} className="animate-spin" />
+                  <span>Processing</span>
+                </div>
+              ) : (
+                <div className="px-2 py-0.5 rounded-md bg-[var(--bg-card)] border border-[var(--border-default)] text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                  {mood.label}
+                </div>
+              )}
             </div>
           )}
 
@@ -69,9 +79,21 @@ export function DreamCard({ dream, index }: DreamCardProps) {
               </p>
             </div>
             
-            <p className="text-[var(--text-secondary)] text-sm line-clamp-2 mb-5 flex-grow leading-relaxed font-normal">
-              "{contentPreview}"
-            </p>
+            {isTranscribing ? (
+              <div className="flex items-center gap-2 text-xs font-mono text-[var(--accent)] mb-5 flex-grow">
+                <Loader2 size={13} className="animate-spin shrink-0" />
+                <span>Transcribing audio in background…</span>
+              </div>
+            ) : isFailed && isVoicePlaceholder ? (
+              <div className="flex items-center gap-2 text-xs font-mono text-amber-500 mb-5 flex-grow">
+                <AlertCircle size={13} className="shrink-0" />
+                <span>Audio saved · Ready to transcribe</span>
+              </div>
+            ) : (
+              <p className="text-[var(--text-secondary)] text-sm line-clamp-2 mb-5 flex-grow leading-relaxed font-normal">
+                "{contentPreview}"
+              </p>
+            )}
             
             {/* Tags / Entities Footer */}
             <div className="pt-3 border-t border-[var(--border-default)] mt-auto flex items-center justify-between gap-2">

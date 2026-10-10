@@ -40,7 +40,7 @@ export default function DreamSymbolsHubPage() {
           <h1 className="text-4xl md:text-6xl font-display font-medium text-[var(--text-primary)] tracking-tight leading-tight">
             Universal Dream Symbols & Meanings
           </h1>
-          <p className="text-[var(--text-secondary)] text-base md:text-lg mt-4 leading-relaxed font-light">
+          <p className="text-[var(--text-secondary)] text-base md:text-lg mt-4 leading-relaxed font-normal">
             Evidence-informed explorations of common oneiric motifs. Understand how symbols reflect emotional state, waking challenges, and psychological transitions.
           </p>
         </div>
@@ -63,18 +63,18 @@ export default function DreamSymbolsHubPage() {
                     <Link key={sym.slug} href={`/dream-symbols/${sym.slug}`} className="group block">
                       <div className="h-full p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] group-hover:border-[var(--accent)]/40 transition-all duration-300 shadow-sm flex flex-col justify-between">
                         <div>
-                          <span className="text-[10px] uppercase font-mono tracking-widest text-[var(--accent)] block mb-2">
+                          <span className="text-xs uppercase font-mono tracking-widest text-[var(--accent)] font-semibold block mb-2">
                             {sym.category}
                           </span>
                           <h3 className="text-2xl font-display font-medium text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors mb-3">
                             {sym.name}
                           </h3>
-                          <p className="text-[var(--text-secondary)] text-xs md:text-sm leading-relaxed font-light line-clamp-3">
+                          <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal line-clamp-3">
                             {sym.quickAnswer}
                           </p>
                         </div>
 
-                        <div className="mt-6 pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--accent)] font-medium font-mono">
+                        <div className="mt-6 pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs sm:text-sm text-[var(--accent)] font-medium font-mono">
                           <span>Explore Symbol Analysis</span>
                           <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                         </div>

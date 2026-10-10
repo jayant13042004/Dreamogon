@@ -99,8 +99,8 @@ export function BlogIndexClient({ posts }: BlogIndexClientProps) {
                     {featuredPost.category}
                   </span>
                   <span className="text-[var(--text-muted)] opacity-40">•</span>
-                  <span className="text-[var(--text-muted)] font-mono text-[11px] flex items-center gap-1">
-                    <Clock size={12} /> {featuredPost.readingTime}
+                  <span className="text-[var(--text-secondary)] font-mono text-xs flex items-center gap-1 font-medium">
+                    <Clock size={13} /> {featuredPost.readingTime}
                   </span>
                 </div>
 
@@ -108,11 +108,11 @@ export function BlogIndexClient({ posts }: BlogIndexClientProps) {
                   {featuredPost.title}
                 </h2>
 
-                <p className="text-[var(--text-secondary)] text-base md:text-lg font-light leading-relaxed">
+                <p className="text-[var(--text-secondary)] text-base md:text-lg font-normal leading-relaxed">
                   {featuredPost.excerpt}
                 </p>
 
-                <div className="pt-4 flex items-center gap-2 text-xs font-mono text-[var(--accent)] uppercase tracking-wider font-medium group-hover:translate-x-1 transition-transform">
+                <div className="pt-4 flex items-center gap-2 text-xs font-mono text-[var(--accent)] uppercase tracking-wider font-semibold group-hover:translate-x-1 transition-transform">
                   <span>Read complete guide</span>
                   <ArrowRight size={14} />
                 </div>
@@ -127,7 +127,7 @@ export function BlogIndexClient({ posts }: BlogIndexClientProps) {
         <div className="p-12 text-center rounded-3xl bg-[var(--bg-card)] border border-dashed border-[var(--border-default)] space-y-3">
           <BookOpen size={28} className="mx-auto text-[var(--text-muted)]" />
           <h3 className="text-base font-medium text-[var(--text-primary)]">No articles found</h3>
-          <p className="text-xs text-[var(--text-muted)] max-w-sm mx-auto">
+          <p className="text-sm text-[var(--text-secondary)] max-w-sm mx-auto">
             No articles match your search or selected category. Try resetting the filters.
           </p>
           <button
@@ -148,11 +148,11 @@ export function BlogIndexClient({ posts }: BlogIndexClientProps) {
               <article className="h-full flex flex-col justify-between p-7 md:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] group-hover:border-[var(--accent)]/50 transition-all duration-300 shadow-xs hover:shadow-md">
                 <div>
                   <div className="flex items-center justify-between gap-4 mb-4 text-xs">
-                    <span className="px-2.5 py-1 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-[10px] uppercase tracking-wider">
+                    <span className="px-2.5 py-1 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-xs uppercase tracking-wider font-medium">
                       {post.category}
                     </span>
-                    <span className="flex items-center gap-1 text-[var(--text-muted)] font-mono text-[11px]">
-                      <Clock size={12} />
+                    <span className="flex items-center gap-1 text-[var(--text-secondary)] font-mono text-xs font-medium">
+                      <Clock size={13} />
                       {post.readingTime}
                     </span>
                   </div>
@@ -161,20 +161,20 @@ export function BlogIndexClient({ posts }: BlogIndexClientProps) {
                     {post.title}
                   </h3>
 
-                  <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-light line-clamp-3 mb-6">
+                  <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed font-normal line-clamp-3 mb-6">
                     {post.excerpt}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-muted)]">
-                  <span className="font-mono text-[11px]">
+                <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-secondary)]">
+                  <span className="font-mono text-xs font-medium">
                     {new Date(post.publishedAt).toLocaleDateString(undefined, {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
                     })}
                   </span>
-                  <span className="text-[var(--accent)] font-medium font-mono text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform uppercase tracking-wider">
+                  <span className="text-[var(--accent)] font-semibold font-mono text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform uppercase tracking-wider">
                     Read article <ArrowRight size={13} />
                   </span>
                 </div>

@@ -124,14 +124,14 @@ export function ProductShowcaseSection() {
         <div className="max-w-2xl space-y-4">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)]">
               Inside Subconscious Log
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
             A quiet sanctuary for your interior life.
           </h2>
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
             Every screen is crafted for calm focus. No gamification streaks, no social vanity metrics, no loud notifications.
           </p>
         </div>
@@ -145,13 +145,13 @@ export function ProductShowcaseSection() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(idx)}
-                className={`flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs font-mono tracking-wider uppercase transition-all whitespace-nowrap ${
+                className={`flex items-center gap-2.5 px-4 py-3 rounded-xl text-xs sm:text-sm font-mono tracking-wider uppercase transition-all whitespace-nowrap ${
                   isActive
                     ? 'bg-[var(--accent)] text-[var(--bg-primary)] font-medium shadow-sm'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)]'
                 }`}
               >
-                <span className={isActive ? 'opacity-90' : 'text-[var(--accent)] opacity-70'}>{tab.step}</span>
+                <span className={isActive ? 'opacity-90' : 'text-[var(--accent)]'}>{tab.step}</span>
                 <span>{tab.label}</span>
               </button>
             );
@@ -169,10 +169,10 @@ export function ProductShowcaseSection() {
               <h3 className="text-2xl sm:text-3xl font-display font-medium text-[var(--text-primary)] leading-tight">
                 {current.title}
               </h3>
-              <p className="text-sm font-display text-[var(--text-secondary)] italic">
+              <p className="text-sm sm:text-base font-display text-[var(--text-secondary)] italic">
                 {current.subtitle}
               </p>
-              <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed pt-2">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed pt-2">
                 {current.description}
               </p>
             </div>
@@ -180,11 +180,11 @@ export function ProductShowcaseSection() {
             {/* Feature Checkpoints */}
             <div className="space-y-3 pt-4 border-t border-[var(--border-subtle)]">
               {current.features.map((feat, i) => (
-                <div key={i} className="flex items-start gap-3 text-xs text-[var(--text-primary)]">
+                <div key={i} className="flex items-start gap-3 text-sm sm:text-base text-[var(--text-primary)]">
                   <div className="w-4 h-4 rounded-full bg-[var(--accent)]/15 text-[var(--accent)] flex items-center justify-center shrink-0 mt-0.5">
                     <Check size={11} />
                   </div>
-                  <span className="font-light">{feat}</span>
+                  <span className="font-normal">{feat}</span>
                 </div>
               ))}
             </div>
@@ -192,7 +192,7 @@ export function ProductShowcaseSection() {
             <div className="pt-4">
               <Link
                 href="/signup"
-                className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
+                className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider font-medium text-[var(--accent)] hover:underline"
               >
                 <span>Experience this in your journal</span>
                 <ChevronRight size={14} />
@@ -209,11 +209,11 @@ export function ProductShowcaseSection() {
                   <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)]" />
                   <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)]" />
                   <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)]" />
-                  <span className="ml-3 font-mono text-[11px] text-[var(--text-muted)]">
+                  <span className="ml-3 font-mono text-xs text-[var(--text-muted)]">
                     subconsciouslog.com/{current.id === 'capture' ? 'dream/new' : current.id === 'reflection' ? 'dreams/d_8829' : current.id}
                   </span>
                 </div>
-                <span className="text-[10px] font-mono text-[var(--accent)] uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--accent)]/10 border border-[var(--accent)]/20">
+                <span className="text-xs font-mono text-[var(--accent)] uppercase tracking-wider font-medium px-2.5 py-1 rounded bg-[var(--accent)]/10 border border-[var(--accent)]/20">
                   Interactive Demo · Illustrative Data
                 </span>
               </div>
@@ -234,14 +234,14 @@ export function ProductShowcaseSection() {
                       <div className="space-y-6">
                         <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4">
                           <div>
-                            <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-muted)]">
+                            <span className="text-xs font-mono uppercase tracking-widest font-medium text-[var(--text-muted)]">
                               06:22 AM · Saturday
                             </span>
                             <h4 className="text-xl font-display font-medium text-[var(--text-primary)]">
                               New Morning Entry
                             </h4>
                           </div>
-                          <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                          <span className="text-xs font-mono font-medium px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                             Autosaved
                           </span>
                         </div>
@@ -253,8 +253,8 @@ export function ProductShowcaseSection() {
                               <Mic size={16} />
                             </div>
                             <div>
-                              <p className="text-xs font-medium text-[var(--text-primary)]">Voice Capture Active</p>
-                              <p className="text-[11px] text-[var(--text-muted)]">Transcribing with half-closed eyes...</p>
+                              <p className="text-sm font-medium text-[var(--text-primary)]">Voice Capture Active</p>
+                              <p className="text-xs text-[var(--text-muted)]">Transcribing with half-closed eyes...</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-3">
@@ -275,13 +275,13 @@ export function ProductShowcaseSection() {
 
                         {/* Metadata selector pills */}
                         <div className="flex flex-wrap gap-2 pt-1 text-xs">
-                          <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-[11px]">
+                          <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-xs">
                             Mood: Serene Wonder
                           </span>
-                          <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-[11px]">
+                          <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] font-mono text-xs">
                             Lucidity: Moderate (50%)
                           </span>
-                          <span className="px-3 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/30 font-mono text-[11px]">
+                          <span className="px-3 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/30 font-mono text-xs font-medium">
                             Tag: Water, Time, Ferry
                           </span>
                         </div>
@@ -293,7 +293,7 @@ export function ProductShowcaseSection() {
                       <div className="space-y-5">
                         <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
                           <div>
-                            <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)]">
+                            <span className="text-xs font-mono uppercase tracking-widest font-medium text-[var(--accent)]">
                               Entry #8829 · 2 days ago
                             </span>
                             <h4 className="text-xl font-display font-medium text-[var(--text-primary)]">
@@ -306,35 +306,35 @@ export function ProductShowcaseSection() {
                         {/* Split: Authentic Ground Truth vs AI Inquiry */}
                         <div className="space-y-4">
                           <div className="p-4 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border-default)] space-y-1.5">
-                            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider font-medium text-[var(--text-secondary)]">
                               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
                               Authentic Words (Ground Truth)
                             </div>
-                            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+                            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                               &ldquo;The ferry had no motor noise, only the sound of water parting. When I looked down at the watch, the crystal was cold.&rdquo;
                             </p>
                           </div>
 
                           <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-2">
-                            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-[var(--accent)]">
-                              <Brain size={12} />
+                            <div className="flex items-center gap-2 text-xs sm:text-sm font-mono uppercase tracking-wider font-medium text-[var(--accent)]">
+                              <Brain size={14} />
                               Socratic Inquiries (For Your Journal)
                             </div>
-                            <ul className="space-y-2 text-xs text-[var(--text-primary)] font-light">
+                            <ul className="space-y-2 text-sm sm:text-base text-[var(--text-primary)] font-normal">
                               <li className="flex items-start gap-2">
-                                <span className="text-[var(--accent)] mt-0.5">·</span>
+                                <span className="text-[var(--accent)] mt-0.5 font-bold">·</span>
                                 <span>When the conductor handed you the handless watch, did you feel urgency, or relief that time had stopped?</span>
                               </li>
                               <li className="flex items-start gap-2">
-                                <span className="text-[var(--accent)] mt-0.5">·</span>
+                                <span className="text-[var(--accent)] mt-0.5 font-bold">·</span>
                                 <span>Ferries often symbolize transitions between life chapters. What boundary are you currently crossing?</span>
                               </li>
                             </ul>
                           </div>
 
-                          <div className="p-3 rounded-xl bg-[var(--accent)]/5 border border-[var(--accent)]/15 flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
-                            <span className="flex items-center gap-1.5">
-                              <ShieldCheck size={13} className="text-[var(--accent)]" />
+                          <div className="p-3.5 rounded-xl bg-[var(--accent)]/5 border border-[var(--accent)]/15 flex items-center justify-between text-xs sm:text-sm font-mono text-[var(--text-secondary)]">
+                            <span className="flex items-center gap-2">
+                              <ShieldCheck size={14} className="text-[var(--accent)]" />
                               Ethical boundary: Subjective inquiry, not diagnosis.
                             </span>
                           </div>
@@ -347,9 +347,9 @@ export function ProductShowcaseSection() {
                       <div className="space-y-4">
                         {/* Search header */}
                         <div className="p-2.5 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center gap-3">
-                          <Search size={15} className="text-[var(--text-muted)] ml-2" />
-                          <span className="text-xs font-mono text-[var(--text-primary)]">water or ferry</span>
-                          <span className="ml-auto text-[10px] font-mono text-[var(--text-muted)] mr-2">
+                          <Search size={15} className="text-[var(--text-secondary)] ml-2" />
+                          <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)]">water or ferry</span>
+                          <span className="ml-auto text-xs sm:text-sm font-mono text-[var(--text-secondary)] mr-2">
                             Showing 8 entries
                           </span>
                         </div>
@@ -382,23 +382,23 @@ export function ProductShowcaseSection() {
                             >
                               <div className="space-y-1 max-w-sm">
                                 <div className="flex items-center gap-2">
-                                  <h5 className="text-xs font-medium text-[var(--text-primary)]">{item.title}</h5>
-                                  <span className="text-[10px] font-mono text-[var(--text-muted)]">{item.date}</span>
+                                  <h5 className="text-sm sm:text-base font-medium text-[var(--text-primary)]">{item.title}</h5>
+                                  <span className="text-xs sm:text-sm font-mono text-[var(--text-secondary)]">{item.date}</span>
                                 </div>
-                                <p className="text-[11px] text-[var(--text-secondary)] font-light truncate">
+                                <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal truncate">
                                   {item.snippet}
                                 </p>
                               </div>
-                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[var(--accent)] shrink-0">
+                              <span className="text-xs sm:text-sm font-mono px-2.5 py-1 rounded bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[var(--accent)] font-medium shrink-0">
                                 {item.tag}
                               </span>
                             </div>
                           ))}
                         </div>
 
-                        <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)] pt-2 border-t border-[var(--border-subtle)]">
+                        <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[var(--text-secondary)] pt-2 border-t border-[var(--border-subtle)]">
                           <span>Total Archive: 42 recorded dreams</span>
-                          <span className="text-[var(--accent)]">Sort: Chronological ↓</span>
+                          <span className="text-[var(--accent)] font-medium">Sort: Chronological ↓</span>
                         </div>
                       </div>
                     )}
@@ -410,7 +410,7 @@ export function ProductShowcaseSection() {
                           <h4 className="text-base font-display font-medium text-[var(--text-primary)]">
                             Subconscious Pattern Radar
                           </h4>
-                          <span className="text-[10px] font-mono text-[var(--accent)] uppercase tracking-wider">
+                          <span className="text-xs font-mono text-[var(--accent)] uppercase tracking-wider font-medium">
                             Last 90 Days
                           </span>
                         </div>
@@ -418,20 +418,20 @@ export function ProductShowcaseSection() {
                         {/* Metrics grid */}
                         <div className="grid grid-cols-2 gap-3">
                           <div className="p-3.5 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border-default)] space-y-1">
-                            <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">Lucidity Trend</span>
+                            <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">Lucidity Trend</span>
                             <p className="text-2xl font-display font-medium text-[var(--text-primary)]">38%</p>
-                            <p className="text-[10px] font-mono text-emerald-500">+14% vs last month</p>
+                            <p className="text-xs font-mono text-emerald-500 font-medium">+14% vs last month</p>
                           </div>
                           <div className="p-3.5 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border-default)] space-y-1">
-                            <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">Top Archetype</span>
+                            <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">Top Archetype</span>
                             <p className="text-2xl font-display font-medium text-[var(--text-primary)]">Thresholds</p>
-                            <p className="text-[10px] font-mono text-[var(--accent)]">Appeared in 12 dreams</p>
+                            <p className="text-xs font-mono text-[var(--accent)] font-medium">Appeared in 12 dreams</p>
                           </div>
                         </div>
 
                         {/* Motif frequency bars */}
                         <div className="space-y-2.5 p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                          <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">
+                          <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] block font-medium">
                             Recurring Motif Distribution
                           </span>
                           {[
@@ -443,7 +443,7 @@ export function ProductShowcaseSection() {
                             <div key={i} className="space-y-1">
                               <div className="flex items-center justify-between text-xs font-mono">
                                 <span className="text-[var(--text-primary)]">{motif.name}</span>
-                                <span className="text-[var(--text-muted)] text-[10px]">{motif.count}</span>
+                                <span className="text-[var(--text-muted)] text-xs">{motif.count}</span>
                               </div>
                               <div className="h-1.5 w-full rounded-full bg-[var(--bg-primary)] overflow-hidden">
                                 <div
@@ -464,7 +464,7 @@ export function ProductShowcaseSection() {
                           <h4 className="text-base font-display font-medium text-[var(--text-primary)]">
                             Topography of Memory
                           </h4>
-                          <span className="text-[10px] font-mono text-[var(--accent)] uppercase tracking-wider">
+                          <span className="text-xs font-mono text-[var(--accent)] uppercase tracking-wider font-medium">
                             32 Connected Nodes
                           </span>
                         </div>
@@ -491,23 +491,23 @@ export function ProductShowcaseSection() {
                           </svg>
 
                           {/* Floating realm badges */}
-                          <div className="absolute top-4 left-6 px-2.5 py-1 rounded-full bg-black/60 border border-[#C8B89E]/20 text-[10px] font-mono text-[#DDD4C7] backdrop-blur-sm">
+                          <div className="absolute top-4 left-6 px-3 py-1 rounded-full bg-black/60 border border-[#C8B89E]/20 text-xs font-mono font-medium text-[#DDD4C7] backdrop-blur-sm">
                             The Inland Ferry
                           </div>
-                          <div className="absolute top-10 right-14 px-2.5 py-1 rounded-full bg-black/60 border border-[#C8B89E]/20 text-[10px] font-mono text-[#DDD4C7] backdrop-blur-sm">
+                          <div className="absolute top-10 right-14 px-3 py-1 rounded-full bg-black/60 border border-[#C8B89E]/20 text-xs font-mono font-medium text-[#DDD4C7] backdrop-blur-sm">
                             The Birch Lighthouse
                           </div>
-                          <div className="absolute bottom-4 left-1/3 px-2.5 py-1 rounded-full bg-black/60 border border-[#C8B89E]/20 text-[10px] font-mono text-[#DDD4C7] backdrop-blur-sm">
+                          <div className="absolute bottom-4 left-1/3 px-3 py-1 rounded-full bg-black/60 border border-[#C8B89E]/20 text-xs font-mono font-medium text-[#DDD4C7] backdrop-blur-sm">
                             The Sunken Library
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)] pt-1">
+                        <div className="flex items-center justify-between text-xs font-mono text-[var(--text-muted)] pt-1">
                           <span className="flex items-center gap-1.5">
-                            <Compass size={13} className="text-[var(--accent)]" />
+                            <Compass size={14} className="text-[var(--accent)]" />
                             Spatial layout grouped by subconscious affinity
                           </span>
-                          <span className="text-[var(--accent)]">Explore Topography →</span>
+                          <span className="text-[var(--accent)] font-medium">Explore Topography →</span>
                         </div>
                       </div>
                     )}
@@ -515,7 +515,7 @@ export function ProductShowcaseSection() {
                 </AnimatePresence>
 
                 {/* Bottom Status Bar in Mockup */}
-                <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
+                <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
                   <span>Illustrative Journal Scenario</span>
                   <span className="text-[var(--accent)] font-medium">Architecture: Private by Design</span>
                 </div>

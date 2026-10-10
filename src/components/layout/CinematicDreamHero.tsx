@@ -210,10 +210,10 @@ export function CinematicDreamHero() {
 
       {/* 7. Quiet Editorial Caption in corner */}
       <div className="absolute bottom-6 left-6 md:left-8 z-30 max-w-xs pointer-events-none">
-        <p className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] mb-1">
+        <p className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] mb-1">
           Illustrative Memory Scene · 04:18 AM
         </p>
-        <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+        <p className="text-sm sm:text-base text-white/90 font-normal leading-relaxed">
           &ldquo;I was driving alone on a wet road at dusk. The water reflected the horizon before the road ended.&rdquo;
         </p>
       </div>
@@ -221,7 +221,7 @@ export function CinematicDreamHero() {
       {/* 8. Memory Coordinate / Status Indicator */}
       <div className="absolute top-6 right-6 md:right-8 z-30 pointer-events-none flex items-center gap-2">
         <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-        <span className="text-[10px] font-mono tracking-[0.2em] text-[var(--text-muted)] uppercase">
+        <span className="text-xs font-mono tracking-[0.16em] font-medium text-white/80 uppercase">
           Illustrative Canvas
         </span>
       </div>

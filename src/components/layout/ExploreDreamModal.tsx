@@ -98,7 +98,7 @@ export function ExploreDreamModal({ isOpen, onClose }: ExploreDreamModalProps) {
               {/* Step 0: Typewriter typing of sample dream */}
               {step === 0 && (
                 <div className="space-y-4">
-                  <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--accent)] font-medium block">
+                  <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--accent)] font-medium block">
                     Illustrative Sample Input
                   </span>
                   <p className="text-xl md:text-2xl font-display font-normal leading-relaxed italic border-l-2 border-[var(--accent)] pl-4 py-1 text-[var(--text-primary)]">
@@ -111,7 +111,7 @@ export function ExploreDreamModal({ isOpen, onClose }: ExploreDreamModalProps) {
               {/* Step 1: Mapping Dream Fragments */}
               {step === 1 && (
                 <div className="flex flex-col items-center justify-center space-y-8 py-4">
-                  <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--accent)] font-medium block self-start">
+                  <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--accent)] font-medium block self-start">
                     Extracting Core Fragments
                   </span>
                   
@@ -123,7 +123,7 @@ export function ExploreDreamModal({ isOpen, onClose }: ExploreDreamModalProps) {
                       transition={{ delay: 0.2 }}
                       className="px-5 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-default)] shadow-sm flex flex-col items-center"
                     >
-                      <span className="text-[9px] uppercase tracking-wider text-[var(--text-muted)]">Setting</span>
+                      <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">Setting</span>
                       <span className="text-sm font-semibold tracking-wider text-[var(--text-primary)]">CITY</span>
                     </motion.div>
 
@@ -144,7 +144,7 @@ export function ExploreDreamModal({ isOpen, onClose }: ExploreDreamModalProps) {
                       transition={{ delay: 1.1 }}
                       className="px-5 py-3 rounded-xl bg-[var(--accent-soft)] border border-[var(--border-default)] shadow-sm flex flex-col items-center"
                     >
-                      <span className="text-[9px] uppercase tracking-wider text-[var(--accent)]">Action</span>
+                      <span className="text-xs font-mono uppercase tracking-wider text-[var(--accent)]">Action</span>
                       <span className="text-sm font-semibold tracking-wider text-[var(--accent)]">SEARCHING</span>
                     </motion.div>
 
@@ -165,7 +165,7 @@ export function ExploreDreamModal({ isOpen, onClose }: ExploreDreamModalProps) {
                       transition={{ delay: 2.0 }}
                       className="px-5 py-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-default)] shadow-sm flex flex-col items-center"
                     >
-                      <span className="text-[9px] uppercase tracking-wider text-[var(--text-muted)]">Symbol</span>
+                      <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">Symbol</span>
                       <span className="text-sm font-semibold tracking-wider text-[var(--text-primary)]">OCEAN</span>
                     </motion.div>
 
@@ -186,7 +186,7 @@ export function ExploreDreamModal({ isOpen, onClose }: ExploreDreamModalProps) {
                       transition={{ delay: 2.9 }}
                       className="px-5 py-3 rounded-xl bg-[var(--accent)] text-[var(--bg-primary)] shadow-sm flex flex-col items-center"
                     >
-                      <span className="text-[9px] uppercase tracking-wider opacity-80">Emotion</span>
+                      <span className="text-xs font-mono uppercase tracking-wider opacity-90">Emotion</span>
                       <span className="text-sm font-semibold tracking-wider">UNCERTAINTY</span>
                     </motion.div>
                   </div>
@@ -210,7 +210,7 @@ export function ExploreDreamModal({ isOpen, onClose }: ExploreDreamModalProps) {
                   className="space-y-6"
                 >
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="text-[11px] uppercase tracking-[0.2em] text-[var(--accent)] font-medium block w-full mb-1">
+                    <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--accent)] font-medium block w-full mb-1">
                       Identified Motifs
                     </span>
                     <span className="px-3 py-1 bg-[var(--bg-secondary)] border border-[var(--border-default)] rounded-md text-xs font-mono text-[var(--text-primary)]">

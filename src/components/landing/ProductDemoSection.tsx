@@ -49,14 +49,14 @@ export function ProductDemoSection({ videoSrc = '/subconsciouslog-demo.mp4' }: P
         <div className="max-w-2xl space-y-4">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)]">
               Product Walkthrough
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium tracking-tight text-[var(--text-primary)]">
             See Subconscious Log in action.
           </h2>
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
             From the first raw murmur at 6:00 AM to a living constellation of subconscious motifs. Watch how Subconscious Log preserves what waking life erases.
           </p>
         </div>
@@ -70,12 +70,12 @@ export function ProductDemoSection({ videoSrc = '/subconsciouslog-demo.mp4' }: P
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)] opacity-60" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)] opacity-60" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-default)] opacity-60" />
-                <span className="ml-3 text-[11px] font-mono text-[var(--text-muted)] tracking-wider">
+                <span className="ml-3 text-xs font-mono text-[var(--text-secondary)] tracking-wider">
                   subconsciouslog.com · product demonstration
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)]">
+                <span className="text-xs font-mono uppercase tracking-widest font-medium text-[var(--accent)]">
                   45s Walkthrough
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -116,31 +116,31 @@ export function ProductDemoSection({ videoSrc = '/subconsciouslog-demo.mp4' }: P
                           <p className="text-sm font-display font-medium text-[#E8DFD3]">The House by the Frozen Sea</p>
                         </div>
                       </div>
-                      <span className="text-[10px] font-mono text-[#A89F91] border border-[#C8B89E]/20 px-2.5 py-1 rounded-full">
+                      <span className="text-xs font-mono text-[#A89F91] border border-[#C8B89E]/20 px-3 py-1 rounded-full">
                         Voice Memo · 06:14 AM
                       </span>
                     </div>
 
                     <div className="space-y-3 py-4 max-w-xl">
-                      <p className="text-xs sm:text-sm text-[#DDD4C7] font-light leading-relaxed italic">
+                      <p className="text-sm sm:text-base text-[#DDD4C7] font-normal leading-relaxed italic">
                         &ldquo;I woke up with the smell of cedar wood. The house had no western wall—just wooden pilings looking straight onto black water that didn&rsquo;t freeze, even though snow was falling on the floorboards...&rdquo;
                       </p>
                       <div className="flex flex-wrap gap-2 pt-1">
-                        <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#C8B89E]/10 text-[#C8B89E] border border-[#C8B89E]/20">
+                        <span className="text-xs font-mono px-3 py-1 rounded-full bg-[#C8B89E]/10 text-[#C8B89E] border border-[#C8B89E]/20">
                           Lucidity: 70%
                         </span>
-                        <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#C8B89E]/10 text-[#C8B89E] border border-[#C8B89E]/20">
+                        <span className="text-xs font-mono px-3 py-1 rounded-full bg-[#C8B89E]/10 text-[#C8B89E] border border-[#C8B89E]/20">
                           Tone: Serene Melancholy
                         </span>
-                        <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#C8B89E]/10 text-[#C8B89E] border border-[#C8B89E]/20">
+                        <span className="text-xs font-mono px-3 py-1 rounded-full bg-[#C8B89E]/10 text-[#C8B89E] border border-[#C8B89E]/20">
                           Motif: Threshold & Sea
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between border-t border-[#C8B89E]/10 pt-3 text-[11px] font-mono text-[#8C8377]">
+                    <div className="flex items-center justify-between border-t border-[#C8B89E]/10 pt-3 text-xs font-mono text-[#8C8377]">
                       <span>AI Reflection: &ldquo;What kept the water from freezing?&rdquo;</span>
-                      <span className="text-[var(--accent)]">Illustrative Scenario</span>
+                      <span className="text-[var(--accent)] font-medium">Illustrative Scenario</span>
                     </div>
                   </div>
 
@@ -167,7 +167,7 @@ export function ProductDemoSection({ videoSrc = '/subconsciouslog-demo.mp4' }: P
                   {/* Ripple ring */}
                   <div className="absolute inset-0 rounded-full border-2 border-[var(--accent)]/40 animate-ping pointer-events-none" />
                 </button>
-                <span className="text-[11px] font-mono text-white/80 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10 uppercase tracking-wider select-none pointer-events-none">
+                <span className="text-xs font-mono font-medium text-white/90 bg-black/60 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-white/10 uppercase tracking-wider select-none pointer-events-none">
                   Launch Interactive Walkthrough
                 </span>
               </div>

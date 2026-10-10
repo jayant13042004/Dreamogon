@@ -15,7 +15,7 @@ export function DreamEvolutionLandingSection() {
         <div className="max-w-3xl space-y-4">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)]">
               Temporal Trajectory &amp; Evolution
             </span>
           </div>
@@ -24,7 +24,7 @@ export function DreamEvolutionLandingSection() {
             How your dreams change over time.
           </h2>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-2xl">
             Your dream world is not static. As your waking life shifts, earlier themes drift into dormancy and new psychological landscapes emerge. Subconscious Log compares earlier and recent eras to reveal your subconscious evolution.
           </p>
         </div>
@@ -52,24 +52,24 @@ export function DreamEvolutionLandingSection() {
           {/* Chronological Era Indicators */}
           <div className="absolute bottom-4 sm:bottom-6 left-5 sm:left-8 right-5 sm:right-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pointer-events-none">
             <div className="space-y-0.5">
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)] block">
                 Earlier Dreams
               </span>
-              <p className="text-xs sm:text-sm text-white/90 font-display font-light">
+              <p className="text-xs sm:text-sm text-white/90 font-display font-medium">
                 Nocturnal mist, enclosed corridors, solitary transit
               </p>
             </div>
 
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-xs border border-white/10 text-white/70 text-[10px] font-mono uppercase tracking-wider">
+            <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-xs border border-white/10 text-white/80 text-xs font-mono uppercase tracking-wider font-medium">
               <span>Temporal Arc</span>
               <ArrowRight size={12} className="text-[var(--accent)]" />
             </div>
 
             <div className="space-y-0.5 sm:text-right">
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/90 block">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-white/90 block">
                 Recent Dreams
               </span>
-              <p className="text-xs sm:text-sm text-white/90 font-display font-light">
+              <p className="text-xs sm:text-sm text-white/90 font-display font-medium">
                 Awakening horizon, open water, grounded resolution
               </p>
             </div>
@@ -81,39 +81,39 @@ export function DreamEvolutionLandingSection() {
           
           <div className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-medium">
+              <span className="text-xs font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-medium">
                 Emerging Landmarks
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-500/80" />
             </div>
-            <h4 className="text-base font-semibold text-[var(--text-primary)]">Newly Appearing Motifs</h4>
-            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+            <h4 className="text-base sm:text-lg font-medium text-[var(--text-primary)]">Newly Appearing Motifs</h4>
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
               Detects symbols, people, and architectures that have entered your dream world over the last 30 to 90 days.
             </p>
           </div>
 
           <div className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-amber-600 dark:text-amber-400 font-medium">
+              <span className="text-xs font-mono uppercase tracking-wider text-amber-600 dark:text-amber-400 font-medium">
                 Dormant Memories
               </span>
               <span className="w-2 h-2 rounded-full bg-amber-500/80" />
             </div>
-            <h4 className="text-base font-semibold text-[var(--text-primary)]">Motifs at Rest</h4>
-            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+            <h4 className="text-base sm:text-lg font-medium text-[var(--text-primary)]">Motifs at Rest</h4>
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
               Surfaces figures and places that defined earlier periods of your life but have quietly faded from recent nights.
             </p>
           </div>
 
           <div className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-blue-600 dark:text-blue-400 font-medium">
+              <span className="text-xs font-mono uppercase tracking-wider text-blue-600 dark:text-blue-400 font-medium">
                 Atmospheric Shift
               </span>
               <span className="w-2 h-2 rounded-full bg-blue-500/80" />
             </div>
-            <h4 className="text-base font-semibold text-[var(--text-primary)]">Emotional Climate Drift</h4>
-            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+            <h4 className="text-base sm:text-lg font-medium text-[var(--text-primary)]">Emotional Climate Drift</h4>
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
               Tracks the gradual transition of emotional tone—from urgent anxiety to contemplative peace across milestones.
             </p>
           </div>
@@ -124,7 +124,7 @@ export function DreamEvolutionLandingSection() {
         <div className="pt-2 text-center">
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider font-medium text-[var(--accent)] hover:underline"
           >
             <span>Start archiving to watch your dream world evolve</span>
             <ArrowRight size={13} />

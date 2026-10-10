@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { constructMetadata } from '@/lib/seo/metadata';
 import { PublicNavbar, PublicFooter } from '@/components/layout/PublicNav';
@@ -54,11 +54,11 @@ export default function AboutPage() {
             A private sanctuary for your subconscious mind.
           </h1>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
             Humans spend approximately a third of their lives asleep, traversing rich, surreal interior landscapes. Yet within ten minutes of waking, morning neurochemistry shifts and up to ninety percent of dream recall dissolves into silence.
           </p>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
             SUBCONSCIOUS LOG exists to provide an unhurried, respectful sanctuary for those fleeting dawn moments—capturing raw memory without friction, reflecting through contemplative inquiry, and mapping your recurring motifs across years.
           </p>
         </div>
@@ -74,10 +74,10 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
                 <ShieldCheck size={20} />
               </div>
-              <h3 className="text-lg font-display font-medium text-[var(--text-primary)]">
+              <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">
                 1. Absolute Privacy
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 Dreams are among the most intimate expressions of human consciousness. We operate on a strict zero-data-selling architecture. Your entries are protected by Row Level Security and are never indexed on public search engines or used by SUBCONSCIOUS LOG to train public foundation models.
               </p>
             </div>
@@ -86,10 +86,10 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
                 <Sparkles size={20} />
               </div>
-              <h3 className="text-lg font-display font-medium text-[var(--text-primary)]">
+              <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">
                 2. Contemplative Inquiry
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 We reject mystical fortune-telling, horoscope gimmicks, and pseudo-clinical diagnosis. SUBCONSCIOUS LOG operates as a Socratic mirror: offering thoughtful inquiries that invite your own reflection, while keeping your authentic unedited words pristine.
               </p>
             </div>
@@ -98,10 +98,10 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
                 <Compass size={20} />
               </div>
-              <h3 className="text-lg font-display font-medium text-[var(--text-primary)]">
+              <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">
                 3. Spatial Memory Topography
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 Linear lists fail to convey how memories relate to one another. SUBCONSCIOUS LOG organizes your subconscious motifs into an interconnected constellation—allowing you to navigate themes of water, thresholds, and recurring figures as a living landscape.
               </p>
             </div>
@@ -110,10 +110,10 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-center text-[var(--accent)]">
                 <Feather size={20} />
               </div>
-              <h3 className="text-lg font-display font-medium text-[var(--text-primary)]">
-                4. Quiet Luxury & Calm
+              <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">
+                4. Quiet Luxury &amp; Calm
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed font-light">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
                 No loud neon gradients, no gamification badges, no streaks designed to trigger anxiety. Every pixel of SUBCONSCIOUS LOG is crafted with restrained typography, warm obsidian or parchment palettes, and generous whitespace.
               </p>
             </div>
@@ -122,21 +122,21 @@ export default function AboutPage() {
 
         {/* Product Architecture */}
         <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] block">
-            Data Architecture & Independence
+          <span className="text-xs font-mono uppercase tracking-widest text-[var(--accent)] font-semibold block">
+            Data Architecture &amp; Independence
           </span>
           <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">
             Built for lifelong permanence.
           </h3>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
             SUBCONSCIOUS LOG is engineered with open, standardized data structures. Every dream entry belongs entirely to you. You can export your complete archive in JSON or Markdown at any time, ensuring that your dream history remains your personal property indefinitely.
           </p>
-          <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono">
-            <Link href="/how-it-works" className="text-[var(--accent)] hover:underline inline-flex items-center gap-1">
+          <div className="pt-2 flex flex-wrap gap-4 text-xs sm:text-sm font-mono">
+            <Link href="/how-it-works" className="text-[var(--accent)] hover:underline inline-flex items-center gap-1 font-medium">
               <span>Read the full product architecture</span>
-              <ArrowRight size={12} />
+              <ArrowRight size={14} />
             </Link>
-            <Link href="/privacy" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/privacy" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               Privacy Standards &rarr;
             </Link>
           </div>
@@ -147,13 +147,13 @@ export default function AboutPage() {
           <h3 className="text-2xl sm:text-3xl font-display font-medium text-[var(--text-primary)]">
             Begin your journal today.
           </h3>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-light max-w-md mx-auto leading-relaxed">
+          <p className="text-base text-[var(--text-secondary)] font-normal max-w-md mx-auto leading-relaxed">
             A permanent archive of what the morning forgets. Start recording free.
           </p>
           <div className="flex justify-center">
             <Link
               href="/signup"
-              className="px-8 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-md"
+              className="px-8 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-md"
             >
               Begin your journal
             </Link>

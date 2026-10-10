@@ -13,7 +13,16 @@ export function createClient() {
   if (!client) {
     client = createBrowserClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookieOptions: {
+          // 400 days is the maximum persistent cookie lifetime supported by modern browsers
+          maxAge: 400 * 24 * 60 * 60,
+          sameSite: 'lax',
+          path: '/',
+          secure: window.location.protocol === 'https:',
+        },
+      }
     );
   }
 

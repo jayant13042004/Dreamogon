@@ -6,7 +6,7 @@ export const BILLING_CURRENCY = (process.env.BILLING_CURRENCY || 'usd').toLowerC
 
 export type BillingProviderId = 'stripe' | 'dodo' | 'razorpay';
 
-export const BILLING_PROVIDER = (process.env.BILLING_PROVIDER || 'stripe') as BillingProviderId;
+export const BILLING_PROVIDER = (process.env.BILLING_PROVIDER || 'dodo') as BillingProviderId;
 
 export const PLAN_IDS = {
   free: 'free',

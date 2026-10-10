@@ -80,6 +80,7 @@ export const dodoBillingProvider: BillingProvider = {
         email: input.email,
       },
       return_url: input.successUrl,
+      cancel_url: input.cancelUrl,
       metadata: {
         user_id: input.userId,
         plan_id: input.planId || 'pro_monthly',

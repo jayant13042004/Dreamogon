@@ -113,12 +113,15 @@ export async function POST(request: NextRequest) {
       if (!userId) {
         console.warn(`[Dodo Webhook] Could not resolve user for subscription: ${subData.subscription_id}`);
       } else {
+        const mappedStatus = mapDodoSubscriptionStatus(subData.status);
+        console.log(`[Dodo Webhook] Processing ${eventType} for user ${userId}: status=${subData.status} -> ${mappedStatus}`);
+
         await syncSubscriptionAccess(supabase, {
           userId,
           provider: 'dodo',
           providerCustomerId: customerId,
           providerSubscriptionId: subData.subscription_id,
-          status: mapDodoSubscriptionStatus(subData.status),
+          status: mappedStatus,
           currency: subData.currency || 'usd',
           currentPeriodEnd: subData.next_billing_date || null,
           cancelAtPeriodEnd: Boolean(subData.cancel_at_next_billing_date),
@@ -131,6 +134,36 @@ export async function POST(request: NextRequest) {
           },
         });
       }
+    } else if (eventType === 'refund.succeeded') {
+      const refundData = event.data as any;
+      const customerId = refundData?.customer?.customer_id || null;
+      const customerEmail = refundData?.customer?.email || null;
+
+      const userId = await resolveUserId(supabase, {
+        customerId,
+        email: customerEmail,
+      });
+
+      if (userId && !refundData?.is_partial) {
+        console.log(`[Dodo Webhook] Full refund succeeded for user ${userId}. Updating status to inactive.`);
+        await syncSubscriptionAccess(supabase, {
+          userId,
+          provider: 'dodo',
+          providerCustomerId: customerId,
+          status: 'inactive',
+          rawMeta: {
+            dodo_event_type: eventType,
+            refund_id: refundData?.refund_id,
+            payment_id: refundData?.payment_id,
+          },
+        });
+      }
+    } else if (eventType === 'payment.failed') {
+      const payData = event.data as any;
+      console.warn(`[Dodo Webhook] Payment failed: id=${payData?.payment_id} customer=${payData?.customer?.email}`);
+    } else if (eventType === 'payment.succeeded') {
+      const payData = event.data as any;
+      console.log(`[Dodo Webhook] Payment succeeded: id=${payData?.payment_id} sub=${payData?.subscription_id}`);
     }
 
     await supabase.from('billing_webhook_events').upsert(

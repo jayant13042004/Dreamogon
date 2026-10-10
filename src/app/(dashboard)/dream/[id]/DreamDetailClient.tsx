@@ -19,12 +19,21 @@ import {
   Lock,
   ChevronDown,
   ChevronUp,
+  Loader2,
+  AlertCircle,
+  Plus,
+  Layers,
+  Mic,
+  PenLine,
+  X,
 } from 'lucide-react';
 import { MOODS } from '@/lib/utils/constants';
 import { toast } from '@/components/ui/Toast';
 import { Analytics } from '@/lib/analytics';
 import Link from 'next/link';
 import { resolveDreamImageUrl } from '@/lib/storage/dream-images';
+import { DreamAudioPlayer } from '@/components/dreams/DreamAudioPlayer';
+import { MorningRecorder } from '@/components/dreams/MorningRecorder';
 
 type AnalysisUiState = 'idle' | 'analyzing' | 'complete' | 'failed';
 
@@ -43,19 +52,36 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
   const [upgradeReason, setUpgradeReason] = useState<'quota_exceeded' | 'regeneration_not_allowed'>(
     'quota_exceeded'
   );
+
+  // Phase 7: Add follow-up segment state
+  const [showAddSegment, setShowAddSegment] = useState(false);
+  const [segmentMode, setSegmentMode] = useState<'voice' | 'text'>('voice');
+  const [newSegmentText, setNewSegmentText] = useState('');
+  const [newSegmentRaw, setNewSegmentRaw] = useState('');
+  const [newSegmentAudioBlob, setNewSegmentAudioBlob] = useState<Blob | null>(null);
+  const [newSegmentAudioMime, setNewSegmentAudioMime] = useState('audio/webm');
+  const [newSegmentAudioLang, setNewSegmentAudioLang] = useState('en-US');
+  const [addingSegment, setAddingSegment] = useState(false);
+
   const supabase = createClient();
   const analysisLock = useRef(false);
   const autoAnalyzeStarted = useRef(false);
+  const autoTranscribeStarted = useRef(false);
 
   const fetchDream = useCallback(async () => {
     try {
       const { data: dreamData, error } = await supabase
         .from('dreams')
-        .select('*, dream_tags(tag), dream_entities(*)')
+        .select('*, dream_tags(tag), dream_entities(*), dream_segments(*)')
         .eq('id', dreamId)
         .single();
 
       if (error) throw error;
+      if (Array.isArray(dreamData?.dream_segments)) {
+        dreamData.dream_segments.sort(
+          (a: any, b: any) => (a.segment_index ?? 0) - (b.segment_index ?? 0)
+        );
+      }
       setDream({
         ...dreamData,
         image_url: resolveDreamImageUrl(dreamData),
@@ -73,6 +99,109 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
   useEffect(() => {
     fetchDream();
   }, [fetchDream]);
+
+  // Phase 4 & 6.5: If dream has voice recording but transcription is pending, trigger background transcribe
+  const [retryingTranscription, setRetryingTranscription] = useState(false);
+  const [transcriptionTimedOut, setTranscriptionTimedOut] = useState(false);
+
+  // Check on mount if existing transcribing status is stale (>90s)
+  useEffect(() => {
+    if (dream?.transcription_status === 'transcribing' && dream.updated_at) {
+      const updatedAtMs = new Date(dream.updated_at).getTime();
+      if (Date.now() - updatedAtMs > 90_000) {
+        setTranscriptionTimedOut(true);
+      }
+    }
+  }, [dream?.transcription_status, dream?.updated_at]);
+
+  // 1. Initial trigger if dream audio was not yet transcribed
+  useEffect(() => {
+    if (!dream?.id || !dream.audio_path) return;
+    if (dream.transcription_status === 'none' && !autoTranscribeStarted.current) {
+      autoTranscribeStarted.current = true;
+      fetch(`/api/dreams/${dream.id}/transcribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            fetchDream();
+          }
+        })
+        .catch((err) => {
+          console.warn('[DreamDetail] Auto-transcribe error:', err);
+          fetchDream();
+        });
+    }
+  }, [dream?.id, dream?.audio_path, dream?.transcription_status, fetchDream]);
+
+  const isAnyTranscribing = Boolean(
+    dream?.transcription_status === 'transcribing' ||
+    dream?.dream_segments?.some((s) => s.transcription_status === 'transcribing')
+  );
+
+  // 2. Polling for background transcription when any recording is in 'transcribing' state
+  useEffect(() => {
+    if (!dream?.id || !isAnyTranscribing || transcriptionTimedOut) return;
+
+    let pollCount = 0;
+    const maxPolls = 16; // 16 * 2.5s = 40 seconds max
+
+    const interval = setInterval(async () => {
+      pollCount++;
+      if (pollCount > maxPolls) {
+        clearInterval(interval);
+        setTranscriptionTimedOut(true);
+        return;
+      }
+
+      const { data: updatedDream } = await supabase
+        .from('dreams')
+        .select('transcription_status, content, ai_analysis, ai_summary, dream_segments(*)')
+        .eq('id', dream.id)
+        .maybeSingle();
+
+      const stillTranscribing =
+        updatedDream?.transcription_status === 'transcribing' ||
+        (Array.isArray(updatedDream?.dream_segments) &&
+          updatedDream.dream_segments.some((s: any) => s.transcription_status === 'transcribing'));
+
+      if (!stillTranscribing) {
+        clearInterval(interval);
+        setTranscriptionTimedOut(false);
+        await fetchDream();
+      }
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [dream?.id, isAnyTranscribing, transcriptionTimedOut, fetchDream, supabase]);
+
+  const handleRetryTranscription = async () => {
+    if (!dream?.id || retryingTranscription) return;
+    setRetryingTranscription(true);
+    setTranscriptionTimedOut(false);
+    try {
+      const failedSeg = dream.dream_segments?.find((s) => s.transcription_status === 'failed');
+      const shouldRetrySegment = dream.transcription_status !== 'failed' && Boolean(failedSeg?.id);
+
+      const res = await fetch(`/api/dreams/${dream.id}/transcribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          force: true,
+          segmentId: shouldRetrySegment ? failedSeg?.id : undefined,
+        }),
+      });
+      if (!res.ok) throw new Error('Transcription retry failed');
+      toast.success('Audio transcribed successfully.');
+      await fetchDream();
+    } catch {
+      toast.error('Could not complete audio transcription.');
+    } finally {
+      setRetryingTranscription(false);
+    }
+  };
 
   const runAnalysis = useCallback(
     async (id: string, content: string, opts?: { silent?: boolean }) => {
@@ -157,6 +286,17 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
       return;
     }
 
+    // PHASE 6: Prevent running AI analysis on placeholder text before audio transcription finishes
+    const isTranscribing = dream.transcription_status === 'transcribing';
+    const isVoicePlaceholder =
+      !dream.content ||
+      dream.content === 'Audio dream recording' ||
+      dream.content.startsWith('Voice recording captured');
+
+    if (isTranscribing || (dream.audio_path && isVoicePlaceholder)) {
+      return;
+    }
+
     if (autoAnalyzeStarted.current || analysisLock.current) return;
     autoAnalyzeStarted.current = true;
     void runAnalysis(dream.id, dream.content, { silent: true });
@@ -219,6 +359,68 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
     await runAnalysis(dream.id, dream.content);
   };
 
+  const handleSaveNewSegment = async () => {
+    if (!dream) return;
+    if (segmentMode === 'text' && !newSegmentText.trim()) {
+      toast.error('Please enter your memory fragment.');
+      return;
+    }
+    if (segmentMode === 'voice' && !newSegmentAudioBlob && !newSegmentText.trim()) {
+      toast.error('Please record or enter your memory fragment.');
+      return;
+    }
+
+    setAddingSegment(true);
+    const clientLocalId = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `seg_${Date.now()}`;
+
+    try {
+      if (newSegmentAudioBlob && newSegmentAudioBlob.size > 800) {
+        const formData = new FormData();
+        formData.append('file', newSegmentAudioBlob, `segment.${newSegmentAudioMime.includes('mp4') ? 'mp4' : 'webm'}`);
+        formData.append('client_local_id', clientLocalId);
+        formData.append('type', 'voice');
+        formData.append('content', newSegmentText || '');
+        formData.append('raw_transcript', newSegmentRaw || newSegmentText || '');
+        formData.append('language', newSegmentAudioLang);
+
+        const res = await fetch(`/api/dreams/${dream.id}/segments`, {
+          method: 'POST',
+          body: formData,
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => null);
+          throw new Error(errData?.error || 'Failed to add voice segment');
+        }
+      } else {
+        const res = await fetch(`/api/dreams/${dream.id}/segments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            client_local_id: clientLocalId,
+            type: 'text',
+            content: newSegmentText,
+            raw_transcript: newSegmentRaw || newSegmentText,
+          }),
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => null);
+          throw new Error(errData?.error || 'Failed to add text segment');
+        }
+      }
+
+      toast.success('Memory fragment added to dream.');
+      setNewSegmentText('');
+      setNewSegmentRaw('');
+      setNewSegmentAudioBlob(null);
+      setShowAddSegment(false);
+      await fetchDream();
+    } catch (err: any) {
+      toast.error(err?.message || 'Could not save fragment.');
+    } finally {
+      setAddingSegment(false);
+    }
+  };
+
 
   if (loading) {
     return (
@@ -243,6 +445,8 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
 
   const moodData = MOODS.find((m) => m.value === dream.mood);
   const analysis = dream.ai_analysis;
+  const isAudioTranscribing = dream.transcription_status === 'transcribing';
+  const isAudioFailed = dream.transcription_status === 'failed';
   const showAnalyzingBanner = analyzing || analysisUi === 'analyzing';
   const showFailedBanner = analysisUi === 'failed' && !analysis;
   const showCompleteBanner = analysisUi === 'complete' && Boolean(analysis);
@@ -274,24 +478,52 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
 
   return (
     <div className="max-w-3xl mx-auto p-4 md:p-8 space-y-12 pb-24 text-[var(--text-primary)]">
-      {(showAnalyzingBanner || showFailedBanner || showCompleteBanner) && (
+      {(isAudioTranscribing || isAudioFailed || showAnalyzingBanner || showFailedBanner || showCompleteBanner) && (
         <div
           className={`rounded-2xl border px-4 py-3 text-sm ${
-            showAnalyzingBanner
+            isAudioTranscribing || showAnalyzingBanner
               ? 'border-[var(--border-default)] bg-[var(--bg-card)] text-[var(--text-secondary)]'
-              : showFailedBanner
+              : isAudioFailed || showFailedBanner
                 ? 'border-amber-400/25 bg-amber-400/10 text-amber-900 dark:text-amber-100'
                 : 'border-emerald-400/20 bg-emerald-400/10 text-emerald-900 dark:text-emerald-100'
           }`}
           role="status"
         >
-          {showAnalyzingBanner && (
+          {isAudioTranscribing && !transcriptionTimedOut && (
+            <div className="flex items-center gap-2">
+              <Loader2 size={14} className="animate-spin text-[var(--accent)] shrink-0" />
+              <p>Transcribing your voice recording in the background… Your audio is safely preserved.</p>
+            </div>
+          )}
+          {isAudioTranscribing && transcriptionTimedOut && (
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2">
+                <AlertCircle size={14} className="shrink-0 text-amber-500" />
+                <p>Audio transcription is taking longer than expected. Your recording is safely preserved.</p>
+              </div>
+              <Button size="sm" variant="secondary" onClick={handleRetryTranscription} disabled={retryingTranscription}>
+                {retryingTranscription ? 'Retrying…' : 'Retry transcription'}
+              </Button>
+            </div>
+          )}
+          {isAudioFailed && !isAudioTranscribing && (
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2">
+                <AlertCircle size={14} className="shrink-0 text-amber-500" />
+                <p>Audio transcription paused. Your recording is safely preserved in your archive.</p>
+              </div>
+              <Button size="sm" variant="secondary" onClick={handleRetryTranscription} disabled={retryingTranscription}>
+                {retryingTranscription ? 'Retrying…' : 'Retry transcription'}
+              </Button>
+            </div>
+          )}
+          {showAnalyzingBanner && !isAudioTranscribing && (
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[var(--accent)] animate-pulse" />
               <p>Saved to your archive. Analyzing patterns in the background… You can keep browsing.</p>
             </div>
           )}
-          {showFailedBanner && (
+          {showFailedBanner && !isAudioTranscribing && !isAudioFailed && (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <p>AI reflection didn&apos;t finish. Your dream is safely preserved in your archive.</p>
               <Button size="sm" variant="secondary" onClick={handleAnalyze} disabled={analyzing}>
@@ -299,7 +531,9 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
               </Button>
             </div>
           )}
-          {showCompleteBanner && !showAnalyzingBanner && <p>Your dream is safely archived and explored.</p>}
+          {showCompleteBanner && !showAnalyzingBanner && !isAudioTranscribing && !isAudioFailed && (
+            <p>Your dream is safely archived and explored.</p>
+          )}
         </div>
       )}
 
@@ -371,6 +605,189 @@ export default function DreamDetailClient({ dreamId }: { dreamId: string }) {
 
         <div className="p-8 md:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-xs leading-relaxed text-[var(--text-secondary)] font-normal text-base md:text-lg whitespace-pre-wrap">
           {dream.content}
+        </div>
+
+        {(dream.audio_path || (dream.dream_segments && dream.dream_segments.some((s) => s.audio_path))) && (
+          <DreamAudioPlayer
+            dreamId={dream.id}
+            durationSeconds={dream.audio_duration_seconds}
+            mimeType={dream.audio_mime_type}
+            transcriptionStatus={dream.transcription_status}
+            rawTranscript={dream.raw_transcript}
+            segments={dream.dream_segments}
+            onTranscriptionComplete={fetchDream}
+          />
+        )}
+
+        {/* Phase 7: Multi-Segment Sequence View */}
+        {dream.dream_segments && dream.dream_segments.length > 1 && (
+          <div className="space-y-4 pt-2">
+            <div className="flex items-center gap-2">
+              <Layers size={14} className="text-[var(--accent)]" />
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] font-mono">
+                Dream Sequence ({dream.dream_segments.length} Parts)
+              </h3>
+            </div>
+            <div className="space-y-3">
+              {dream.dream_segments.map((seg, idx) => (
+                <div
+                  key={seg.id}
+                  className="p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-[var(--bg-secondary)] text-[var(--accent)] border border-[var(--border-default)]">
+                      Part {idx + 1} &bull; {seg.segment_type === 'voice' ? 'Voice Fragment' : 'Written Fragment'}
+                    </span>
+                    {seg.transcription_status === 'transcribing' && (
+                      <span className="text-[10px] text-amber-500 font-mono animate-pulse">Transcribing...</span>
+                    )}
+                  </div>
+                  <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed whitespace-pre-wrap">
+                    {seg.content || (seg.transcription_status === 'transcribing' ? 'Transcribing audio...' : '(Empty fragment)')}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Phase 7: Add Another Memory Fragment Block */}
+        <div className="rounded-3xl border border-[var(--border-default)] bg-[var(--bg-card)] p-5 md:p-6 space-y-4">
+          {!showAddSegment ? (
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-medium text-[var(--text-primary)]">
+                  Anything else you remember?
+                </h3>
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                  Add another voice or written fragment to this dream at any time.
+                </p>
+              </div>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setShowAddSegment(true)}
+                className="shrink-0 flex items-center gap-1.5"
+              >
+                <Plus size={14} className="text-[var(--accent)]" />
+                <span>Add memory fragment</span>
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="flex items-center justify-between border-b border-[var(--border-default)] pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-[var(--text-primary)]">
+                    Add Fragment {dream.dream_segments ? `(Part ${dream.dream_segments.length + 1})` : ''}
+                  </span>
+                  <div className="inline-flex rounded-lg bg-[var(--bg-secondary)] p-0.5 border border-[var(--border-default)]">
+                    <button
+                      type="button"
+                      onClick={() => setSegmentMode('voice')}
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+                        segmentMode === 'voice'
+                          ? 'bg-[var(--bg-card)] text-[var(--text-primary)] shadow-xs'
+                          : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+                      }`}
+                    >
+                      <Mic size={12} />
+                      <span>Voice</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSegmentMode('text')}
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+                        segmentMode === 'text'
+                          ? 'bg-[var(--bg-card)] text-[var(--text-primary)] shadow-xs'
+                          : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+                      }`}
+                    >
+                      <PenLine size={12} />
+                      <span>Written</span>
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddSegment(false);
+                    setNewSegmentText('');
+                    setNewSegmentRaw('');
+                    setNewSegmentAudioBlob(null);
+                  }}
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] p-1 rounded-lg"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {segmentMode === 'voice' && (
+                <div className="space-y-3">
+                  <MorningRecorder
+                    onTranscript={(text) => setNewSegmentText((prev) => (prev ? `${prev} ${text}` : text))}
+                    onRawTranscript={(raw) => setNewSegmentRaw((prev) => (prev ? `${prev} ${raw}` : raw))}
+                    onAudioCaptured={(blob, mime, lang) => {
+                      setNewSegmentAudioBlob(blob);
+                      setNewSegmentAudioMime(mime);
+                      setNewSegmentAudioLang(lang);
+                    }}
+                  />
+                  {newSegmentText && (
+                    <div className="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-default)] text-xs text-[var(--text-secondary)]">
+                      <span className="font-semibold text-[var(--text-primary)] block mb-1">Captured note:</span>
+                      {newSegmentText}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {segmentMode === 'text' && (
+                <div>
+                  <textarea
+                    rows={3}
+                    value={newSegmentText}
+                    onChange={(e) => setNewSegmentText(e.target.value)}
+                    placeholder="Wait, I also remember there was a dog by the stairs..."
+                    className="w-full rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-default)] p-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)]"
+                  />
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setShowAddSegment(false);
+                    setNewSegmentText('');
+                    setNewSegmentRaw('');
+                    setNewSegmentAudioBlob(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  disabled={
+                    addingSegment ||
+                    (segmentMode === 'text' && !newSegmentText.trim()) ||
+                    (segmentMode === 'voice' && !newSegmentAudioBlob && !newSegmentText.trim())
+                  }
+                  onClick={handleSaveNewSegment}
+                >
+                  {addingSegment ? (
+                    <>
+                      <Loader2 size={13} className="mr-1.5 animate-spin" />
+                      Saving fragment...
+                    </>
+                  ) : (
+                    'Add to dream'
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

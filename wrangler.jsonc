@@ -8,5 +8,14 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "vars": {
+    "NEXT_PUBLIC_APP_URL": "https://subconsciouslog.com",
+    "NEXT_PUBLIC_SUPABASE_URL": "https://jyckiorkqdhiwbusmatx.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_iHTTnqCuVK9Z1k1rpgdXZw_1QifXFK1",
+    "BILLING_PROVIDER": "dodo",
+    "DODO_PAYMENTS_ENVIRONMENT": "live_mode",
+    "DODO_PRODUCT_ID_PRO_MONTHLY": "pdt_0NomvRtdbmX0ltTCKA2Z2",
+    "DODO_PRODUCT_ID_PRO_ANNUAL": "pdt_0Nomvh8MoMVxouoOj2oca"
+  },
   "workers_dev": true
 }

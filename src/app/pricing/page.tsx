@@ -94,7 +94,7 @@ export default function PricingPage() {
             Start free. Understand over time.
           </h1>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
             Record dreams freely forever. Upgrade when you want deeper cross-dream reflection, longitudinal memory, and pattern synthesis across your archive.
           </p>
         </div>
@@ -105,20 +105,20 @@ export default function PricingPage() {
           <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-7 shadow-xs">
             <div className="space-y-5">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] block mb-1">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--text-secondary)] font-medium block mb-1">
                   Essential Journal
                 </span>
                 <h2 className="text-2xl font-display font-medium text-[var(--text-primary)]">Free</h2>
                 <div className="mt-2 flex items-baseline gap-1">
                   <span className="text-4xl font-display font-semibold text-[var(--text-primary)]">$0</span>
-                  <span className="text-xs text-[var(--text-muted)]">/ forever</span>
+                  <span className="text-sm text-[var(--text-secondary)]">/ forever</span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
+                <p className="text-sm text-[var(--text-secondary)] mt-2 font-normal leading-relaxed">
                   Start your dream archive. Unlimited recording, zero paywalls on your memories.
                 </p>
               </div>
 
-              <div className="space-y-2.5 pt-4 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+              <div className="space-y-2.5 pt-4 border-t border-[var(--border-subtle)] text-sm text-[var(--text-secondary)]">
                 {[
                   'Unlimited dream recording (text & voice)',
                   'Full archive, timeline & calendar views',
@@ -130,7 +130,7 @@ export default function PricingPage() {
                   'Complete privacy & data ownership',
                 ].map((feat, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                    <Check size={15} className="text-[var(--accent)] shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </div>
                 ))}
@@ -139,7 +139,7 @@ export default function PricingPage() {
 
             <Link
               href="/signup"
-              className="w-full py-3 rounded-full border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)] text-xs font-mono uppercase tracking-wider text-[var(--text-primary)] text-center transition-colors block"
+              className="w-full py-3.5 rounded-full border border-[var(--border-default)] hover:border-[var(--text-secondary)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-card)] text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-primary)] text-center transition-colors block"
             >
               Start Free Journal
             </Link>
@@ -149,20 +149,20 @@ export default function PricingPage() {
           <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col justify-between space-y-7 shadow-xs">
             <div className="space-y-5">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--accent)] font-medium block mb-1">
                   Archive Intelligence
                 </span>
                 <h2 className="text-2xl font-display font-medium text-[var(--text-primary)]">Pro Monthly</h2>
                 <div className="mt-2 flex items-baseline gap-1">
                   <span className="text-4xl font-display font-semibold text-[var(--text-primary)]">$9</span>
-                  <span className="text-xs text-[var(--text-muted)]">/ month</span>
+                  <span className="text-sm text-[var(--text-secondary)]">/ month</span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
+                <p className="text-sm text-[var(--text-secondary)] mt-2 font-normal leading-relaxed">
                   Understand your dream life over time with deep cross-dream pattern synthesis.
                 </p>
               </div>
 
-              <div className="space-y-2.5 pt-4 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+              <div className="space-y-2.5 pt-4 border-t border-[var(--border-subtle)] text-sm text-[var(--text-secondary)]">
                 {[
                   'Everything included in Free',
                   '100 AI operations / month',
@@ -174,7 +174,7 @@ export default function PricingPage() {
                   'Priority support desk access',
                 ].map((feat, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                    <Check size={15} className="text-[var(--accent)] shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </div>
                 ))}
@@ -183,7 +183,7 @@ export default function PricingPage() {
 
             <Link
               href="/signup?tier=pro_monthly"
-              className="w-full py-3 rounded-full border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent-soft)] text-xs font-medium uppercase tracking-wider text-center transition-colors block"
+              className="w-full py-3.5 rounded-full border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent-soft)] text-xs sm:text-sm font-medium uppercase tracking-wider text-center transition-colors block"
             >
               Choose Monthly ($9/mo)
             </Link>
@@ -191,28 +191,28 @@ export default function PricingPage() {
 
           {/* PRO ANNUAL */}
           <div className="p-7 rounded-3xl bg-[var(--bg-card)] border-2 border-[var(--accent)] flex flex-col justify-between space-y-7 relative shadow-md">
-            <div className="absolute -top-3 right-6">
-              <span className="px-3 py-0.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-[9px] font-mono uppercase tracking-widest font-semibold">
+            <div className="absolute -top-3.5 right-6">
+              <span className="px-3.5 py-1 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-mono uppercase tracking-widest font-semibold">
                 Best Value · Save 33%
               </span>
             </div>
 
             <div className="space-y-5">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--accent)] block mb-1">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--accent)] font-medium block mb-1">
                   Annual Billing
                 </span>
                 <h2 className="text-2xl font-display font-medium text-[var(--text-primary)]">Pro Annual</h2>
                 <div className="mt-2 flex items-baseline gap-1">
                   <span className="text-4xl font-display font-semibold text-[var(--text-primary)]">$72</span>
-                  <span className="text-xs text-[var(--text-muted)]">/ year ($6/mo)</span>
+                  <span className="text-sm text-[var(--text-secondary)]">/ year ($6/mo)</span>
                 </div>
-                <p className="text-xs text-[var(--text-secondary)] mt-2 font-light">
+                <p className="text-sm text-[var(--text-secondary)] mt-2 font-normal leading-relaxed">
                   Save with annual billing. Full Pro access at equivalent $6/month.
                 </p>
               </div>
 
-              <div className="space-y-2.5 pt-4 border-t border-[var(--border-subtle)] text-xs text-[var(--text-secondary)]">
+              <div className="space-y-2.5 pt-4 border-t border-[var(--border-subtle)] text-sm text-[var(--text-primary)]">
                 {[
                   'Everything included in Pro Monthly',
                   '$6/month equivalent (save 33%)',
@@ -224,7 +224,7 @@ export default function PricingPage() {
                   'Priority processing queues',
                 ].map((feat, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                    <Check size={15} className="text-[var(--accent)] shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </div>
                 ))}
@@ -233,7 +233,7 @@ export default function PricingPage() {
 
             <Link
               href="/signup?tier=pro_annual"
-              className="w-full py-3 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider text-center transition-colors block shadow-xs"
+              className="w-full py-3.5 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider text-center transition-colors block shadow-xs"
             >
               Choose Annual ($72/yr)
             </Link>
@@ -246,16 +246,16 @@ export default function PricingPage() {
             <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">
               Feature & Capability Comparison
             </h3>
-            <p className="text-xs text-[var(--text-secondary)] font-light">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal">
               Clear distinctions. The journal is unlimited for everyone; Pro monetizes deeper understanding.
             </p>
           </div>
 
           <div className="rounded-3xl border border-[var(--border-default)] bg-[var(--bg-card)] overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-[var(--border-default)] bg-[var(--bg-elevated)] text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                  <tr className="border-b border-[var(--border-default)] bg-[var(--bg-elevated)] text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-secondary)] font-semibold">
                     <th className="p-4 sm:p-5">Capability</th>
                     <th className="p-4 sm:p-5">Free</th>
                     <th className="p-4 sm:p-5 text-[var(--accent)]">Pro (Monthly / Annual)</th>
@@ -294,7 +294,7 @@ export default function PricingPage() {
             <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">
               Frequently Asked Questions
             </h3>
-            <p className="text-xs text-[var(--text-secondary)] font-light">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal">
               Clear terms on subscriptions, renewals, allowances, and cancellations.
             </p>
           </div>
@@ -305,8 +305,8 @@ export default function PricingPage() {
                 key={idx}
                 className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-2"
               >
-                <h4 className="text-sm font-medium text-[var(--text-primary)]">{faq.question}</h4>
-                <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">{faq.answer}</p>
+                <h4 className="text-base sm:text-lg font-medium text-[var(--text-primary)]">{faq.question}</h4>
+                <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">{faq.answer}</p>
               </div>
             ))}
           </div>
@@ -317,13 +317,13 @@ export default function PricingPage() {
           <h3 className="text-2xl sm:text-3xl font-display font-medium text-[var(--text-primary)]">
             Begin your dream archive today.
           </h3>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-light max-w-md mx-auto leading-relaxed">
+          <p className="text-base text-[var(--text-secondary)] font-normal max-w-md mx-auto leading-relaxed">
             Record raw memories before they fade. No credit card required to begin journaling.
           </p>
           <div className="pt-2 flex justify-center">
             <Link
               href="/signup"
-              className="px-8 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-sm"
+              className="px-8 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-sm"
             >
               Start Free Journal
             </Link>

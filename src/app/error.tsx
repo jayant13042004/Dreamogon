@@ -42,22 +42,22 @@ export default function ErrorBoundary({ error, reset }: ErrorProps) {
           Something shifted unexpectedly
         </h1>
 
-        <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed font-light mb-8 max-w-md">
+        <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-normal mb-8 max-w-md">
           A temporary disturbance interrupted your request. Your private entries remain safe and securely stored.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => reset()}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider shadow-sm hover:opacity-95 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider shadow-sm hover:opacity-95 transition-all cursor-pointer"
           >
-            <RotateCcw size={14} />
+            <RotateCcw size={15} />
             Try Again
           </button>
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] text-xs font-medium tracking-wider uppercase transition-all"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] text-xs sm:text-sm font-medium tracking-wider uppercase transition-all"
           >
             <Home size={14} />
             Return to Sanctuary

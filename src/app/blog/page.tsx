@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { constructMetadata } from '@/lib/seo/metadata';
 import { BLOG_POSTS } from '@/lib/seo/blogPosts';
 import { PublicNavbar, PublicFooter } from '@/components/layout/PublicNav';
@@ -40,14 +40,14 @@ export default function BlogIndexPage() {
       <main className="pt-28 md:pt-36 pb-24 max-w-6xl mx-auto px-5 sm:px-8 md:px-10 w-full">
         {/* Header */}
         <div className="max-w-3xl mb-12 space-y-4">
-          <div className="inline-flex items-center gap-2 text-[10px] font-mono text-[var(--accent)] uppercase tracking-[0.24em]">
-            <Compass size={13} />
+          <div className="inline-flex items-center gap-2 text-xs font-mono text-[var(--accent)] font-semibold uppercase tracking-[0.2em]">
+            <Compass size={14} />
             <span>The SUBCONSCIOUS LOG Chronicle</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-display font-medium text-[var(--text-primary)] tracking-tight leading-[1.12]">
             Reflections on Dreams, Memory & the Subconscious
           </h1>
-          <p className="text-[var(--text-secondary)] text-base md:text-xl font-light leading-relaxed">
+          <p className="text-[var(--text-secondary)] text-lg md:text-xl font-normal leading-relaxed">
             Evidence-based guides, REM neuroscience, and mindful journaling practices curated by the
             SUBCONSCIOUS LOG Editorial Desk.
           </p>
@@ -59,20 +59,20 @@ export default function BlogIndexPage() {
         {/* Bottom CTA */}
         <div className="mt-24 p-8 sm:p-12 md:p-16 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] text-center space-y-6 shadow-xs relative overflow-hidden">
           <div className="max-w-xl mx-auto space-y-3 relative z-10">
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)] block">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--accent)] font-semibold block">
               The Subconscious Archive
             </span>
             <h2 className="text-3xl md:text-4xl font-display font-medium text-[var(--text-primary)] leading-snug">
               Begin Tracking Your Subconscious World
             </h2>
-            <p className="text-[var(--text-secondary)] text-sm md:text-base font-light leading-relaxed">
+            <p className="text-[var(--text-secondary)] text-base md:text-lg font-normal leading-relaxed">
               Capture fragments at 5 AM before they dissolve, with private AI reflections and
               cross-dream motif discovery.
             </p>
             <div className="pt-3">
               <Link
                 href="/signup"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-xs font-semibold uppercase tracking-wider transition-all shadow-md"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--bg-primary)] text-sm font-semibold uppercase tracking-wider transition-all shadow-md"
               >
                 <span>Begin your journal</span>
                 <ArrowRight size={14} />

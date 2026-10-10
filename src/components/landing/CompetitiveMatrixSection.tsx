@@ -67,14 +67,14 @@ export function CompetitiveMatrixSection() {
         <div className="max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)]">
               Objective Comparison
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[var(--text-primary)]">
             Why Subconscious Log vs. Traditional Apps or Generic AI
           </h2>
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
             Most dream apps treat the subconscious like casual entertainment or horoscope superstition. Generic AI chatbots lack memory, spatial context, and psychological boundaries. Subconscious Log was engineered for depth.
           </p>
         </div>
@@ -83,7 +83,7 @@ export function CompetitiveMatrixSection() {
         <div className="hidden md:block rounded-3xl border border-[var(--border-default)] bg-[var(--bg-card)] overflow-hidden shadow-xl">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[var(--border-default)] bg-[var(--bg-elevated)]/60 text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+              <tr className="border-b border-[var(--border-default)] bg-[var(--bg-elevated)]/60 text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-secondary)] font-medium">
                 <th className="py-5 px-6 font-medium w-1/4">Dimension</th>
                 <th className="py-5 px-6 font-semibold text-[var(--accent)] bg-[var(--accent)]/5 w-1/3">
                   <div className="flex items-center gap-2">
@@ -95,7 +95,7 @@ export function CompetitiveMatrixSection() {
                 <th className="py-5 px-6 font-medium w-1/4">Generic AI Chatbots</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--border-subtle)] text-xs">
+            <tbody className="divide-y divide-[var(--border-subtle)] text-sm sm:text-base">
               {COMPARISON_DATA.map((row, idx) => (
                 <tr
                   key={idx}
@@ -112,13 +112,13 @@ export function CompetitiveMatrixSection() {
                       <span>{row.subconsciouslog}</span>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-[var(--text-muted)] leading-relaxed align-top">
+                  <td className="py-4 px-6 text-[var(--text-secondary)] leading-relaxed align-top">
                     <div className="flex items-start gap-2">
                       <X size={14} className="text-rose-400/80 shrink-0 mt-0.5" />
                       <span>{row.traditionalApps}</span>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-[var(--text-muted)] leading-relaxed align-top">
+                  <td className="py-4 px-6 text-[var(--text-secondary)] leading-relaxed align-top">
                     <div className="flex items-start gap-2">
                       <X size={14} className="text-rose-400/80 shrink-0 mt-0.5" />
                       <span>{row.genericAi}</span>
@@ -137,25 +137,25 @@ export function CompetitiveMatrixSection() {
               key={idx}
               className="p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3"
             >
-              <h3 className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+              <h3 className="text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--text-secondary)] font-medium">
                 {row.dimension}
               </h3>
-              <div className="p-3 rounded-xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] font-semibold flex items-center gap-1">
-                  <Sparkles size={11} /> Subconscious Log
+              <div className="p-3.5 rounded-xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 space-y-1">
+                <span className="text-xs font-mono uppercase tracking-widest text-[var(--accent)] font-semibold flex items-center gap-1.5">
+                  <Sparkles size={12} /> Subconscious Log
                 </span>
-                <p className="text-xs font-medium text-[var(--text-primary)] leading-relaxed">
+                <p className="text-sm font-medium text-[var(--text-primary)] leading-relaxed">
                   {row.subconsciouslog}
                 </p>
               </div>
-              <div className="space-y-2 text-xs text-[var(--text-muted)] pt-1">
+              <div className="space-y-2.5 text-sm text-[var(--text-secondary)] pt-1">
                 <div>
-                  <span className="text-[10px] font-mono text-[var(--text-secondary)] block">Traditional Apps:</span>
-                  <p className="text-xs leading-relaxed">{row.traditionalApps}</p>
+                  <span className="text-xs font-mono text-[var(--text-secondary)] block font-medium">Traditional Apps:</span>
+                  <p className="text-sm leading-relaxed text-[var(--text-secondary)]">{row.traditionalApps}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono text-[var(--text-secondary)] block">Generic AI:</span>
-                  <p className="text-xs leading-relaxed">{row.genericAi}</p>
+                  <span className="text-xs font-mono text-[var(--text-secondary)] block font-medium">Generic AI:</span>
+                  <p className="text-sm leading-relaxed text-[var(--text-secondary)]">{row.genericAi}</p>
                 </div>
               </div>
             </div>

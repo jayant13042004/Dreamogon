@@ -63,21 +63,21 @@ export default function HowItWorksPage() {
             How SUBCONSCIOUS LOG Works.
           </h1>
 
-          <p className="text-lg sm:text-xl text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-lg sm:text-xl text-[var(--text-secondary)] font-normal leading-relaxed">
             Dreams dissolve in the morning light within ten minutes of waking. SUBCONSCIOUS LOG provides an effortless contemplative ritual: capture raw fragments before they fade, reflect with respectful AI inquiry, uncover recurring motifs across seasons, and map your interior life.
           </p>
 
           <div className="pt-2 flex flex-wrap gap-4">
             <Link
               href="/signup"
-              className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-7 py-3.5 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-sm"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium uppercase tracking-wider bg-[var(--accent)] text-[var(--bg-primary)] px-7 py-3.5 rounded-full hover:bg-[var(--accent-hover)] transition-all shadow-sm"
             >
               <span>Begin free journal</span>
               <ChevronRight size={14} />
             </Link>
             <Link
               href="/pricing"
-              className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider border border-[var(--border-default)] hover:border-[var(--text-muted)] bg-[var(--bg-card)] px-6 py-3.5 rounded-full transition-all"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono uppercase tracking-wider border border-[var(--border-default)] hover:border-[var(--text-secondary)] bg-[var(--bg-card)] px-6 py-3.5 rounded-full transition-all text-[var(--text-secondary)]"
             >
               <span>View transparent pricing</span>
             </Link>
@@ -89,7 +89,7 @@ export default function HowItWorksPage() {
           {/* Stage 1: Capture */}
           <section id="capture" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center scroll-mt-24">
             <div className="lg:col-span-6 space-y-5">
-              <div className="flex items-center gap-2 text-xs font-mono text-[var(--accent)] uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-mono text-[var(--accent)] uppercase tracking-widest font-semibold">
                 <span>Stage 01</span>
                 <span>/</span>
                 <span>Dawn Capture</span>
@@ -97,7 +97,7 @@ export default function HowItWorksPage() {
               <h2 className="text-3xl font-display font-medium text-[var(--text-primary)]">
                 Built for half-closed eyes and fading memories.
               </h2>
-              <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
+              <p className="text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                 When you wake up, neurological shifts trigger rapid memory decay. Motor movements and cognitive friction accelerate this loss. SUBCONSCIOUS LOG eliminates every distraction:
               </p>
               <div className="space-y-3 pt-2">
@@ -116,10 +116,10 @@ export default function HowItWorksPage() {
                   },
                 ].map((item, idx) => (
                   <div key={idx} className="p-4 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)]">
-                    <h3 className="text-xs font-medium text-[var(--text-primary)] font-mono uppercase tracking-wider">
+                    <h3 className="text-xs sm:text-sm font-medium text-[var(--text-primary)] font-mono uppercase tracking-wider">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-[var(--text-secondary)] font-light mt-1 leading-relaxed">
+                    <p className="text-sm text-[var(--text-secondary)] font-normal mt-1 leading-relaxed">
                       {item.desc}
                     </p>
                   </div>
@@ -130,22 +130,22 @@ export default function HowItWorksPage() {
             <div className="lg:col-span-6">
               <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-xl space-y-4">
                 <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                  <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">
                     06:08 AM · Audio Memo
                   </span>
-                  <span className="text-[10px] font-mono text-emerald-500 flex items-center gap-1.5">
+                  <span className="text-xs font-mono text-emerald-500 flex items-center gap-1.5 font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     Transcribing
                   </span>
                 </div>
-                <div className="p-4 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border-default)] text-sm font-serif italic text-[var(--text-primary)] leading-relaxed">
+                <div className="p-4 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border-default)] text-base font-serif italic text-[var(--text-primary)] leading-relaxed">
                   &ldquo;We were walking through an orchard of gray apple trees beside a railway line. The train passed without any sound, but the ground vibrated through our boots...&rdquo;
                 </div>
-                <div className="flex gap-2 text-[10px] font-mono">
-                  <span className="px-2.5 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[var(--accent)]">
+                <div className="flex gap-2 text-xs font-mono">
+                  <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[var(--accent)] font-medium">
                     Mood: Peaceful
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[var(--text-secondary)]">
+                  <span className="px-3 py-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] text-[var(--text-secondary)]">
                     Lucidity: Partial
                   </span>
                 </div>
@@ -158,34 +158,34 @@ export default function HowItWorksPage() {
             <div className="lg:col-span-6 order-2 lg:order-1">
               <div className="p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-xl space-y-4">
                 <div className="p-4 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border-default)] space-y-1.5">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">
+                  <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] font-medium block">
                     Authentic Memory (Unedited Ground Truth)
                   </span>
-                  <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+                  <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                     &ldquo;The train passed without any sound, but the ground vibrated through our boots.&rdquo;
                   </p>
                 </div>
                 <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-2">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--accent)] flex items-center gap-1.5">
-                    <Sparkles size={12} />
+                  <span className="text-xs font-mono uppercase tracking-wider text-[var(--accent)] font-semibold flex items-center gap-1.5">
+                    <Sparkles size={14} />
                     Contemplative Inquiries
                   </span>
-                  <p className="text-xs text-[var(--text-primary)] font-light leading-relaxed">
+                  <p className="text-sm text-[var(--text-primary)] font-normal leading-relaxed">
                     &bull; The silent train suggests power without voice. Is there an impending event in waking life that feels inevitable yet unspoken?
                   </p>
-                  <p className="text-xs text-[var(--text-primary)] font-light leading-relaxed">
+                  <p className="text-sm text-[var(--text-primary)] font-normal leading-relaxed">
                     &bull; Feeling vibrations in your feet often anchors physical grounding. Did you feel fear or reassurance when the ground shook?
                   </p>
                 </div>
-                <div className="p-3 rounded-xl bg-[var(--accent)]/5 border border-[var(--accent)]/20 text-[11px] font-mono text-[var(--text-muted)] flex items-center gap-2">
-                  <ShieldCheck size={14} className="text-[var(--accent)] shrink-0" />
+                <div className="p-3.5 rounded-xl bg-[var(--accent)]/5 border border-[var(--accent)]/20 text-xs font-mono text-[var(--text-secondary)] flex items-center gap-2">
+                  <ShieldCheck size={16} className="text-[var(--accent)] shrink-0" />
                   <span>Possibilities for personal reflection, never medical diagnosis.</span>
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-6 order-1 lg:order-2 space-y-5">
-              <div className="flex items-center gap-2 text-xs font-mono text-[var(--accent)] uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-mono text-[var(--accent)] uppercase tracking-widest font-semibold">
                 <span>Stage 02</span>
                 <span>/</span>
                 <span>Ethical AI Reflection</span>
@@ -193,20 +193,20 @@ export default function HowItWorksPage() {
               <h2 className="text-3xl font-display font-medium text-[var(--text-primary)]">
                 A quiet mirror, never a pseudo-scientific oracle.
               </h2>
-              <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
+              <p className="text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                 Most AI tools attempt to pretend they know the secret future or offer medical diagnostic labels. SUBCONSCIOUS LOG adheres to a strict ethical standard:
               </p>
-              <ul className="space-y-2.5 text-xs text-[var(--text-primary)] font-light">
+              <ul className="space-y-3 text-sm sm:text-base text-[var(--text-primary)] font-normal">
                 <li className="flex items-start gap-2.5">
-                  <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                  <Check size={16} className="text-[var(--accent)] shrink-0 mt-0.5" />
                   <span><strong>Preserved Authenticity:</strong> Your authentic words are never rewritten, condensed, or replaced.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                  <Check size={16} className="text-[var(--accent)] shrink-0 mt-0.5" />
                   <span><strong>Socratic Inquiries:</strong> The AI acts as a patient journaling partner, asking questions that prompt your own introspection.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <Check size={14} className="text-[var(--accent)] shrink-0 mt-0.5" />
+                  <Check size={16} className="text-[var(--accent)] shrink-0 mt-0.5" />
                   <span><strong>Entity Continuity Tracking:</strong> Automatically connects recurring people, places, and motifs across your archive over time.</span>
                 </li>
               </ul>
@@ -216,7 +216,7 @@ export default function HowItWorksPage() {
           {/* Stage 3: Patterns */}
           <section id="patterns" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center scroll-mt-24">
             <div className="lg:col-span-6 space-y-5">
-              <div className="flex items-center gap-2 text-xs font-mono text-[var(--accent)] uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-mono text-[var(--accent)] uppercase tracking-widest font-semibold">
                 <span>Stage 03</span>
                 <span>/</span>
                 <span>Subconscious Patterns</span>
@@ -224,23 +224,23 @@ export default function HowItWorksPage() {
               <h2 className="text-3xl font-display font-medium text-[var(--text-primary)]">
                 Discover what your mind returns to over time.
               </h2>
-              <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
+              <p className="text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                 A single dream is an isolated vignette. A year of dreams is an interior autobiography. SUBCONSCIOUS LOG synthesizes your archive into longitudinal insights:
               </p>
               <div className="space-y-3 pt-2">
                 <div className="p-4 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)]">
-                  <h3 className="text-xs font-mono uppercase tracking-wider text-[var(--accent)]">
+                  <h3 className="text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--accent)] font-semibold">
                     Recurring Motif Tracking
                   </h3>
-                  <p className="text-xs text-[var(--text-secondary)] font-light mt-1 leading-relaxed">
+                  <p className="text-sm text-[var(--text-secondary)] font-normal mt-1 leading-relaxed">
                     Identify recurring motifs—water bodies, stairways, airports, childhood figures—and observe when they surge or recede in relation to waking events.
                   </p>
                 </div>
                 <div className="p-4 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-default)]">
-                  <h3 className="text-xs font-mono uppercase tracking-wider text-[var(--accent)]">
+                  <h3 className="text-xs sm:text-sm font-mono uppercase tracking-wider text-[var(--accent)] font-semibold">
                     Lucidity Index Progression
                   </h3>
-                  <p className="text-xs text-[var(--text-secondary)] font-light mt-1 leading-relaxed">
+                  <p className="text-sm text-[var(--text-secondary)] font-normal mt-1 leading-relaxed">
                     Track changes in your dream awareness. Measure how reality checks, wake-back-to-bed protocols, and regular journaling improve lucid frequency.
                   </p>
                 </div>
@@ -297,20 +297,20 @@ export default function HowItWorksPage() {
 
             <div className="lg:col-span-6 order-1 lg:order-2 space-y-5">
               <div className="flex items-center gap-2 text-xs font-mono text-[var(--accent)] uppercase tracking-widest">
-                <span>Stage 04</span>
+                <span className="font-semibold">Stage 04</span>
                 <span>/</span>
-                <span>The Dream World</span>
+                <span className="font-semibold">The Dream World</span>
               </div>
               <h2 className="text-3xl font-display font-medium text-[var(--text-primary)]">
                 An interconnected spatial memory landscape.
               </h2>
-              <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
+              <p className="text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                 Rather than storing memories as cold static database rows, SUBCONSCIOUS LOG places dreams into a visual 2D/3D constellation. Dreams that share emotional resonance or symbols drift toward each other, forming thematic territories that reflect your personal mythology.
               </p>
               <div className="pt-2">
                 <Link
                   href="/signup"
-                  className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
+                  className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider font-medium text-[var(--accent)] hover:underline"
                 >
                   <span>Explore your personal dream world</span>
                   <ArrowRight size={13} />
@@ -325,13 +325,13 @@ export default function HowItWorksPage() {
           <h3 className="text-2xl sm:text-4xl font-display font-medium text-[var(--text-primary)]">
             Begin your morning archive tomorrow.
           </h3>
-          <p className="text-sm sm:text-base text-[var(--text-secondary)] font-light max-w-xl mx-auto leading-relaxed">
-            Tonight's dreams are already taking shape. Prepare your private sanctuary before you sleep.
+          <p className="text-base text-[var(--text-secondary)] font-normal max-w-xl mx-auto leading-relaxed">
+            Tonight&apos;s dreams are already taking shape. Prepare your private sanctuary before you sleep.
           </p>
           <div className="pt-2 flex justify-center">
             <Link
               href="/signup"
-              className="px-8 py-4 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-md"
+              className="px-8 py-4 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-md"
             >
               Begin your journal free
             </Link>

@@ -30,21 +30,21 @@ export default function NotFound() {
           Lost in a Dream?
         </h1>
 
-        <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed font-light mb-8">
+        <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-normal mb-8">
           The page or memory you are looking for does not seem to exist in this subconscious realm.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/"
-            className="px-6 py-3 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider shadow-sm hover:opacity-95 transition-all"
+            className="px-7 py-3.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider shadow-sm hover:opacity-95 transition-all"
           >
             Return to Sanctuary
           </Link>
 
           <Link
             href="/dream-symbols"
-            className="px-6 py-3 rounded-full bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] text-xs font-medium tracking-wider uppercase transition-all"
+            className="px-7 py-3.5 rounded-full bg-[var(--bg-card)] hover:bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] text-xs sm:text-sm font-medium tracking-wider uppercase transition-all"
           >
             Explore Dream Symbols
           </Link>

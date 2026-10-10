@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Compass, MessageCircle, TrendingUp, Plus } from 'lucide-react';
+import { LayoutDashboard, Compass, MessageCircle, TrendingUp, Mic } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function MobileNav() {
@@ -17,7 +17,7 @@ export function MobileNav() {
   const navItems = [
     { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
     { name: 'World', href: '/world', icon: Compass },
-    { name: 'Record', href: '/dream/new', icon: Plus, isFab: true },
+    { name: 'Record', href: '/dream/new?record=1', icon: Mic, isFab: true },
     { name: 'Insights', href: '/insights', icon: TrendingUp },
     { name: 'History', href: '/chat', icon: MessageCircle },
   ];

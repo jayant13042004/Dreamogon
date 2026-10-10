@@ -31,18 +31,45 @@ function getPrivilegedClient(fallbackClient: SupabaseClient): SupabaseClient {
   return fallbackClient;
 }
 
+/**
+ * Server-only helper: check if an email belongs to the configured owner allowlist.
+ * Never exposed to the client.
+ */
+export function isOwnerEmail(email?: string | null): boolean {
+  if (!email) return false;
+  const raw = process.env.OWNER_EMAILS || '';
+  if (!raw.trim()) return false;
+  const list = raw
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  return list.includes(email.trim().toLowerCase());
+}
+
 export async function getPlanTier(
   supabase: SupabaseClient,
-  userId: string
+  userId: string,
+  userEmail?: string | null
 ): Promise<PlanTier> {
   try {
+    if (userEmail && isOwnerEmail(userEmail)) {
+      return 'pro';
+    }
+
     const { data, error } = await supabase
       .from('profiles')
-      .select('plan_tier')
+      .select('plan_tier, email')
       .eq('id', userId)
       .maybeSingle();
 
-    if (!error && (data?.plan_tier === 'pro' || data?.plan_tier === 'lifetime')) return 'pro';
+    if (!error && data) {
+      if (isOwnerEmail(data.email)) {
+        return 'pro';
+      }
+      if (data.plan_tier === 'pro' || data.plan_tier === 'lifetime') {
+        return 'pro';
+      }
+    }
   } catch {
     // Fall back to free
   }
@@ -73,12 +100,31 @@ export async function getSubscription(
 
 export async function getAiQuota(
   supabase: SupabaseClient,
-  userId: string
+  userId: string,
+  userEmail?: string | null
 ): Promise<AiQuotaDecision> {
-  const planTier = await getPlanTier(supabase, userId);
+  const planTier = await getPlanTier(supabase, userId, userEmail);
   const plan = getPlanDefinition(planTier);
   const limit = plan.aiAllowance.monthlyLimit;
   const periodKey = currentUtcMonthKey();
+
+  let effectiveEmail = userEmail;
+  if (!effectiveEmail) {
+    const { data: p } = await supabase.from('profiles').select('email').eq('id', userId).maybeSingle();
+    effectiveEmail = p?.email;
+  }
+
+  if (effectiveEmail && isOwnerEmail(effectiveEmail)) {
+    return {
+      allowed: true,
+      planTier: 'pro',
+      limit,
+      used: 0,
+      remaining: limit,
+      periodKey,
+      reason: 'ok',
+    };
+  }
 
   let used = 0;
   try {
@@ -125,9 +171,10 @@ export async function getAiQuota(
 
 export async function getAiUsageSummary(
   supabase: SupabaseClient,
-  userId: string
+  userId: string,
+  userEmail?: string | null
 ): Promise<AiUsageSummary> {
-  const quota = await getAiQuota(supabase, userId);
+  const quota = await getAiQuota(supabase, userId, userEmail);
   return {
     planTier: quota.planTier,
     limit: quota.limit,
@@ -211,7 +258,18 @@ export async function syncSubscriptionAccess(
     rawMeta?: Record<string, unknown>;
   }
 ): Promise<void> {
-  const planTier = planTierFromSubscriptionStatus(args.status, 'pro');
+  let planTier = planTierFromSubscriptionStatus(args.status, 'pro');
+
+  // Verify if user is an owner, never downgrade owner access
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('email')
+    .eq('id', args.userId)
+    .maybeSingle();
+
+  if (profile?.email && isOwnerEmail(profile.email)) {
+    planTier = 'pro';
+  }
 
   await supabase.from('subscriptions').upsert(
     {

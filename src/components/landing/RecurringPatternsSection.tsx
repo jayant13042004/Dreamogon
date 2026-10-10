@@ -15,7 +15,7 @@ export function RecurringPatternsSection() {
         <div className="max-w-3xl space-y-4">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[var(--accent)]">
+            <span className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-[var(--accent)]">
               Pattern Recognition &amp; Continuity
             </span>
           </div>
@@ -24,7 +24,7 @@ export function RecurringPatternsSection() {
             See what keeps returning across your dreams.
           </h2>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed max-w-2xl">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-2xl">
             A single dream feels random. Twenty dreams reveal a recurring geography. Subconscious Log quietly organizes your entries to reveal the persistent people, places, and motifs that shape your interior world.
           </p>
         </div>
@@ -38,10 +38,10 @@ export function RecurringPatternsSection() {
             {/* 1. Subconscious Landmarks Card */}
             <div className="p-6 md:p-7 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-sm space-y-5">
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3.5">
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                <span className="text-xs sm:text-sm font-mono uppercase tracking-[0.16em] font-medium text-[var(--text-secondary)]">
                   Detected Subconscious Landmarks
                 </span>
-                <span className="text-[10px] font-mono text-[var(--accent)] uppercase tracking-wider">
+                <span className="text-xs sm:text-sm font-mono text-[var(--accent)] uppercase tracking-wider font-medium">
                   Archive Intelligence
                 </span>
               </div>
@@ -49,52 +49,52 @@ export function RecurringPatternsSection() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="p-3.5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                    <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">
                       Place · Anchor
                     </span>
-                    <span className="text-[10px] font-mono font-medium text-[var(--accent)]">7×</span>
+                    <span className="text-xs font-mono font-semibold text-[var(--accent)]">7×</span>
                   </div>
-                  <h4 className="text-sm font-semibold text-[var(--text-primary)]">The Coastal Highway</h4>
-                  <p className="text-[11px] text-[var(--text-muted)] font-light">
+                  <h4 className="text-sm sm:text-base font-medium text-[var(--text-primary)]">The Coastal Highway</h4>
+                  <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal">
                     Enduring constant · First recorded in October
                   </p>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                    <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">
                       Person · Recurring
                     </span>
-                    <span className="text-[10px] font-mono font-medium text-[var(--accent)]">4×</span>
+                    <span className="text-xs font-mono font-semibold text-[var(--accent)]">4×</span>
                   </div>
-                  <h4 className="text-sm font-semibold text-[var(--text-primary)]">The Silent Passenger</h4>
-                  <p className="text-[11px] text-[var(--text-muted)] font-light">
+                  <h4 className="text-sm sm:text-base font-medium text-[var(--text-primary)]">The Silent Passenger</h4>
+                  <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal">
                     Frequently co-occurs with ocean mist
                   </p>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                    <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">
                       Theme · Emerging
                     </span>
-                    <span className="text-[10px] font-mono font-medium text-[var(--accent)]">3×</span>
+                    <span className="text-xs font-mono font-semibold text-[var(--accent)]">3×</span>
                   </div>
-                  <h4 className="text-sm font-semibold text-[var(--text-primary)]">Unopened Letters</h4>
-                  <p className="text-[11px] text-[var(--text-muted)] font-light">
+                  <h4 className="text-sm sm:text-base font-medium text-[var(--text-primary)]">Unopened Letters</h4>
+                  <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal">
                     Newly appeared in recent spring entries
                   </p>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                    <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">
                       Emotion · Climate
                     </span>
-                    <span className="text-[10px] font-mono font-medium text-[var(--accent)]">62%</span>
+                    <span className="text-xs font-mono font-semibold text-[var(--accent)]">62%</span>
                   </div>
-                  <h4 className="text-sm font-semibold text-[var(--text-primary)]">Solitary Contemplation</h4>
-                  <p className="text-[11px] text-[var(--text-muted)] font-light">
+                  <h4 className="text-sm sm:text-base font-medium text-[var(--text-primary)]">Solitary Contemplation</h4>
+                  <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-normal">
                     Predominant waking emotional resonance
                   </p>
                 </div>
@@ -103,20 +103,20 @@ export function RecurringPatternsSection() {
 
             {/* 2. Ask Your Dream History (Grounded Retrieval) */}
             <div className="p-5 md:p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] shadow-sm space-y-3.5">
-              <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-muted)]">
-                <MessageSquare size={13} className="text-[var(--accent)]" />
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-mono font-medium text-[var(--text-secondary)]">
+                <MessageSquare size={14} className="text-[var(--accent)]" />
                 <span className="uppercase tracking-wider">Ask Your Dream History</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] italic">
+              <div className="p-3.5 rounded-2xl bg-[var(--bg-secondary)] border border-[var(--border-subtle)] text-sm sm:text-base text-[var(--text-primary)] italic">
                 &ldquo;When did I last dream about waiting at an airport?&rdquo;
               </div>
 
-              <div className="space-y-1.5 pl-2 border-l-2 border-[var(--accent)]/40 text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+              <div className="space-y-1.5 pl-3 border-l-2 border-[var(--accent)]/40 text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
                 <p>
-                  Found in <strong>3 entries</strong> between November and February. In each dream, departure was delayed by rising water, and a shared feeling of relief rather than panic was recorded upon waking.
+                  Found in <strong className="font-medium text-[var(--text-primary)]">3 entries</strong> between November and February. In each dream, departure was delayed by rising water, and a shared feeling of relief rather than panic was recorded upon waking.
                 </p>
-                <p className="text-[10px] font-mono text-[var(--text-muted)]">
+                <p className="text-xs sm:text-sm font-mono text-[var(--text-secondary)]">
                   Strict provenance across your private archive · Never hallucinated
                 </p>
               </div>
@@ -125,7 +125,7 @@ export function RecurringPatternsSection() {
             <div className="pt-2">
               <Link
                 href="/signup"
-                className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[var(--accent)] hover:underline"
+                className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider font-medium text-[var(--accent)] hover:underline"
               >
                 <span>Discover the recurring motifs in your archive</span>
                 <ArrowRight size={13} />
@@ -156,10 +156,10 @@ export function RecurringPatternsSection() {
 
               {/* Minimal caption */}
               <div className="absolute bottom-5 left-5 right-5 text-center pointer-events-none">
-                <p className="text-[10px] font-mono uppercase tracking-[0.24em] text-white/90">
+                <p className="text-xs font-mono uppercase tracking-[0.2em] font-medium text-white/90">
                   Subconscious Filaments &amp; Motifs
                 </p>
-                <p className="text-xs text-white/70 font-light mt-0.5">
+                <p className="text-xs sm:text-sm text-white/90 font-medium mt-1">
                   Connections forming between people, places, and memory.
                 </p>
               </div>

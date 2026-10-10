@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { constructMetadata } from '@/lib/seo/metadata';
 import { PublicNavbar, PublicFooter } from '@/components/layout/PublicNav';
@@ -37,10 +37,10 @@ export default function LucidDreamingPillarPage() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-display font-medium text-[var(--text-primary)] tracking-tight leading-tight">
-            The Science & Practice of Lucid Dreaming
+            The Science &amp; Practice of Lucid Dreaming
           </h1>
 
-          <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-light">
+          <p className="text-[var(--text-secondary)] text-base md:text-lg leading-relaxed font-normal">
             Awaken inside your dreams with full conscious clarity. Discover how consistent dream journaling forms the foundational cognitive anchor for sustained oneiric awareness.
           </p>
         </div>
@@ -49,21 +49,21 @@ export default function LucidDreamingPillarPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
             <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">MILD Method</h3>
-            <p className="text-[var(--text-secondary)] text-xs md:text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               Mnemonic Induction of Lucid Dreams: cultivating prospective memory through bedtime affirmation and visualization of recurring dream signs.
             </p>
           </div>
 
           <div className="p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
             <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">WBTB Protocol</h3>
-            <p className="text-[var(--text-secondary)] text-xs md:text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               Wake-Back-to-Bed: briefly awakening after 5 hours of sleep to prime cortical awareness before entering your deepest, longest REM cycles.
             </p>
           </div>
 
           <div className="p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
             <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">Critical Reality Tests</h3>
-            <p className="text-[var(--text-secondary)] text-xs md:text-sm leading-relaxed font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-normal">
               Conditioning waking habits of questioning reality (finger through palm, reading digital text twice) that naturally trigger inside dreams.
             </p>
           </div>
@@ -74,12 +74,12 @@ export default function LucidDreamingPillarPage() {
           <h2 className="text-3xl md:text-4xl font-display font-medium text-[var(--text-primary)]">
             Journaling is the Foundation of Lucidity
           </h2>
-          <p className="text-[var(--text-secondary)] text-sm md:text-base max-w-lg mx-auto font-light">
+          <p className="text-[var(--text-secondary)] text-base sm:text-lg max-w-lg mx-auto font-normal leading-relaxed">
             You cannot become lucid if you cannot remember your dreams. Start building your recall practice with SUBCONSCIOUS LOG today.
           </p>
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider shadow-sm hover:opacity-95 transition-all"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs sm:text-sm font-medium uppercase tracking-wider shadow-sm hover:opacity-95 transition-all"
           >
             Start Free Lucid Sanctuary <ArrowRight size={14} />
           </Link>

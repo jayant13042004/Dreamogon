@@ -48,9 +48,9 @@ export default function TermsPage() {
         </div>
 
         {/* Content Body */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-8 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-light">
+        <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-8 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
           <section className="space-y-3">
-            <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
+            <h2 className="text-xl font-display font-medium text-[var(--text-primary)]">
               1. Acceptance of Terms
             </h2>
             <p>

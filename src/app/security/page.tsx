@@ -41,49 +41,49 @@ export default function SecurityPage() {
             Security & Data Protection
           </h1>
 
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] font-normal leading-relaxed">
             Your subconscious thoughts deserve uncompromising technical defense. Learn how Subconscious Log protects your dream entries at every architectural layer.
           </p>
         </div>
 
         {/* Technical Controls Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
-            <Lock size={20} className="text-[var(--accent)]" />
-            <h2 className="text-base font-display font-medium text-[var(--text-primary)]">
+          <div className="p-6 sm:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <Lock size={22} className="text-[var(--accent)]" />
+            <h2 className="text-lg sm:text-xl font-display font-medium text-[var(--text-primary)]">
               Database Row Level Security (RLS)
             </h2>
-            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
               We enforce multi-tenant isolation at the database engine level. Every SQL query for dreams, entities, or reflections is cryptographically bound to your authenticated Supabase user ID. Cross-account data leaks are prevented at the engine core.
             </p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
-            <KeyRound size={20} className="text-[var(--accent)]" />
-            <h2 className="text-base font-display font-medium text-[var(--text-primary)]">
+          <div className="p-6 sm:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <KeyRound size={22} className="text-[var(--accent)]" />
+            <h2 className="text-lg sm:text-xl font-display font-medium text-[var(--text-primary)]">
               Encryption in Transit & At Rest
             </h2>
-            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
               All communications between your browser and our servers use standard HTTPS/TLS encryption. Database storage and automated backups are encrypted at rest by our managed database infrastructure (Supabase).
             </p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
-            <Server size={20} className="text-[var(--accent)]" />
-            <h2 className="text-base font-display font-medium text-[var(--text-primary)]">
+          <div className="p-6 sm:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <Server size={22} className="text-[var(--accent)]" />
+            <h2 className="text-lg sm:text-xl font-display font-medium text-[var(--text-primary)]">
               Isolated Payment Infrastructure
             </h2>
-            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
               Subconscious Log never handles, touches, or stores your payment card credentials. All billing is managed through Stripe, certified under PCI-DSS Level 1 (the highest standard in payment security).
             </p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
-            <EyeOff size={20} className="text-[var(--accent)]" />
-            <h2 className="text-base font-display font-medium text-[var(--text-primary)]">
+          <div className="p-6 sm:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-3">
+            <EyeOff size={22} className="text-[var(--accent)]" />
+            <h2 className="text-lg sm:text-xl font-display font-medium text-[var(--text-primary)]">
               Model Training Boundaries
             </h2>
-            <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
               We do not train our own public foundation models on your journal entries or reflections. Data submitted for AI analysis is sent per-request to generate reflections according to the privacy and security terms of the Google Gemini API.
             </p>
           </div>
@@ -91,19 +91,19 @@ export default function SecurityPage() {
 
         {/* Responsible Disclosure */}
         <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-4">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] block">
+          <span className="text-xs font-mono uppercase tracking-widest text-[var(--accent)] font-semibold block">
             Vulnerability Reporting
           </span>
-          <h3 className="text-xl font-display font-medium text-[var(--text-primary)]">
+          <h3 className="text-2xl font-display font-medium text-[var(--text-primary)]">
             Responsible Disclosure Channel
           </h3>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
             We welcome vulnerability reports from independent security researchers. If you discover a security issue or vulnerability in our application, please report it to our security and privacy desk at{' '}
             <a href={`mailto:${SITE_CONFIG.privacyEmail}`} className="text-[var(--accent)] hover:underline font-mono">
               {SITE_CONFIG.privacyEmail}
             </a>.
           </p>
-          <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-sm sm:text-base text-[var(--text-secondary)] font-normal leading-relaxed">
             Please include steps to reproduce and allow reasonable time for remediation before any public disclosure. We do not pursue legal action against researchers acting in good faith.
           </p>
         </div>

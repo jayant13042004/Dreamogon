@@ -22,6 +22,7 @@ type BillingCatalogItem = {
 
 type BillingStatus = {
   planTier: 'free' | 'pro';
+  isOwner?: boolean;
   plan: {
     id: string;
     name: string;
@@ -242,7 +243,7 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
         return;
       }
       if (data.code === 'billing_not_configured') {
-        toast.error('Billing is not configured yet. Add Stripe keys to enable checkout.');
+        toast.error('Billing is not configured yet. Please check payment provider settings.');
       } else {
         toast.error(data.error || 'Could not start checkout');
       }
@@ -331,7 +332,7 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
                 <p className="text-2xl font-display font-medium text-[var(--text-primary)] mt-1">
                   {billing?.plan.name || 'Free'}
                 </p>
-                <p className="text-xs text-[var(--text-secondary)] mt-1 font-light leading-relaxed">
+                <p className="text-xs text-[var(--text-secondary)] mt-1 font-normal leading-relaxed">
                   {billing?.plan.headline}
                 </p>
 
@@ -373,7 +374,20 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
             </div>
 
             {/* Plan Action Blocks */}
-            {!isPaid ? (
+            {billing?.isOwner ? (
+              <div className="p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-default)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--accent)] text-[var(--bg-primary)] font-mono uppercase tracking-wider">
+                      Owner Pro Access
+                    </span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1.5 leading-relaxed">
+                    Your account is recognized as an owner and has permanent complimentary Pro access with full AI reflections and features.
+                  </p>
+                </div>
+              </div>
+            ) : !isPaid ? (
               <div className="space-y-4">
                 <div className="text-xs text-[var(--text-muted)] uppercase tracking-wider font-mono">
                   Upgrade to understand your dream archive over time
@@ -389,7 +403,7 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
                         <span className="text-2xl font-display font-semibold text-[var(--text-primary)]">$9</span>
                         <span className="text-xs text-[var(--text-muted)]">/ mo</span>
                       </div>
-                      <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+                      <p className="text-xs text-[var(--text-secondary)] font-normal leading-relaxed">
                         100 AI reflections / mo, deep cross-dream pattern synthesis, and recurring motifs.
                       </p>
                     </div>
@@ -410,7 +424,7 @@ ${reflection ? `## AI Reflection\n${reflection}\n` : ''}
                         <span className="text-2xl font-display font-semibold text-[var(--text-primary)]">$72</span>
                         <span className="text-xs text-[var(--text-muted)]">/ yr ($6/mo)</span>
                       </div>
-                      <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+                      <p className="text-xs text-[var(--text-secondary)] font-normal leading-relaxed">
                         The full Pro experience at $6/month equivalent, billed annually.
                       </p>
                     </div>

@@ -52,14 +52,14 @@ export default function AIDisclaimerPage() {
             <AlertTriangle size={15} />
             Important Notice
           </div>
-          <p className="text-xs sm:text-sm text-[var(--text-primary)] font-medium leading-relaxed">
+          <p className="text-sm sm:text-base text-[var(--text-primary)] font-medium leading-relaxed">
             Subconscious Log is a software tool for creative journaling, self-inquiry, and long-term pattern discovery. It is NOT a medical, psychological, or psychiatric diagnostic service.
           </p>
         </div>
 
-        <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-8 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-light">
+        <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-default)] space-y-8 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed font-normal">
           <section className="space-y-3">
-            <h2 className="text-lg font-display font-medium text-[var(--text-primary)]">
+            <h2 className="text-xl font-display font-medium text-[var(--text-primary)]">
               1. Non-Medical & Non-Clinical Nature
             </h2>
             <p>

@@ -15,6 +15,7 @@ import {
   readDreamDraft,
   writeDreamDraft,
 } from '@/lib/drafts';
+import { mergeTranscripts } from '@/lib/utils/voice';
 
 interface DreamEditorProps {
   initialDream?: Partial<Dream>;
@@ -90,7 +91,7 @@ export function DreamEditor({
   }, [title, date, content, mood, lucidity, tags, isEditing, user, saving]);
 
   const handleVoiceTranscript = useCallback((text: string) => {
-    setContent((prev) => prev + (prev.endsWith(' ') || prev === '' ? '' : ' ') + text);
+    setContent((prev) => mergeTranscripts(prev, text));
   }, []);
 
   const handleSubmit = async (analyze: boolean) => {

@@ -23,23 +23,23 @@ export function PublicNavbar() {
         <BrandLogo size="md" href="/" />
 
         {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
-          <Link href="/how-it-works" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-medium tracking-wide text-[var(--text-secondary)]">
+          <Link href="/how-it-works" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors py-1">
             How It Works
           </Link>
-          <Link href="/pricing" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/pricing" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors py-1">
             Pricing
           </Link>
-          <Link href="/blog" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/blog" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors py-1">
             Blog
           </Link>
-          <Link href="/about" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/about" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors py-1">
             About
           </Link>
-          <Link href="/faq" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/faq" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors py-1">
             FAQ
           </Link>
-          <Link href="/contact" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors">
+          <Link href="/contact" className="whitespace-nowrap hover:text-[var(--text-primary)] transition-colors py-1">
             Contact
           </Link>
         </div>
@@ -48,21 +48,21 @@ export function PublicNavbar() {
         <div className="hidden lg:flex items-center gap-3 shrink-0">
           <button
             onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-            className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors shrink-0"
+            className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-xl border border-transparent hover:border-[var(--border-default)] transition-colors shrink-0"
             aria-label="Toggle theme"
           >
-            {mounted && resolvedTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            {mounted && resolvedTheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
           </button>
           <span className="w-px h-4 bg-[var(--border-default)] shrink-0 mx-0.5" aria-hidden="true" />
           <Link
             href="/login"
-            className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-2 transition-colors whitespace-nowrap shrink-0"
+            className="text-sm font-medium text-[var(--text-primary)] hover:text-[var(--accent)] px-3 py-2 transition-colors whitespace-nowrap shrink-0"
           >
             Log In
           </Link>
           <Link
             href="/signup"
-            className="px-5 py-2.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--accent-hover)] transition-all shadow-sm whitespace-nowrap shrink-0"
+            className="px-5 py-2.5 rounded-full bg-[var(--accent)] text-[var(--bg-primary)] text-sm font-semibold hover:bg-[var(--accent-hover)] transition-all shadow-sm hover:shadow-md whitespace-nowrap shrink-0"
           >
             Begin your journal
           </Link>
@@ -157,18 +157,18 @@ export function PublicNavbar() {
 
 export function PublicFooter() {
   return (
-    <footer className="bg-[var(--bg-card)]/40 border-t border-[var(--border-default)] pt-16 pb-12 text-[var(--text-muted)] text-xs">
+    <footer className="bg-[var(--bg-card)]/60 border-t border-[var(--border-default)] pt-16 pb-14 text-[var(--text-secondary)] text-sm">
       <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-12">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <BrandLogo size="md" href="/" />
-            <p className="text-[var(--text-secondary)] text-xs leading-relaxed max-w-sm font-light">
+            <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed max-w-sm font-normal">
               An editorial, privacy-first dream journal for the moments immediately upon waking. Write or speak raw fragments before they fade, reflect with quiet care, and watch subconscious patterns emerge across time.
             </p>
-            <div className="pt-2 flex items-center gap-2 text-[11px] font-mono text-[var(--text-muted)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+            <div className="pt-2 flex items-center gap-2 text-xs sm:text-sm font-mono text-[var(--text-secondary)] font-medium">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)]" />
               <span>Private Subconscious Journal</span>
               <span className="opacity-40">·</span>
               <span>Encrypted Storage</span>
@@ -176,38 +176,38 @@ export function PublicFooter() {
           </div>
 
           {/* Product Col */}
-          <div className="space-y-3">
-            <h4 className="text-[var(--text-primary)] font-medium uppercase tracking-wider text-[11px] font-mono">
+          <div className="space-y-4">
+            <h4 className="text-[var(--text-primary)] font-semibold uppercase tracking-wider text-xs sm:text-sm font-mono">
               Product
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-3 text-sm sm:text-base font-normal">
               <li>
-                <Link href="/how-it-works#capture" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/how-it-works#capture" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Journal
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works#capture" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/how-it-works#capture" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Dream Capture
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works#reflection" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/how-it-works#reflection" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   AI Reflection
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works#patterns" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/how-it-works#patterns" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Insights & Patterns
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works#world" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/how-it-works#world" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Dream World
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/pricing" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Pricing
                 </Link>
               </li>
@@ -215,38 +215,38 @@ export function PublicFooter() {
           </div>
 
           {/* Resources Col */}
-          <div className="space-y-3">
-            <h4 className="text-[var(--text-primary)] font-medium uppercase tracking-wider text-[11px] font-mono">
+          <div className="space-y-4">
+            <h4 className="text-[var(--text-primary)] font-semibold uppercase tracking-wider text-xs sm:text-sm font-mono">
               Resources
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-3 text-sm sm:text-base font-normal">
               <li>
-                <Link href="/blog" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/blog" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Editorial Blog
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/faq" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Frequently Asked Questions
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/how-it-works" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   How Subconscious Log Works
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/about" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   About Subconscious Log
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/contact" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Contact Support
                 </Link>
               </li>
               <li>
-                <Link href="/dream-symbols" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/dream-symbols" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Symbol Library
                 </Link>
               </li>
@@ -254,43 +254,43 @@ export function PublicFooter() {
           </div>
 
           {/* Legal & Trust Col */}
-          <div className="space-y-3">
-            <h4 className="text-[var(--text-primary)] font-medium uppercase tracking-wider text-[11px] font-mono">
+          <div className="space-y-4">
+            <h4 className="text-[var(--text-primary)] font-semibold uppercase tracking-wider text-xs sm:text-sm font-mono">
               Legal & Trust
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-3 text-sm sm:text-base font-normal">
               <li>
-                <Link href="/privacy" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/privacy" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/terms" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/cookies" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/cookies" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Cookie Policy
                 </Link>
               </li>
               <li>
-                <Link href="/refunds" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/refunds" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Refunds & Cancellation
                 </Link>
               </li>
               <li>
-                <Link href="/ai-disclaimer" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/ai-disclaimer" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   AI & Contemplative Disclaimer
                 </Link>
               </li>
               <li>
-                <Link href="/security" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/security" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Security & Data Protection
                 </Link>
               </li>
               <li>
-                <Link href="/accessibility" className="hover:text-[var(--text-primary)] transition-colors">
+                <Link href="/accessibility" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors block py-0.5">
                   Accessibility Statement
                 </Link>
               </li>
@@ -299,19 +299,19 @@ export function PublicFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono">
-          <p>&copy; {new Date().getFullYear()} Subconscious Log. All rights reserved.</p>
+        <div className="pt-8 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm font-mono text-[var(--text-secondary)]">
+          <p className="font-normal">&copy; {new Date().getFullYear()} Subconscious Log. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/privacy" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-medium transition-colors">
               Privacy
             </Link>
-            <Link href="/terms" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/terms" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-medium transition-colors">
               Terms
             </Link>
-            <Link href="/security" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/security" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-medium transition-colors">
               Security
             </Link>
-            <Link href="/contact" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/contact" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-medium transition-colors">
               Contact
             </Link>
           </div>
