@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Mic, MicOff, Globe, AlertCircle, Square, Sparkles, Loader2, Search, Check, X, Volume2, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, VoiceLanguage } from '@/lib/constants/languages';
-import { mergeTranscripts } from '@/lib/utils/voice';
+import { mergeTranscripts, getBestSupportedAudioMimeType, getAudioFileExtension } from '@/lib/utils/voice';
 
 export interface MorningRecorderProps {
   onTranscript: (text: string) => void;
@@ -40,6 +40,7 @@ export function MorningRecorder({
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const actualMimeTypeRef = useRef<string>('audio/webm');
   const accumulatedTranscriptRef = useRef<string>('');
   const wakeLockRef = useRef<any>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -157,15 +158,17 @@ export function MorningRecorder({
    */
   const transcribeAudioChunks = async (chunks: Blob[], langCode: string) => {
     if (chunks.length === 0) return;
-    const audioBlob = new Blob(chunks, { type: chunks[0]?.type || 'audio/webm' });
-    if (audioBlob.size < 800) return;
+    const finalMime = actualMimeTypeRef.current || chunks[0]?.type || 'audio/webm';
+    const audioBlob = new Blob(chunks, { type: finalMime });
+    if (audioBlob.size < 50) return;
 
     setIsTranscribing(true);
     setErrorHint(null);
 
     try {
+      const ext = getAudioFileExtension(finalMime);
       const formData = new FormData();
-      formData.append('file', audioBlob, 'recording.webm');
+      formData.append('file', audioBlob, `recording.${ext}`);
       formData.append('language', langCode);
 
       const res = await fetch('/api/ai/transcribe', {
@@ -194,7 +197,7 @@ export function MorningRecorder({
   };
 
   /**
-   * Start recording using MediaRecorder fallback (for Firefox or when SpeechRecognition fails)
+   * Start recording using MediaRecorder fallback (for mobile devices, Safari, or when SpeechRecognition fails)
    */
   const startMediaRecorderFallback = async () => {
     try {
@@ -202,31 +205,57 @@ export function MorningRecorder({
         throw new Error('NO_MEDIA_DEVICES');
       }
 
-      // Simple { audio: true } constraint avoids driver crashes on Windows/mobile
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Audio constraints that work reliably across mobile and desktop
+      let stream: MediaStream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        });
+      } catch {
+        // Fallback to simple unconstrained audio if complex constraints fail on certain mobile drivers
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      }
+
       mediaStreamRef.current = stream;
       audioChunksRef.current = [];
 
-      let mimeType = 'audio/webm';
-      if (typeof MediaRecorder !== 'undefined') {
-        if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-          mimeType = 'audio/webm;codecs=opus';
-        } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-          mimeType = 'audio/mp4';
-        } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
-          mimeType = 'audio/ogg';
-        }
-
-        const recorder = new MediaRecorder(stream, { mimeType });
-        recorder.ondataavailable = (event) => {
-          if (event.data && event.data.size > 0) {
-            audioChunksRef.current.push(event.data);
-          }
-        };
-        recorder.start(250);
-        mediaRecorderRef.current = recorder;
+      const supportedMime = getBestSupportedAudioMimeType();
+      let recorder: MediaRecorder;
+      try {
+        recorder = supportedMime
+          ? new MediaRecorder(stream, { mimeType: supportedMime })
+          : new MediaRecorder(stream);
+      } catch {
+        // Fallback without options in case browser rejected options object
+        recorder = new MediaRecorder(stream);
       }
 
+      actualMimeTypeRef.current = recorder.mimeType || supportedMime || 'audio/webm';
+
+      recorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      // In iOS Safari (MP4/AAC), timeslices produce malformed fragmented chunks.
+      // Calling start() without timeslice produces a clean, valid container upon stop().
+      const isMp4OrAac =
+        actualMimeTypeRef.current.includes('mp4') ||
+        actualMimeTypeRef.current.includes('aac') ||
+        actualMimeTypeRef.current.includes('m4a');
+
+      if (isMp4OrAac) {
+        recorder.start();
+      } else {
+        recorder.start(1000);
+      }
+
+      mediaRecorderRef.current = recorder;
       activeEngineRef.current = 'recorder';
       setIsRecording(true);
       onRecordingChange?.(true);
@@ -236,12 +265,14 @@ export function MorningRecorder({
     } catch (err: any) {
       console.warn('MediaRecorder fallback failed:', err);
       if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-        setErrorHint('Microphone access was not granted by your browser or operating system.');
+        setErrorHint('Microphone access was denied. Please allow microphone permissions in your mobile browser settings.');
         setShowHelpDetails(true);
       } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-        setErrorHint('No microphone device was detected on your computer or phone.');
+        setErrorHint('No microphone was detected on this device.');
+      } else if (err.message === 'NO_MEDIA_DEVICES') {
+        setErrorHint('Microphone requires a secure connection (HTTPS) or is not supported in this browser.');
       } else {
-        setErrorHint('Unable to access microphone. You can type your dream directly in the text box.');
+        setErrorHint('Unable to access microphone. Please check permissions or type your dream directly.');
       }
       return false;
     }
@@ -267,14 +298,11 @@ export function MorningRecorder({
       (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
         (typeof window !== 'undefined' && window.innerWidth <= 768));
 
-    // On mobile devices (Android / iOS): ALWAYS use MediaRecorder directly.
-    // Reason: Mobile browsers (especially Android Chrome) have broken SpeechRecognition:
-    // they play system start/stop beeps, cut off on 1s of silence, and cause repeated text.
-    // MediaRecorder is completely silent, never cuts off mid-speech, and Gemini transcribes
-    // accurately with zero repetition.
+    // On mobile devices (Android / iOS): MediaRecorder is preferred to avoid beep interruptions and cutoffs
     if (isMobile) {
-      await startMediaRecorderFallback();
-      return;
+      const ok = await startMediaRecorderFallback();
+      if (ok) return;
+      // If MediaRecorder failed on mobile (e.g. webview without MediaRecorder), fall through to SpeechRecognition
     }
 
     const SpeechRecognition =
@@ -387,13 +415,40 @@ export function MorningRecorder({
     let chunksToProcess: Blob[] = [];
 
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      const recorder = mediaRecorderRef.current;
       await new Promise<void>((resolve) => {
-        const recorder = mediaRecorderRef.current!;
-        recorder.onstop = () => {
-          resolve();
+        const handleData = (event: BlobEvent) => {
+          if (event.data && event.data.size > 0) {
+            audioChunksRef.current.push(event.data);
+          }
         };
+        recorder.addEventListener('dataavailable', handleData);
+        recorder.addEventListener(
+          'stop',
+          () => {
+            setTimeout(() => {
+              try {
+                recorder.removeEventListener('dataavailable', handleData);
+              } catch {
+                // ignore
+              }
+              resolve();
+            }, 60);
+          },
+          { once: true }
+        );
+
         try {
-          recorder.stop();
+          if (recorder.state === 'recording') {
+            try {
+              recorder.requestData();
+            } catch {
+              // ignore
+            }
+            recorder.stop();
+          } else {
+            resolve();
+          }
         } catch {
           resolve();
         }
@@ -404,7 +459,7 @@ export function MorningRecorder({
       chunksToProcess = [...audioChunksRef.current];
     }
 
-    // 3. Release media stream
+    // 3. Release media stream AFTER chunk flush is completely finished
     stopMediaStream();
 
     activeEngineRef.current = null;
@@ -419,15 +474,12 @@ export function MorningRecorder({
 
     // 4. If recorded with MediaRecorder (or didn't get speech text), transcribe with Gemini AI
     if ((wasRecordingWithRecorder || !accumulatedTranscriptRef.current.trim()) && chunksToProcess.length > 0) {
-      // Phase 2: Emit audio blob to parent for IndexedDB persistence (before transcription)
-      if (onAudioCaptured && chunksToProcess.length > 0) {
-        const mimeType = chunksToProcess[0]?.type || 'audio/webm';
-        const audioBlob = new Blob(chunksToProcess, { type: mimeType });
-        if (audioBlob.size > 800) {
-          onAudioCaptured(audioBlob, mimeType.split(';')[0], selectedLang);
-        }
+      const finalMime = actualMimeTypeRef.current || chunksToProcess[0]?.type || 'audio/webm';
+      const audioBlob = new Blob(chunksToProcess, { type: finalMime });
+      if (audioBlob.size > 50) {
+        onAudioCaptured?.(audioBlob, finalMime.split(';')[0], selectedLang);
+        await transcribeAudioChunks(chunksToProcess, selectedLang);
       }
-      await transcribeAudioChunks(chunksToProcess, selectedLang);
     }
   };
 

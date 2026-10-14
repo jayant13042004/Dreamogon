@@ -146,3 +146,120 @@ export function mergeTranscripts(existingText: string, incomingChunk: string): s
   const needsSpace = !existingText.endsWith(' ') && !existingText.endsWith('\n');
   return existingText + (needsSpace ? ' ' : '') + incoming;
 }
+
+/**
+ * Detects the best supported recording MIME type in the current browser.
+ * Returns undefined if no specific MIME type can be guaranteed, signaling
+ * MediaRecorder to use browser default rather than throwing a NotSupportedError.
+ */
+export function getBestSupportedAudioMimeType(): string | undefined {
+  if (typeof window === 'undefined' || typeof MediaRecorder === 'undefined') {
+    return undefined;
+  }
+  if (typeof MediaRecorder.isTypeSupported !== 'function') {
+    return undefined;
+  }
+
+  // Candidate types in priority order
+  const candidates = [
+    'audio/webm;codecs=opus',
+    'audio/webm',
+    'audio/mp4',
+    'audio/aac',
+    'audio/ogg;codecs=opus',
+    'audio/ogg',
+    'audio/wav',
+    'audio/x-m4a',
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      if (MediaRecorder.isTypeSupported(candidate)) {
+        return candidate;
+      }
+    } catch {
+      // Continue searching
+    }
+  }
+
+  return undefined;
+}
+
+/**
+ * Sniffs the magic byte headers of an audio buffer to return the true MIME type.
+ * Prevents Gemini decode failures when mobile browsers (e.g. iOS Safari) produce MP4/AAC
+ * but client-side code labeled it as audio/webm.
+ */
+export function detectAudioFormatFromBytes(
+  buffer: Uint8Array | Buffer | ArrayBuffer | null | undefined,
+  fallback = 'audio/webm'
+): { mimeType: string; extension: string } {
+  if (!buffer) return { mimeType: fallback, extension: 'webm' };
+
+  const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+  if (bytes.length < 4) return { mimeType: fallback, extension: 'webm' };
+
+  // 1. WebM / Matroska: 0x1A 0x45 0xDF 0xA3
+  if (bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3) {
+    return { mimeType: 'audio/webm', extension: 'webm' };
+  }
+
+  // 2. Ogg: 'OggS' (0x4F 0x67 0x67 0x53)
+  if (bytes[0] === 0x4f && bytes[1] === 0x67 && bytes[2] === 0x67 && bytes[3] === 0x53) {
+    return { mimeType: 'audio/ogg', extension: 'ogg' };
+  }
+
+  // 3. WAV: 'RIFF' (0x52 0x49 0x46 0x46)
+  if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46) {
+    return { mimeType: 'audio/wav', extension: 'wav' };
+  }
+
+  // 4. MP3 ID3 (0x49 0x44 0x33) or sync word 0xFF 0xFB / 0xFF 0xF3 / 0xFF 0xF2
+  if (bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33) {
+    return { mimeType: 'audio/mp3', extension: 'mp3' };
+  }
+  if (bytes[0] === 0xff && (bytes[1] === 0xfb || bytes[1] === 0xf3 || bytes[1] === 0xf2)) {
+    return { mimeType: 'audio/mp3', extension: 'mp3' };
+  }
+
+  // 5. AAC ADTS: 0xFF 0xF1 or 0xFF 0xF9
+  if (bytes[0] === 0xff && (bytes[1] === 0xf1 || bytes[1] === 0xf9)) {
+    return { mimeType: 'audio/aac', extension: 'aac' };
+  }
+
+  // 6. MP4 / M4A:
+  // Typically has 4-byte length followed by 'ftyp' or 'moov' at offset 4
+  if (bytes.length >= 8) {
+    const box = String.fromCharCode(bytes[4], bytes[5], bytes[6], bytes[7]);
+    if (box === 'ftyp' || box === 'moov') {
+      return { mimeType: 'audio/mp4', extension: 'mp4' };
+    }
+  }
+
+  const cleanFallback = fallback.split(';')[0].trim().toLowerCase() || 'audio/webm';
+  const ext =
+    cleanFallback.includes('mp4') || cleanFallback.includes('m4a')
+      ? 'mp4'
+      : cleanFallback.includes('aac')
+      ? 'aac'
+      : cleanFallback.includes('ogg')
+      ? 'ogg'
+      : cleanFallback.includes('wav')
+      ? 'wav'
+      : cleanFallback.includes('mp3') || cleanFallback.includes('mpeg')
+      ? 'mp3'
+      : 'webm';
+
+  return { mimeType: cleanFallback, extension: ext };
+}
+
+export function getAudioFileExtension(mimeType: string): string {
+  const clean = (mimeType || '').split(';')[0].trim().toLowerCase();
+  if (clean.includes('mp4') || clean.includes('m4a')) return 'mp4';
+  if (clean.includes('aac')) return 'aac';
+  if (clean.includes('ogg')) return 'ogg';
+  if (clean.includes('wav')) return 'wav';
+  if (clean.includes('mp3') || clean.includes('mpeg')) return 'mp3';
+  return 'webm';
+}
+

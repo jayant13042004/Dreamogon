@@ -104,7 +104,6 @@ export function useVoiceInput(options: UseVoiceInputOptions = {}): UseVoiceInput
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         streamRef.current = stream;
-        stream.getTracks().forEach((t) => t.stop());
       } catch (err) {
         console.warn('Microphone permission request error in useVoiceInput:', err);
         return;

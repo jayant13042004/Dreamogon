@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Mic, MicOff, Globe, AlertCircle, Loader2, Check, X, Search } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/lib/constants/languages';
-import { mergeTranscripts } from '@/lib/utils/voice';
+import { mergeTranscripts, getBestSupportedAudioMimeType, getAudioFileExtension } from '@/lib/utils/voice';
 
 interface VoiceInputProps {
   onTranscript: (text: string) => void;
@@ -31,6 +31,7 @@ export function VoiceInput({
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const actualMimeTypeRef = useRef<string>('audio/webm');
   const accumulatedTranscriptRef = useRef<string>('');
   const wakeLockRef = useRef<any>(null);
   const isExplicitlyStopped = useRef(true);
@@ -105,15 +106,17 @@ export function VoiceInput({
 
   const transcribeAudioChunks = async (chunks: Blob[], langCode: string) => {
     if (chunks.length === 0) return;
-    const audioBlob = new Blob(chunks, { type: chunks[0]?.type || 'audio/webm' });
-    if (audioBlob.size < 800) return;
+    const finalMime = actualMimeTypeRef.current || chunks[0]?.type || 'audio/webm';
+    const audioBlob = new Blob(chunks, { type: finalMime });
+    if (audioBlob.size < 50) return;
 
     setIsTranscribing(true);
     setErrorHint(null);
 
     try {
+      const ext = getAudioFileExtension(finalMime);
       const formData = new FormData();
-      formData.append('file', audioBlob, 'recording.webm');
+      formData.append('file', audioBlob, `recording.${ext}`);
       formData.append('language', langCode);
 
       const res = await fetch('/api/ai/transcribe', {
@@ -142,32 +145,64 @@ export function VoiceInput({
       if (!navigator?.mediaDevices?.getUserMedia) {
         throw new Error('NO_MEDIA_DEVICES');
       }
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      let stream: MediaStream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        });
+      } catch {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      }
+
       mediaStreamRef.current = stream;
       audioChunksRef.current = [];
 
-      let mimeType = 'audio/webm';
-      if (typeof MediaRecorder !== 'undefined') {
-        if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-          mimeType = 'audio/webm;codecs=opus';
-        } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-          mimeType = 'audio/mp4';
-        }
-        const recorder = new MediaRecorder(stream, { mimeType });
-        recorder.ondataavailable = (event) => {
-          if (event.data && event.data.size > 0) {
-            audioChunksRef.current.push(event.data);
-          }
-        };
-        recorder.start(250);
-        mediaRecorderRef.current = recorder;
+      const supportedMime = getBestSupportedAudioMimeType();
+      let recorder: MediaRecorder;
+      try {
+        recorder = supportedMime
+          ? new MediaRecorder(stream, { mimeType: supportedMime })
+          : new MediaRecorder(stream);
+      } catch {
+        recorder = new MediaRecorder(stream);
       }
+
+      actualMimeTypeRef.current = recorder.mimeType || supportedMime || 'audio/webm';
+
+      recorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      const isMp4OrAac =
+        actualMimeTypeRef.current.includes('mp4') ||
+        actualMimeTypeRef.current.includes('aac') ||
+        actualMimeTypeRef.current.includes('m4a');
+
+      if (isMp4OrAac) {
+        recorder.start();
+      } else {
+        recorder.start(1000);
+      }
+
+      mediaRecorderRef.current = recorder;
       activeEngineRef.current = 'recorder';
       setIsRecording(true);
       await requestWakeLock();
       return true;
     } catch (err: any) {
-      setErrorHint('Microphone unavailable. You can type directly.');
+      console.warn('MediaRecorder fallback in VoiceInput failed:', err);
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setErrorHint('Microphone access denied. Please allow permissions.');
+      } else {
+        setErrorHint('Microphone unavailable. You can type directly.');
+      }
       return false;
     }
   };
@@ -186,10 +221,10 @@ export function VoiceInput({
       (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
         (typeof window !== 'undefined' && window.innerWidth <= 768));
 
-    // On mobile devices (Android / iOS): ALWAYS use MediaRecorder directly
+    // On mobile devices (Android / iOS): MediaRecorder is preferred
     if (isMobile) {
-      await startMediaRecorderFallback();
-      return;
+      const ok = await startMediaRecorderFallback();
+      if (ok) return;
     }
 
     const SpeechRecognition =
@@ -278,11 +313,40 @@ export function VoiceInput({
     let chunksToProcess: Blob[] = [];
 
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      const recorder = mediaRecorderRef.current;
       await new Promise<void>((resolve) => {
-        const recorder = mediaRecorderRef.current!;
-        recorder.onstop = () => resolve();
+        const handleData = (event: BlobEvent) => {
+          if (event.data && event.data.size > 0) {
+            audioChunksRef.current.push(event.data);
+          }
+        };
+        recorder.addEventListener('dataavailable', handleData);
+        recorder.addEventListener(
+          'stop',
+          () => {
+            setTimeout(() => {
+              try {
+                recorder.removeEventListener('dataavailable', handleData);
+              } catch {
+                // ignore
+              }
+              resolve();
+            }, 60);
+          },
+          { once: true }
+        );
+
         try {
-          recorder.stop();
+          if (recorder.state === 'recording') {
+            try {
+              recorder.requestData();
+            } catch {
+              // ignore
+            }
+            recorder.stop();
+          } else {
+            resolve();
+          }
         } catch {
           resolve();
         }

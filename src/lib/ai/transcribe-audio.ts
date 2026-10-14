@@ -1,4 +1,5 @@
 import { getAIClient, GENERATION_MODELS, shouldFallbackToNextModel } from '@/lib/ai/client';
+import { detectAudioFormatFromBytes } from '@/lib/utils/voice';
 
 export interface TranscriptionResult {
   rawTranscript: string;
@@ -14,7 +15,8 @@ export async function transcribeAudioBuffer(
   mimeType = 'audio/webm',
   language = 'en-US'
 ): Promise<TranscriptionResult> {
-  const cleanMimeType = mimeType.split(';')[0].trim() || 'audio/webm';
+  const detected = detectAudioFormatFromBytes(audioBytes, mimeType);
+  const cleanMimeType = detected.mimeType;
   const base64Audio = Buffer.from(audioBytes).toString('base64');
 
   const ai = getAIClient();
